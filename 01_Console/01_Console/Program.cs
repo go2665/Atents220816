@@ -188,10 +188,26 @@ namespace _01_Console
             Console.WriteLine($"최종 Level : {level}");
 
             // 실습 : exp가 1을 넘어 레벨업을 할 때까지 계속 추가 경험치를 입력하도록 하는 코드를 작성하기
+            // 힌트1 : 반복문 안에서 계속 입력을 받아야 한다.
+            // 힌트2 : 레벨업을 할 수 없으면 반복문이 계속 실행되어야 한다.
+            // 시간 : 2시 까지
             exp = 0.0f;
-            Console.WriteLine("경험치를 추가합니다.");
-            Console.Write("추가할 경험치 : ");
-            string temp = Console.ReadLine();
+            Console.WriteLine($"현재 경험치 : {exp}");
+
+            while( 1.0f > exp ) // exp값이 1보다 작으면 계속 반복한다.
+            {
+                Console.WriteLine($"경험치를 추가 해야합니다. 현재 경험치 : {exp}");
+                Console.Write("추가할 경험치 : ");
+                string temp = Console.ReadLine();   // 입력 받기
+                float tempFloat = 0.0f;
+                float.TryParse(temp, out tempFloat);    // 입력 받은 string을 float으로 변경
+
+                exp += tempFloat;   // 입력 받은 값을 exp에 추가
+            }
+
+            // while이 끝났다라는 이야기는 exp가 1보다 크거나 같아졌다라는 의미
+            Console.WriteLine("레벨업");
+
 
             Console.ReadKey();                  // 키 입력 대기하는 코드
         }
