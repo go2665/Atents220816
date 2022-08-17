@@ -106,7 +106,7 @@ namespace _01_Console
 
             // 변수 끝 -------------------------------------------------------------------------------------
 
-            // 제어문(Control statement)
+            // 제어문(Control statement) - 조건문(if, switch), 반복문
             // 실행되는 코드 라인을 변경할 수 있는 코드
             hp = 10;
             if( hp < 3 )    // hp가 2이기 때문에 참이다. 따라서 중괄호 사이에 코드가 실행된다.
@@ -135,25 +135,63 @@ namespace _01_Console
                     break;
             }
 
-            exp = 0.5f;
+            // 조건문 실습
+            //exp = 0.5f;
+            //Console.WriteLine("경험치를 추가합니다.");
+            //Console.Write("추가할 경험치 : ");
+            //string temp = Console.ReadLine();
+
+            //// 실습 : exp의 값과 추가로 입력받은 경험치의 합이 1이상이면 "레벨업"이라고 출력하고 1미만이면 합계를 출력하는 코드 작성하기
+            //// 시간 : 12시 55분까지
+
+            //float tempExp;
+            //float.TryParse(temp, out tempExp);
+            //if( (exp + tempExp) > 1.0f )
+            //{
+            //    Console.WriteLine("레벨업!");
+            //}
+            //else
+            //{
+            //    Console.WriteLine($"현재 경험치 : {exp+tempExp}");
+            //}
+
+            level = 1;
+            while (level < 3)   // 소괄호() 안의 조건이 참이면 중괄호{} 사이의 코드를 실행하는 statement
+            {
+                Console.WriteLine($"현재 레벨 : {level}");                
+                level++;    //level = level + 1;    // level += 1;  // 셋 다 같은 코드
+                //level += 2; // level에다 2를 더해서 레벨에 넣어라
+            }
+
+            // i는 0에서 시작해서 3보다 작으면 계속 {}사이의 코드를 실행한다. i는 {} 사이의 코드를 실행할 때마나 1씩 증가한다.
+            hp = 10;
+            for (int i=0; i<3; i++)  
+            {
+                Console.WriteLine($"현재 HP : {hp}");
+                hp += 10;
+            }
+            Console.WriteLine($"최종 HP : {hp}");
+
+            level = 1;
+            do
+            {
+                Console.WriteLine($"현재 레벨 : {level}");
+
+                if (level == 2)    // 1+1 == 2  ...............  ==은 양쪽이 같다라는 의미
+                {
+                    break;
+                }
+
+                level++;
+            }
+            while (level < 10);
+            Console.WriteLine($"최종 Level : {level}");
+
+            // 실습 : exp가 1을 넘어 레벨업을 할 때까지 계속 추가 경험치를 입력하도록 하는 코드를 작성하기
+            exp = 0.0f;
             Console.WriteLine("경험치를 추가합니다.");
             Console.Write("추가할 경험치 : ");
             string temp = Console.ReadLine();
-
-            // 실습 : exp의 값과 추가로 입력받은 경험치의 합이 1이상이면 "레벨업"이라고 출력하고 1미만이면 합계를 출력하는 코드 작성하기
-            // 시간 : 12시 55분까지
-
-            float tempExp;
-            float.TryParse(temp, out tempExp);
-            if( (exp + tempExp) > 1.0f )
-            {
-                Console.WriteLine("레벨업!");
-            }
-            else
-            {
-                Console.WriteLine($"현재 경험치 : {exp+tempExp}");
-            }
-
 
             Console.ReadKey();                  // 키 입력 대기하는 코드
         }
