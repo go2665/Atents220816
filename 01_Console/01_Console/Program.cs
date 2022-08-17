@@ -10,6 +10,49 @@ namespace _01_Console
     {
         static void Main(string[] args)
         {
+            int sumResult = Sum(10, 20);        // break point (단축키 F9)
+            Console.WriteLine($"SumResult : {sumResult}");
+
+            Print();
+
+            string name = "너굴맨";
+            int level = 2;
+            int hp = 10;
+            int maxHP = 20;
+            float exp = 0.1f;
+            float maxExp = 1.0f;
+
+            PrintCharacter();
+
+            Console.ReadKey();                  // 키 입력 대기하는 코드
+        }   // Main 함수의 끝
+
+        private static void PrintCharacter(string name, int level, int hp, int maxHP, float exp, float maxExp)
+        {
+            // 실습 : 파라메터로 받은 데이터를 적당한 양식으로 출력해주는 함수 완성하기
+        }
+
+        // 함수의 구성요소
+        // 이름 : 함수들을 구분하기 위한 이름 (예제의 Sum)
+        // 리턴타입 : 함수의 실행 결과로 돌려주는 데이터의 타입 (int, 함수의 이름앞에 표시된다. )
+        // 파라메터(매개변수) : 함수가 실행될 때 외부에서 받는 값 (예제의 (int a, int b) 두개의 파라메터가 있다. 함수 이름 뒤에 표시된다.)
+        // 함수바디 : 함수가 호출될 때 실행될 코드들( 예제의 222~225라인)
+
+        // 함수의 이름, 리턴타입, 파라메터를 합쳐서 함수 프로토타입. 함수의 주민등록번호. 절대로 하나의 프로그램안에서 겹치지 않는다.
+
+        static int Sum(int a, int b)
+        {
+            int result = a + b;
+            return result;
+        }
+
+        static void Print()    // 리턴해주는 값이 없고, 파라메터도 없는 경우
+        {
+            Console.WriteLine("Print");
+        }
+
+        void Test()
+        {
             Console.WriteLine("Hello World!");  // "Hello World!"를 출력하는 코드            
             Console.WriteLine("고병조");         // 출력
             //string str = Console.ReadLine();    // 키보드 입력을 받아서 str이라는 string 변수에 저장한다.
@@ -109,11 +152,11 @@ namespace _01_Console
             // 제어문(Control statement) - 조건문(if, switch), 반복문
             // 실행되는 코드 라인을 변경할 수 있는 코드
             hp = 10;
-            if( hp < 3 )    // hp가 2이기 때문에 참이다. 따라서 중괄호 사이에 코드가 실행된다.
-            {   
+            if (hp < 3)    // hp가 2이기 때문에 참이다. 따라서 중괄호 사이에 코드가 실행된다.
+            {
                 Console.WriteLine("HP가 부족합니다.");    // (hp < 3) 참일 때 실행되는 코드
             }
-            else if( hp < 10 )
+            else if (hp < 10)
             {
                 Console.WriteLine("HP가 적당합니다.");    // (hp < 3)는 거짓이고 ( hp < 10 )는 참일 때 실행되는 코드
             }
@@ -122,7 +165,7 @@ namespace _01_Console
                 Console.WriteLine("HP가 충분합니다.");    // (hp < 3)와 ( hp < 10 )가 거짓일 때 실행되는 코드
             }
 
-            switch(hp)
+            switch (hp)
             {
                 case 0: // hp가 0일 때
                     Console.WriteLine("HP가 0입니다.");
@@ -158,14 +201,14 @@ namespace _01_Console
             level = 1;
             while (level < 3)   // 소괄호() 안의 조건이 참이면 중괄호{} 사이의 코드를 실행하는 statement
             {
-                Console.WriteLine($"현재 레벨 : {level}");                
+                Console.WriteLine($"현재 레벨 : {level}");
                 level++;    //level = level + 1;    // level += 1;  // 셋 다 같은 코드
                 //level += 2; // level에다 2를 더해서 레벨에 넣어라
             }
 
             // i는 0에서 시작해서 3보다 작으면 계속 {}사이의 코드를 실행한다. i는 {} 사이의 코드를 실행할 때마나 1씩 증가한다.
             hp = 10;
-            for (int i=0; i<3; i++)  
+            for (int i = 0; i < 3; i++)
             {
                 Console.WriteLine($"현재 HP : {hp}");
                 hp += 10;
@@ -194,7 +237,7 @@ namespace _01_Console
             exp = 0.0f;
             Console.WriteLine($"현재 경험치 : {exp}");
 
-            while( 1.0f > exp ) // exp값이 1보다 작으면 계속 반복한다.
+            while (1.0f > exp) // exp값이 1보다 작으면 계속 반복한다.
             {
                 Console.WriteLine($"경험치를 추가 해야합니다. 현재 경험치 : {exp}");
                 Console.Write("추가할 경험치 : ");
@@ -207,9 +250,6 @@ namespace _01_Console
 
             // while이 끝났다라는 이야기는 exp가 1보다 크거나 같아졌다라는 의미
             Console.WriteLine("레벨업");
-
-
-            Console.ReadKey();                  // 키 입력 대기하는 코드
         }
     }
 }
