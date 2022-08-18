@@ -3,33 +3,91 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace _01_Console
 {
     internal class Program
     {
+        // 스코프(Scope) : 변수나 함수를 사용할 수 있는 범위. 변수를 선언한 시점에서 해당 변수가 포함된 중괄호가 끝나는 구간까지
         static void Main(string[] args)
         {
-            int sumResult = Sum(10, 20);        // break point (단축키 F9)
-            Console.WriteLine($"SumResult : {sumResult}");
+            //int sumResult = Sum(10, 20);        // break point (단축키 F9)
+            //Console.WriteLine($"SumResult : {sumResult}");
+            //Print();
+            //Test_Function();
 
-            Print();
+            Test_GuGudan();
 
-            string name = "너굴맨";
+            Console.ReadKey();                  // 키 입력 대기하는 코드
+        }   // Main 함수의 끝
+
+        private static void Test_GuGudan()
+        {
+            // 실습
+            // 1. int 타입의 파라메터를 하나 받아서 그 숫자에 해당하는 구구단을 출력해주는 함수 만들기
+            // 2. 1번에서 만드는 함수는 2~9까지 입력이 들어오면 해당 구구단 출력. 그 외의 숫자는 "잘못된 입력입니다."라고 출력
+            // 3. 메인 함수에서 숫자를 하나 입력받는 코드가 있어야 한다.
+            // 시간 : 9시 50까지 -> 10시 30분까지
+
+            Console.Write("출력할 구구단을 입력하세요(2~9) : ");
+            string temp = Console.ReadLine();
+            int dan;
+            int.TryParse(temp, out dan);
+            GuGuDan(dan);
+
+            bool b1 = true;
+            bool b2 = false;
+            // 논리 연산자 
+            // && (and) - 둘 다 참일 때만 참이다. t && t = t, t && f = f, f && t = f, f && f = f
+            // || (or) - 둘 중 하나만 참이면 참이다. t || t = t, t || f = t, f || t = t, f || f = f
+            // ~  (not) - true는 false. false는 true. ~t = f, 
+
+            // 예습 : 가위바위보 만들기 
+            Random r = new Random();
+            r.Next();
+            int a = 10 % 3;     // % : 나머지 구하는 연산자. a = 1
+        }
+
+        static void GuGuDan(int dan)
+        {
+            // <= 나 >= 는 두개의 조건이 결합된 것이므로 피하는 것이 좋다.
+            //if( 2 <= dan && dan <= 9)     // 2 <= dan        2 < dan && 2 == dan
+            if (1 < dan && dan < 10)
+            {
+                Console.WriteLine($"구구단 {dan}단 출력");
+                // 구구단 출력
+                for(int i = 1; i<10 ; i++)
+                {
+                    Console.WriteLine($"{dan} * {i} = {dan * i}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("잘못된 입력입니다.");
+            }
+        }
+
+        private static void Test_Function()
+        {
+            string name2 = "너굴맨";
             int level = 2;
             int hp = 10;
             int maxHP = 20;
             float exp = 0.1f;
             float maxExp = 1.0f;
 
-            PrintCharacter();
-
-            Console.ReadKey();                  // 키 입력 대기하는 코드
-        }   // Main 함수의 끝
+            PrintCharacter(name2, level, hp, maxHP, exp, maxExp);
+        }
 
         private static void PrintCharacter(string name, int level, int hp, int maxHP, float exp, float maxExp)
         {
             // 실습 : 파라메터로 받은 데이터를 적당한 양식으로 출력해주는 함수 완성하기
+            Console.WriteLine($"┏ 이름\t: {name} ━━━━━━━━━━━━━━━━━━━┓");
+            Console.WriteLine($"┃ 레벨\t: {level}");
+            Console.WriteLine($"┃ HP\t: ({hp,3}/{maxHP,3})");
+            Console.WriteLine($"┗ Exp\t: ({exp:f3}/{maxExp:f3})");
+
         }
 
         // 함수의 구성요소
