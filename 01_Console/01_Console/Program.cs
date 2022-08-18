@@ -31,6 +31,7 @@ namespace _01_Console
             human2.TestPrintStatus();
 
             // 실습 : 26번 라인~31번 라인까지를 한쪽이 죽을 때까지 반복하기
+            // (human2.HP <= 0) (human1.HP <= 0) 두 조건 중 하나가 만족하면 한명이 죽었다라는 이야기
 
             //Console.WriteLine($"{human1.HP}");
             //human1.HP = 20;
