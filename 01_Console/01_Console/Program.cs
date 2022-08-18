@@ -21,9 +21,18 @@ namespace _01_Console
 
 
             Character human1 = new Character();  // 메모리 할당 완료(Instance화). 객체(Object) 생성 완료(객체의 인스턴스를 만들었다)
-            Character human2 = new Character("개굴맨");  // Character 타입으로 하나 더 만든 것. human1과 human2는 서로 다른 개체이다.
+            Character human2 = new Character("개굴맨맨");  // Character 타입으로 하나 더 만든 것. human1과 human2는 서로 다른 개체이다.
 
-            Console.WriteLine($"{human1.HP}");
+            human1.Attack(human2);
+            human1.TestPrintStatus();
+            human2.TestPrintStatus();
+            human2.Attack(human1);
+            human1.TestPrintStatus();
+            human2.TestPrintStatus();
+
+            // 실습 : 26번 라인~31번 라인까지를 한쪽이 죽을 때까지 반복하기
+
+            //Console.WriteLine($"{human1.HP}");
             //human1.HP = 20;
             //human1.TestPrintStatus();
 

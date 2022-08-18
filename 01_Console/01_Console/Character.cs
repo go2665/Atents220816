@@ -61,26 +61,20 @@ namespace _01_Console
                 if( hp <= 0 )
                 {
                     // 사망 처리용 함수 호출
+                    Console.WriteLine($"{name}이 사망");
                 }
             }
         }
 
         public Character()
         {
-            Console.WriteLine("생성자 호출");
+            //Console.WriteLine("생성자 호출");
             rand = new Random();
             int randomNumber = rand.Next(); // 랜덤 클래스 이용해서 0~21억 사이의 숫자를 랜덤으로 선택
             randomNumber %= 5;  //randomNumber = randomNumber % 5;  // 랜덤으로 고른 숫자를 0~4로 변경
             name = nameArray[randomNumber]; // 0~4로 변경한 값을 인덱스로 사용하여 이름 배열에서 이름 선택
 
-            maxHP = rand.Next(100, 201);    // 100에서 200 중에 랜덤으로 선택
-            hp = maxHP;
-
-            strenth = rand.Next(20) + 1;    // 1~20 사이를 랜덤하게 선택
-            dexterity = rand.Next(20) + 1;
-            intellegence = rand.Next(20) + 1;
-
-
+            GenerateStatus();
             TestPrintStatus();
             // 실습
             // 1. 이름이 nameArray에 들어있는 것 중 하나로 랜덤하게 선택된다.
@@ -93,9 +87,22 @@ namespace _01_Console
 
         public Character(string newName)
         {
+            //Console.WriteLine($"생성자 호출 - {newName}");
             rand = new Random();
-            Console.WriteLine($"생성자 호출 - {newName}");
             name = newName;
+
+            GenerateStatus();
+            TestPrintStatus();
+        }
+
+        private void GenerateStatus()
+        {
+            maxHP = rand.Next(100, 201);    // 100에서 200 중에 랜덤으로 선택
+            hp = maxHP;
+
+            strenth = rand.Next(20) + 1;    // 1~20 사이를 랜덤하게 선택
+            dexterity = rand.Next(20) + 1;
+            intellegence = rand.Next(20) + 1;
         }
 
         //public void SetName(string newName)
@@ -104,14 +111,17 @@ namespace _01_Console
         //}
 
         // 맴버 함수 -> 이 클래스가 가지는 기능
-        public void Attack()
+        public void Attack(Character target)
         {
-
+            int damage = strenth;
+            Console.WriteLine($"{name}이 {target.name}에게 공격을 합니다.(공격력 : {damage})");
+            target.TakeDamage(damage);
         }
 
-        public void TakeDamage()
+        public void TakeDamage(int damage)
         {
-
+            HP -= damage;
+            Console.WriteLine($"{name}이 {damage}만큼의 피해를 입었습니다.");
         }
 
         public void TestPrintStatus()
