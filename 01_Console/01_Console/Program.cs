@@ -16,8 +16,16 @@ namespace _01_Console
             //Console.WriteLine($"SumResult : {sumResult}");
             //Print();
             //Test_Function();
+            //Test_GuGudan();
 
-            Test_GuGudan();
+            Character human1 = new Character();  // 메모리 할당 완료(Instance화). 객체(Object) 생성 완료(객체의 인스턴스를 만들었다)
+            Character human2 = new Character("개굴맨");  // Character 타입으로 하나 더 만든 것. human1과 human2는 서로 다른 개체이다.
+
+            //human1.name = "너굴맨";
+            //human1.SetName("너굴맨");
+
+            //human1.TestPrintStatus();
+            //human1.Attack();
 
             Console.ReadKey();                  // 키 입력 대기하는 코드
         }   // Main 함수의 끝
