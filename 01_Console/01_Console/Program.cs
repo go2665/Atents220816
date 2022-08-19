@@ -17,9 +17,53 @@ namespace _01_Console
             //Print();
             //Test_Function();
             //Test_GuGudan();
+            //Test_Character();
+            //Test_Human();
+
+            // 주말과제용
+            Human player = new Human();
+            Orc enemy = new Orc();
 
 
+            Console.ReadKey();                  // 키 입력 대기하는 코드
+        }   // Main 함수의 끝
 
+        private static void Test_Human()
+        {
+            //Human h1 = new Human();
+            //Character c1 = h1;      // 상속받은 클래스는 부모 클래스 타입으로 저장할 수 있다.
+            //c1.TestPrintStatus();   // character의 TestPrintStatus가 호출이 된다.(가상함수가 아니라서)
+            //c1.GenerateStatus();    // Human의 GenerateStatus가 호출이 된다. (가상함수이기 때문에)
+
+            // 실습
+            // 1. Human의 TestPrintStatus 함수를 오버라이드(원래 함수의 기능을 다른 기능으로 변경 하는 것) 하라.(mp출력할 것)
+            // 2. Human의 Attack 함수를 오버라이드 하라
+            //    2.1. Attack을 할 때 30%의 확률로 치명타가 터지게 만들어라(치명타는 대미지 2배)
+            // 시간 : 2시 20분까지
+
+            //h1.TestPrintStatus();
+
+            Human human1 = new Human();  // 메모리 할당 완료(Instance화). 객체(Object) 생성 완료(객체의 인스턴스를 만들었다)
+            Human human2 = new Human();  // Character 타입으로 하나 더 만든 것. human1과 human2는 서로 다른 개체이다.
+
+            while (!human1.IsDead && !human2.IsDead)    // human1이 살아있고 human2도 살아있다.
+            {
+                human1.Attack(human2);
+                human1.TestPrintStatus();
+                human2.TestPrintStatus();
+                if (human2.IsDead)   // human2가 죽으면 공격을 안함
+                {
+                    break;
+                }
+
+                human2.Attack(human1);
+                human1.TestPrintStatus();
+                human2.TestPrintStatus();
+            }
+        }
+
+        private static void Test_Character()
+        {
             Character human1 = new Character();  // 메모리 할당 완료(Instance화). 객체(Object) 생성 완료(객체의 인스턴스를 만들었다)
             Character human2 = new Character("개굴맨맨");  // Character 타입으로 하나 더 만든 것. human1과 human2는 서로 다른 개체이다.
 
@@ -30,7 +74,7 @@ namespace _01_Console
                 human1.Attack(human2);
                 human1.TestPrintStatus();
                 human2.TestPrintStatus();
-                if(human2.IsDead)   // human2가 죽으면 공격을 안함
+                if (human2.IsDead)   // human2가 죽으면 공격을 안함
                 {
                     break;
                 }
@@ -39,7 +83,7 @@ namespace _01_Console
                 human1.TestPrintStatus();
                 human2.TestPrintStatus();
             }
-            
+
             // 실습 : 26번 라인~31번 라인까지를 한쪽이 죽을 때까지 반복하기
             // (human2.HP <= 0) (human1.HP <= 0) 두 조건 중 하나가 만족하면 한명이 죽었다라는 이야기
 
@@ -54,9 +98,7 @@ namespace _01_Console
 
             //human1.TestPrintStatus();
             //human1.Attack();
-
-            Console.ReadKey();                  // 키 입력 대기하는 코드
-        }   // Main 함수의 끝
+        }
 
         private static void Test_GuGudan()
         {

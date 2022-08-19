@@ -18,14 +18,16 @@ namespace _01_Console
     public class Character   // Character 클래스를 public으로 선언한다.
     {
         // 맴버 변수 -> 이 클래스에서 사용되는 데이터
-        private string name;
-        private int hp = 100;
-        private int maxHP = 100;
-        private int strenth = 10;
-        private int dexterity = 5;
-        private int intellegence = 7;
+        protected string name;
+        protected int hp = 100;
+        protected int maxHP = 100;
+        protected int strenth = 10;
+        protected int dexterity = 5;
+        protected int intellegence = 7;
 
-        bool isDead = false;
+        protected bool isDead = false;
+
+        public string Name => name;
         public bool IsDead => isDead;   // 간단하게 읽기전용 프로퍼티 만드는 방법
 
         //Random random = new Random();
@@ -43,9 +45,9 @@ namespace _01_Console
         //int[] intArray; // 인티저를 여러개 가질 수 있는 배열
         //intArray = new int[5];    // 인티저를 5개 가질 수 있도록 할당
 
-        string[] nameArray = { "너굴맨", "개굴맨", "ㅁㅁㅁ", "ㄷㄷㄷ", "ㅋㅋㅋ" }; // nameArray에 기본값 설정(선언과 할당을 동시에 처리)
+        string[] nameArray = { "너굴맨", "개굴맨", "가", "나", "다" }; // nameArray에 기본값 설정(선언과 할당을 동시에 처리)
 
-        Random rand;
+        protected Random rand;
 
         public int HP
         {
@@ -64,16 +66,21 @@ namespace _01_Console
                 if( hp <= 0 )
                 {
                     // 사망 처리용 함수 호출
-                    Console.WriteLine($"{name}이 사망");
-                    isDead = true;
+                    Dead();
                 }
             }
+        }
+
+        private void Dead()
+        {
+            Console.WriteLine($"{name}이 사망");
+            isDead = true;
         }
 
         public Character()
         {
             //Console.WriteLine("생성자 호출");
-            rand = new Random();
+            rand = new Random(DateTime.Now.Millisecond);
             int randomNumber = rand.Next(); // 랜덤 클래스 이용해서 0~21억 사이의 숫자를 랜덤으로 선택
             randomNumber %= 5;  //randomNumber = randomNumber % 5;  // 랜덤으로 고른 숫자를 0~4로 변경
             name = nameArray[randomNumber]; // 0~4로 변경한 값을 인덱스로 사용하여 이름 배열에서 이름 선택
@@ -92,14 +99,14 @@ namespace _01_Console
         public Character(string newName)
         {
             //Console.WriteLine($"생성자 호출 - {newName}");
-            rand = new Random();
+            rand = new Random(DateTime.Now.Millisecond);
             name = newName;
 
             GenerateStatus();
             TestPrintStatus();
         }
 
-        private void GenerateStatus()
+        public virtual void GenerateStatus()
         {
             maxHP = rand.Next(100, 201);    // 100에서 200 중에 랜덤으로 선택
             hp = maxHP;
@@ -115,7 +122,7 @@ namespace _01_Console
         //}
 
         // 맴버 함수 -> 이 클래스가 가지는 기능
-        public void Attack(Character target)
+        public virtual void Attack(Character target)
         {
             int damage = strenth;
             Console.WriteLine($"{name}이 {target.name}에게 공격을 합니다.(공격력 : {damage})");
@@ -128,7 +135,7 @@ namespace _01_Console
             Console.WriteLine($"{name}이 {damage}만큼의 피해를 입었습니다.");
         }
 
-        public void TestPrintStatus()
+        public virtual void TestPrintStatus()
         {
             Console.WriteLine("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
             Console.WriteLine($"┃ 이름\t:\t{name}");
