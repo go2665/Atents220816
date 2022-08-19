@@ -25,6 +25,9 @@ namespace _01_Console
         private int dexterity = 5;
         private int intellegence = 7;
 
+        bool isDead = false;
+        public bool IsDead => isDead;   // 간단하게 읽기전용 프로퍼티 만드는 방법
+
         //Random random = new Random();
         //for (int i = 0; i < 100; i++)
         //{
@@ -62,6 +65,7 @@ namespace _01_Console
                 {
                     // 사망 처리용 함수 호출
                     Console.WriteLine($"{name}이 사망");
+                    isDead = true;
                 }
             }
         }
