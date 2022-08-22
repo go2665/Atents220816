@@ -21,8 +21,21 @@ namespace _01_Console
             //Test_Human();
 
             // 주말과제용
-            Human player = new Human();
-            Orc enemy = new Orc();
+
+            Human player;
+            string result;
+            do
+            {
+                Console.Write("당신의 이름을 입력해 주세요 : ");
+                string name = Console.ReadLine();
+                player = new Human(name);
+                Console.Write($"이대로 진행하시겠습니까? (yes/no): ");
+                result = Console.ReadLine();
+            }
+            //while (!(result == "yes" || result == "Yes" || result == "y" || result == "Y"));
+            while (result != "yes" && result != "Yes" && result != "y" && result != "Y");
+
+            Orc enemy = new Orc("가로쉬");
 
 
             Console.ReadKey();                  // 키 입력 대기하는 코드
