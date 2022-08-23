@@ -10,6 +10,9 @@ namespace _01_Console
     {
         int mp = 100;
         int maxMp = 100;
+        
+        const int DefenseCount = 3;
+        int remainsDefenseCount = 0;
 
         public Human()  // 상속받은 부모의 생성자도 같이 실행
         {            
@@ -62,6 +65,23 @@ namespace _01_Console
             int damage = (int)(((rand.NextDouble() * 1.5f) + 1) * intellegence);    // 지능을 1 ~ 2.5배 한 결과에서 소수점 제거한 수
             Console.WriteLine($"{name}이 {target.Name}에게 스킬을 사용 합니다.(공격력 : {damage})");
             target.TakeDamage(damage);
+        }
+
+        public void Defense()
+        {
+            Console.WriteLine($"3턴간 받는 데미지 반감");
+            remainsDefenseCount += DefenseCount;
+        }
+
+        public override void TakeDamage(int damage)
+        {
+            if( remainsDefenseCount > 0 )
+            {
+                Console.WriteLine("방어 발동! 받는 데미지가 절반 감소합니다.");
+                remainsDefenseCount--;
+                damage = damage >> 1;
+            }
+            base.TakeDamage(damage);
         }
     }
 }

@@ -37,6 +37,53 @@ namespace _01_Console
 
             Orc enemy = new Orc("가로쉬");
 
+            Console.WriteLine($"오크 {enemy.Name}가 나타났다.");
+
+            Console.WriteLine("\n\n------------------------------------전투시작------------------------------------\n\n");
+
+            while( true )   // 무한 루프
+            {
+                int selection = 0;
+                do
+                {
+                    Console.Write("행동을 선택하세요 ( 1)공격   2)스킬   3)방어 ) : ");
+                    string temp = Console.ReadLine();
+                    int.TryParse(temp, out selection);
+                } while (selection < 1 || selection > 3);
+                //while (selection != 1 && selection != 2 && selection != 3) ;
+
+                switch (selection)
+                {
+                    case 1:
+                        player.Attack(enemy);
+                        break;
+                    case 2:
+                        player.Skill(enemy);
+                        break;
+                    case 3:
+                        player.Defense();
+                        break;
+                    default:
+                        break;
+                }
+
+                player.TestPrintStatus();
+                enemy.TestPrintStatus();
+                if (enemy.IsDead)
+                {
+                    Console.WriteLine("승리!");
+                    break;
+                }
+                enemy.Attack(player);
+                player.TestPrintStatus();
+                enemy.TestPrintStatus();
+                if (player.IsDead)
+                {
+                    Console.WriteLine("패배...");
+                    break;
+                }
+            }
+
 
             Console.ReadKey();                  // 키 입력 대기하는 코드
         }   // Main 함수의 끝
