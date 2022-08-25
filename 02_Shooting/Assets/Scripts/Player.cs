@@ -6,8 +6,17 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    //public delegate void DelegateName();    // 이런 종류의 델리게이트가 있다 (리턴없고 파라메터도 없는 함수를 저장하는 델리게이트)
+    //public DelegateName del;      // DelegateName 타입으로 del이라는 이름의 델리게이트를 만듬
+    //Action del2;                  // 리턴타입이 void, 파라메터도 없는 델리게이트 del2를 만듬
+    //Action<int> del3;             // 리턴타입이 void, 파라메터는 int 하나인 델리게이트 del3을 만듬
+    //Func<int, float> del4;        // 리턴타입이 int고 파라메터는 float 하나인 델리게이트 del4를 만듬
+
     public float speed = 1.0f;      // 플레이어의 이동 속도(초당 이동 속도)
     Vector3 dir;                    // 이동 방향(입력에 따라 변경됨)
+    float boost = 1.0f;
+
+    Rigidbody2D rigid;
 
     PlayerInputAction inputActions;
     // Awake -> OnEnable -> Start : 대체적으로 이 순서
@@ -18,6 +27,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         inputActions = new PlayerInputAction();
+        rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
     }
 
     /// <summary>
@@ -29,6 +39,8 @@ public class Player : MonoBehaviour
         inputActions.Player.Move.performed += OnMove;   // Move액션이 performed 일 때 OnMove 함수 실행하도록 연결
         inputActions.Player.Move.canceled += OnMove;    // Move액션이 canceled 일 때 OnMove 함수 실행하도록 연결
         inputActions.Player.Fire.performed += OnFire;
+        inputActions.Player.Boost.performed += OnBoostOn;
+        inputActions.Player.Boost.canceled += OnBoostOff;
     }
 
     /// <summary>
@@ -53,9 +65,28 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 매 프레임마다 호출.
     /// </summary>
-    private void Update()
+    //private void Update()
+    //{
+    //    //transform.position += (speed * Time.deltaTime * dir);
+    //    //transform.Translate(speed * Time.deltaTime * dir);
+    //    //transform.Translate(speed * Time.deltaTime * dir.x, speed * Time.deltaTime * dir.y, 0);
+
+    //    //transform.position = dir;
+    //}
+
+    /// <summary>
+    /// 일정 시간 간격(물리 업데이트 시간 간격)으로 호출
+    /// </summary>
+    private void FixedUpdate()
     {
-        transform.position += (speed * Time.deltaTime * dir);
+        //transform.Translate(speed * Time.fixedDeltaTime * dir);
+
+        // 이 스크립트 파일이 들어 있는 게임 오브젝트에서 Rigidbody2D 컴포넌트를 찾아 리턴.(없으면 null)
+        // 그런데 GetComponent는 무거운 함수 => (Update나 FixedUpdate처럼 주기적 또는 자주 호출되는 함수 안에서는 안쓰는 것이 좋다)
+        // Rigidbody2D rigid = GetComponent<Rigidbody2D>();    
+
+        // rigid.AddForce(speed * Time.fixedDeltaTime * dir); // 관성이 있는 움직임을 할 때 유용
+        rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir); // 관성이 없는 움직임을 처리할 때 유용
     }
 
     private void OnMove(InputAction.CallbackContext context)
@@ -64,12 +95,21 @@ public class Player : MonoBehaviour
         //throw new NotImplementedException();    // NotImplementedException 을 실행해라. => 코드 구현을 알려주기 위해 강제로 죽이는 코드
 
         //Debug.Log("이동 입력");
-        Vector2 inputDir = context.ReadValue<Vector2>();    // 어느 방향으로 움직여야 하는지를 입력받음
-        dir = inputDir;
+        dir = context.ReadValue<Vector2>();    // 어느 방향으로 움직여야 하는지를 입력받음
     }
 
     private void OnFire(InputAction.CallbackContext context)
     {
         Debug.Log("발사!");
+    }
+
+    private void OnBoostOn(InputAction.CallbackContext context)
+    {
+        boost *= 2.0f;
+    }
+
+    private void OnBoostOff(InputAction.CallbackContext context)
+    {
+        boost = 1.0f;
     }
 }
