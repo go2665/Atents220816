@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
     private void OnFire(InputAction.CallbackContext context)
     {
         //Debug.Log("발사!");
-        float value = Random.Range(0.0f, 10.0f);  // value에는 0.0 ~ 10.0의 랜덤값이 들어간다.
+        //float value = Random.Range(0.0f, 10.0f);  // value에는 0.0 ~ 10.0의 랜덤값이 들어간다.
 
         Instantiate(bullet, transform.position, Quaternion.identity);
     }
