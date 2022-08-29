@@ -41,3 +41,11 @@
 1. EnemySpawner.cs를 수정하여 Enemy 프리팹을 지속적으로 실행하게 만들어보기.
   1.1. 반드시 코루틴으로 작성해야 한다.
   시간 : 12시 20분까지 -> 12시 50분까지
+
+2. 운석이 화면 오른쪽 바깥의 랜덤한 지점에서 생성되서 화면 왼쪽 바깥의 랜덤한 지점으로 이동한다.
+  2.1. AsteriodSpawner 클래스를 생성한다.
+  2.2. AsteriodSpawner 클래스는 주기적으로 Asteroid 프리팹을 생성한다.
+  2.3. AsteriodSpawner가 Asteroid를 생성하는 위치는 y만 랜덤.
+  2.4. AsteriodSpawner는 Asteroid를 생성한 직후 Asteroid에게 화면 왼쪽의 랜덤한 지역을 목표로 지정한다.
+  2.5. Asteroid는 지정된 지점을 향해 직선으로 움직인다.
+  2.6. Asteroid는 자신의 진행방향을 기즈모(DrawLine)로 표시한다.
