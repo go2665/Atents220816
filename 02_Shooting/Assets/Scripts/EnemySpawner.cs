@@ -12,8 +12,8 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemy;        // 생성할 적의 프리팹
     public float interval = 0.5f;   // 생성할 시간 간격
 
-    float minY = -4.5f;     // 스폰이 일어나는 최저 높이
-    float maxY = 4.5f;      // 스폰이 일어나는 최고 높이
+    float minY = -4.0f;     // 스폰이 일어나는 최저 높이
+    float maxY = 4.0f;      // 스폰이 일어나는 최고 높이
 
 
     // 필요한 기능은 무엇인가? -> Enemy 프리팹을 생성하는 코루틴
@@ -31,5 +31,18 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(interval);  // interval만큼 대기
         }
     }
+
+    // 개발용 정보를 항상 그리는 함수
+    private void OnDrawGizmos()
+    {
+        //Gizmos.color = new Color(1,0,0);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position, new(1, Mathf.Abs(maxY) + Mathf.Abs(minY) + 2, 1));
+    }
+
+    // 개발용 정보를 선택되었을 때만 그리는 함수
+    //private void OnDrawGizmosSelected()
+    //{        
+    //}
 
 }
