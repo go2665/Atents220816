@@ -182,7 +182,10 @@ public class Player : MonoBehaviour
         {
             for(int i=0;i<firePosition.Length;i++)
             {
-                Instantiate(bullet, firePosition[i].position, Quaternion.identity);
+                GameObject obj = Instantiate(bullet, firePosition[i].position, Quaternion.identity);
+                //obj.transform;
+                // 힌트1. Instantiate의 파라메터가 가지는 의미를 생각할 것
+                // 힌트2. Instantiate의 결과로 받아오는 GameObject를 활용하는 방법을 생각할 것
             }
             yield return new WaitForSeconds(fireInterval);
         }
