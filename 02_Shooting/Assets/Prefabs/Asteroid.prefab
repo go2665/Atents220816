@@ -98,3 +98,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 360
+  moveSpeed: 1.5
+  direction: {x: -1, y: 0, z: 0}
