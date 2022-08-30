@@ -21,7 +21,6 @@ public class AsteroidSpawner : EnemySpawner
     //{
     //    // 첫번째 업데이트 실행 직전 호출
     //    // 나와 다른 오브젝트를 가져와야 할 때 사용
-
     //}
 
     protected override IEnumerator Spawn()

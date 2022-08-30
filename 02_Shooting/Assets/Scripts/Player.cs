@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     //bool isFiring = false;
     //float fireTimeCount = 0.0f;
 
+    Transform firePosition;
     IEnumerator fireCoroutine;
 
     Rigidbody2D rigid;
@@ -39,6 +40,9 @@ public class Player : MonoBehaviour
         inputActions = new PlayerInputAction();
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
+
+        firePosition = transform.GetChild(0);
+
         fireCoroutine = Fire();
     }
 
@@ -171,7 +175,7 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            Instantiate(bullet, transform.position, Quaternion.identity);
+            Instantiate(bullet, firePosition.position, Quaternion.identity);
             yield return new WaitForSeconds(fireInterval);
         }
     }
