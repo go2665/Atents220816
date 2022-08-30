@@ -23,7 +23,8 @@ public class Player : MonoBehaviour
     //bool isFiring = false;
     //float fireTimeCount = 0.0f;
 
-    Transform firePosition;
+    Transform[] firePosition;   // 트랜스폼을 여러개 가지는 배열
+
     IEnumerator fireCoroutine;
 
     Rigidbody2D rigid;
@@ -41,7 +42,11 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
 
-        firePosition = transform.GetChild(0);
+        firePosition = new Transform[transform.childCount];
+        for( int i=0; i<transform.childCount; i++)
+        {
+            firePosition[i] = transform.GetChild(i);
+        }
 
         fireCoroutine = Fire();
     }
@@ -175,7 +180,10 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            Instantiate(bullet, firePosition.position, Quaternion.identity);
+            for(int i=0;i<firePosition.Length;i++)
+            {
+                Instantiate(bullet, firePosition[i].position, Quaternion.identity);
+            }
             yield return new WaitForSeconds(fireInterval);
         }
     }
