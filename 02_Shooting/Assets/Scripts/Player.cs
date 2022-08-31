@@ -182,10 +182,26 @@ public class Player : MonoBehaviour
         {
             for(int i=0;i<firePosition.Length;i++)
             {
-                GameObject obj = Instantiate(bullet, firePosition[i].position, Quaternion.identity);
+                // bullet이라는 프리팹을 firePosition[i]의 위치에 (0,0,0) 회전으로 만들어라
+                //GameObject bulletInstance = Instantiate(bullet, firePosition[i].position, Quaternion.identity);
+
+                // bullet이라는 프리팹을 firePosition[i]의 위치에 firePosition[i]의 회전으로 만들어라
+                GameObject bulletInstance = Instantiate(bullet, firePosition[i].position, firePosition[i].rotation);
+
+                // Instantiate(생성할 프리팹);    // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 만들어짐 
+                // Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
+
                 //obj.transform;
                 // 힌트1. Instantiate의 파라메터가 가지는 의미를 생각할 것
                 // 힌트2. Instantiate의 결과로 받아오는 GameObject를 활용하는 방법을 생각할 것
+
+                // 총알의 회전 값으로 firePosition[i]의 회전값을 그대로 사용한다.
+                //bulletInstance.transform.rotation = firePosition[i].rotation;
+
+                //Vector3 angle = firePosition[i].rotation.eulerAngles; // 현재 회전 값을 x,y,z축별로 몇도씩 회전했는지 확인 가능
+                //Quaternion.Euler(10, 20, 30);     // x축으로 10도, y축으로 20도, z축으로 30도 회전하는 코드
+
+                //Time.timeScale = 0.0f;
             }
             yield return new WaitForSeconds(fireInterval);
         }
