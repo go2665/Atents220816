@@ -7,6 +7,14 @@ public class Asteroid : MonoBehaviour
     public float rotateSpeed = 360.0f;          // 회전 속도
     public float moveSpeed = 3.0f;              // 이동 속도
     public Vector3 direction = Vector3.left;    // 운석이 이동할 방향
+    public int hitPoint = 3;
+
+    GameObject explosion;
+
+    private void Start()
+    {
+        explosion = transform.GetChild(0).gameObject;
+    }
 
     void Update()
     {
@@ -20,5 +28,20 @@ public class Asteroid : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, transform.position + direction * 1.5f);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Bullet"))
+        {
+            hitPoint--;
+
+            if (hitPoint <= 0)
+            {
+                explosion.SetActive(true);
+                explosion.transform.parent = null;
+                Destroy(this.gameObject);
+            }
+        }
     }
 }

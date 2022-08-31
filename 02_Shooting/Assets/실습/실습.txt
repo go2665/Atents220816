@@ -69,3 +69,6 @@
    시간 : 10시 18분까지
 2. explosion1 ~ explosion5를 이용해서 ExplosionEffect라는 프리팹 만들어 보기
    시간 : 10시 50분까지
+3. 운석이 터질때 ExplosionEffect가 재생되도록 만들어 보기
+4. 운석은 3번 총알에 맞아야 터진다.
+   시간 : 1시 20분까지
