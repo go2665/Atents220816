@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     //float fireTimeCount = 0.0f;
 
     Transform[] firePosition;   // 트랜스폼을 여러개 가지는 배열
+    public GameObject flash;
 
     IEnumerator fireCoroutine;
 
@@ -42,11 +43,12 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
 
-        firePosition = new Transform[transform.childCount];
-        for( int i=0; i<transform.childCount; i++)
+        firePosition = new Transform[transform.childCount-1];
+        for( int i=0; i<transform.childCount-1; i++)
         {
             firePosition[i] = transform.GetChild(i);
         }
+        //flash = transform.GetChild(transform.childCount - 1).gameObject;
 
         fireCoroutine = Fire();
     }
@@ -203,8 +205,17 @@ public class Player : MonoBehaviour
 
                 //Time.timeScale = 0.0f;
             }
+            flash.SetActive(true);
+            StartCoroutine(FlashOff());
+
             yield return new WaitForSeconds(fireInterval);
         }
+    }
+
+    IEnumerator FlashOff()
+    {
+        yield return new WaitForSeconds(0.1f);
+        flash.SetActive(false);
     }
 
     private void OnBoostOn(InputAction.CallbackContext context)
