@@ -6,6 +6,12 @@ public class Asteroid : MonoBehaviour
 {
     public float rotateSpeed = 360.0f;          // 회전 속도
     public float moveSpeed = 3.0f;              // 이동 속도
+
+    public float minMoveSpeed = 2.0f;
+    public float maxMoveSpeed = 4.0f;
+    public float minRotateSpeed = 30.0f;
+    public float maxRotateSpeed = 360.0f;
+
     public Vector3 direction = Vector3.left;    // 운석이 이동할 방향
     public int hitPoint = 3;
 
@@ -14,9 +20,6 @@ public class Asteroid : MonoBehaviour
     private void Awake()
     {
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.flipX = true;
-        sprite.flipY = false;
-
         //int rand = Random.Range(0, 100) % 2;
         ////if( rand == 0 )
         ////{
@@ -39,13 +42,10 @@ public class Asteroid : MonoBehaviour
         // ((rand & 0b_10) != 0) : rand의 제일 오른쪽에서 두번째 비트가 1이면 true, 0이면 false
         sprite.flipY = ((rand & 0b_10) != 0);
 
+        moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);        
+        float ratio = (moveSpeed - minMoveSpeed) / (maxMoveSpeed - minMoveSpeed);        
+        rotateSpeed = ratio * (maxRotateSpeed - minRotateSpeed) + minRotateSpeed;
 
-        // 0b_1001110101010
-        // 0b_0000000010000
-
-
-        moveSpeed = Random.Range(2.0f, 4.0f);
-        rotateSpeed = Random.Range(30.0f, 360.0f);
     }
 
     private void Start()
