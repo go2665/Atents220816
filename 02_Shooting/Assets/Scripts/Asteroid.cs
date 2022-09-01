@@ -11,6 +11,43 @@ public class Asteroid : MonoBehaviour
 
     GameObject explosion;
 
+    private void Awake()
+    {
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        sprite.flipX = true;
+        sprite.flipY = false;
+
+        //int rand = Random.Range(0, 100) % 2;
+        ////if( rand == 0 )
+        ////{
+        ////    sprite.flipX = true;
+        ////}
+        ////else
+        ////{
+        ////    sprite.flipX = false;
+        ////}
+        //sprite.flipX = (rand == 0);
+
+        // 코드 해석하고 주석달기(아래3줄)
+        int rand = Random.Range(0, 4);  // rand에다가 0(0b_00), 1(0b_01), 2(0b_10), 3(0b_11) 중 하나의 숫자를 랜덤으로 준다.
+
+        // rand & 0b_01 : rand의 제일 오른쪽 비트가 0인지 1인지 확인하는 작업
+        // ((rand & 0b_01) != 0) : rand의 제일 오른쪽 비트가 1이면 true, 0이면 false
+        sprite.flipX = ((rand & 0b_01) != 0);
+
+        // rand & 0b_10 : rand의 제일 오른쪽에서 두번째 비트가 0인지 1인지 확인하는 작업
+        // ((rand & 0b_10) != 0) : rand의 제일 오른쪽에서 두번째 비트가 1이면 true, 0이면 false
+        sprite.flipY = ((rand & 0b_10) != 0);
+
+
+        // 0b_1001110101010
+        // 0b_0000000010000
+
+
+        moveSpeed = Random.Range(2.0f, 4.0f);
+        rotateSpeed = Random.Range(30.0f, 360.0f);
+    }
+
     private void Start()
     {
         explosion = transform.GetChild(0).gameObject;

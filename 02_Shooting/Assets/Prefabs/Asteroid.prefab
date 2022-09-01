@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 437de8efd1859ef4e9068a742caf8d6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 360
+  rotateSpeed: 30
   moveSpeed: 1.5
   direction: {x: -1, y: 0, z: 0}
   hitPoint: 3
