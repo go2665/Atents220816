@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     //bool isFiring = false;
     //float fireTimeCount = 0.0f;
 
-    Transform firePositionRoot;   // 트랜스폼을 여러개 가지는 배열
+    Transform firePositionRoot;
     GameObject flash;
 
     float fireAngle = 30.0f;
