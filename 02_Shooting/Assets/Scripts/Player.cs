@@ -23,8 +23,41 @@ public class Player : MonoBehaviour
     //bool isFiring = false;
     //float fireTimeCount = 0.0f;
 
-    Transform[] firePosition;   // 트랜스폼을 여러개 가지는 배열
-    public GameObject flash;
+    Transform firePositionRoot;   // 트랜스폼을 여러개 가지는 배열
+    GameObject flash;
+
+    float fireAngle = 30.0f;
+    int power = 0;
+    int Power
+    {
+        get => power;
+        set
+        {
+            power = value;
+            if (power > 3)
+                power = 3;
+
+            while(firePositionRoot.childCount > 0)
+            {
+                Transform temp = firePositionRoot.GetChild(0);
+                temp.parent = null;
+                Destroy(temp.gameObject);
+            }
+
+            for(int i=0; i<power; i++)
+            {
+                GameObject firePos = new GameObject();
+                firePos.name = $"FirePosition_{i}";
+                firePos.transform.parent = firePositionRoot;
+                firePos.transform.localPosition = Vector3.zero;   // 아래줄과 같은 기능
+                //firePos.transform.position = firePositionRoot.transform.position;
+
+                firePos.transform.rotation = Quaternion.Euler(0,0, (power - 1) * (fireAngle * 0.5f) + i * -fireAngle);
+                firePos.transform.Translate(1.0f, 0, 0);
+
+            }
+        }
+    }
 
     IEnumerator fireCoroutine;
 
@@ -43,12 +76,9 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
 
-        firePosition = new Transform[transform.childCount-1];
-        for( int i=0; i<transform.childCount-1; i++)
-        {
-            firePosition[i] = transform.GetChild(i);
-        }
-        //flash = transform.GetChild(transform.childCount - 1).gameObject;
+        firePositionRoot = transform.GetChild(0);
+        flash = transform.GetChild(1).gameObject;
+        flash.SetActive(false);
 
         fireCoroutine = Fire();
     }
@@ -87,7 +117,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Start()
     {
-
+        Power = 1;
     }
 
     /// <summary>
@@ -124,25 +154,30 @@ public class Player : MonoBehaviour
         //}
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("OnCollisionEnter2D");    // Collider와 부딪쳤을 때 실행
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    Debug.Log("OnCollisionEnter2D");    // Collider와 부딪쳤을 때 실행
+    //}
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        Debug.Log("OnCollisionExit2D");     // Collider와 접촉이 떨어지는 순간 실행
-    }
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    Debug.Log("OnCollisionExit2D");     // Collider와 접촉이 떨어지는 순간 실행
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("OnTriggerEnter2D");      // 트리거에 들어갔을 때 실행
+        //Debug.Log("OnTriggerEnter2D");      // 트리거에 들어갔을 때 실행
+        if(collision.CompareTag("PowerUp"))
+        {
+            Power++;
+            Destroy(collision.gameObject);
+        }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        Debug.Log("OnTriggerExit2D");       // 트리거에서 나갔을 때 실행
-    }
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    Debug.Log("OnTriggerExit2D");       // 트리거에서 나갔을 때 실행
+    //}
 
     private void OnMove(InputAction.CallbackContext context)
     {
@@ -182,13 +217,14 @@ public class Player : MonoBehaviour
 
         while (true)
         {
-            for(int i=0;i<firePosition.Length;i++)
+            for (int i = 0; i < firePositionRoot.childCount; i++)
             {
                 // bullet이라는 프리팹을 firePosition[i]의 위치에 (0,0,0) 회전으로 만들어라
                 //GameObject bulletInstance = Instantiate(bullet, firePosition[i].position, Quaternion.identity);
 
                 // bullet이라는 프리팹을 firePosition[i]의 위치에 firePosition[i]의 회전으로 만들어라
-                GameObject bulletInstance = Instantiate(bullet, firePosition[i].position, firePosition[i].rotation);
+                GameObject bulletInstance = Instantiate(bullet, 
+                    firePositionRoot.GetChild(i).position, firePositionRoot.GetChild(i).rotation);
 
                 // Instantiate(생성할 프리팹);    // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 만들어짐 
                 // Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
@@ -227,6 +263,5 @@ public class Player : MonoBehaviour
     {
         boost = 1.0f;
     }
-
 
 }

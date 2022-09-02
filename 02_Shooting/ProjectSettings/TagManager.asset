@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Bullet
+  - PowerUp
   layers:
   - Default
   - TransparentFX
@@ -48,6 +49,9 @@ TagManager:
     locked: 0
   - name: Enemy
     uniqueID: 3301214489
+    locked: 0
+  - name: Item
+    uniqueID: 657612157
     locked: 0
   - name: Player
     uniqueID: 1745913707
