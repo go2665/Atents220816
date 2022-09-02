@@ -10,6 +10,9 @@ public class Enemy : MonoBehaviour
     float spawnY;       // 생성 되었을 때의 기준 높이
     float timeElapsed;  // 게임 시작부터 얼마나 시간이 지났나를 기록해 놓는 변수
 
+    public float amplitude = 1;     // 사인으로 변경되는 위아래 차이. 원래 sin은 -1~+1인데 그것을 변경하는 변수
+    public float frequency = 1;     // 사인 그래프가 한번 도는데 걸리는 시간.
+
     private void Start()
     {
         explosion = transform.GetChild(0).gameObject;
@@ -21,8 +24,8 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         // Time.deltaTime : 이전 프레임에서 현재 프레임까지의 시간
-        timeElapsed += Time.deltaTime;
-        float newY = spawnY + Mathf.Sin(timeElapsed);  // Mathf.Sin의 결과는 0에서 시작해서  +1까지 증가하다가 -1까지 감소. 다시 +1까지 증가
+        timeElapsed += (Time.deltaTime * frequency);
+        float newY = spawnY + Mathf.Sin(timeElapsed) * amplitude;  // Mathf.Sin의 결과는 0에서 시작해서  +1까지 증가하다가 -1까지 감소. 다시 +1까지 증가
         float newX = transform.position.x - speed * Time.deltaTime;
 
         transform.position = new Vector3(newX, newY, 0.0f);

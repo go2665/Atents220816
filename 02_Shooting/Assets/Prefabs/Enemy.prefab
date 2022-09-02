@@ -122,6 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  amplitude: 1.5
+  frequency: 3
 --- !u!58 &3490802106677526276
 CircleCollider2D:
   m_ObjectHideFlags: 0
