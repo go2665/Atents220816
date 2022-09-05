@@ -154,10 +154,14 @@ public class Player : MonoBehaviour
         //}
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    Debug.Log("OnCollisionEnter2D");    // Collider와 부딪쳤을 때 실행
-    //}
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if( collision.gameObject.CompareTag("PowerUp") )
+        {
+            Power++;
+            Destroy(collision.gameObject);
+        }
+    }
 
     //private void OnCollisionExit2D(Collision2D collision)
     //{
