@@ -34,6 +34,7 @@ public class Enemy : MonoBehaviour
         //transform.Translate(speed * Time.deltaTime * new Vector3(-1,0), Space.Self);  // new로 새로 만들기 때문에 Vector3.left를 쓰는 것보다는 느리다.
     }
 
+    // Special Enemy에서 오버라이드 할 수 있게 가상함수로 변경
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if( collision.gameObject.CompareTag("Bullet") )

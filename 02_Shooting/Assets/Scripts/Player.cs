@@ -33,25 +33,30 @@ public class Player : MonoBehaviour
         get => power;
         set
         {
-            power = value;
-            if (power > 3)
+            power = value;  // 들어온 값으로 파워 설정
+            if (power > 3)  // 파워가 3을 벗어나면 3을 제한
                 power = 3;
 
+            // 기존에 있는 파이어 포지션 제거
             while(firePositionRoot.childCount > 0)
             {
-                Transform temp = firePositionRoot.GetChild(0);
-                temp.parent = null;
-                Destroy(temp.gameObject);
+                Transform temp = firePositionRoot.GetChild(0);  // firePositionRoot의 첫번째 자식을
+                temp.parent = null;         // 부모 제거하고
+                Destroy(temp.gameObject);   // 삭제 시키기
             }
 
+            // 파워 등급에 맞기 새로 배치
             for(int i=0; i<power; i++)
             {
-                GameObject firePos = new GameObject();
+                GameObject firePos = new GameObject();  // 빈 오브젝트 생성하기
                 firePos.name = $"FirePosition_{i}";
-                firePos.transform.parent = firePositionRoot;
-                firePos.transform.localPosition = Vector3.zero;   // 아래줄과 같은 기능
+                firePos.transform.parent = firePositionRoot;        // firePositionRoot의 자식으로 추가
+                firePos.transform.localPosition = Vector3.zero;     // 로컬 위치를 (0,0,0)으로 변경. 아래줄과 같은 기능
                 //firePos.transform.position = firePositionRoot.transform.position;
 
+                // 파워가 1 일때  : 0도
+                // 파워가 2 일때  : -15도, +15도
+                // 파워가 3 일때  : -30도, 0도, +30도
                 firePos.transform.rotation = Quaternion.Euler(0,0, (power - 1) * (fireAngle * 0.5f) + i * -fireAngle);
                 firePos.transform.Translate(1.0f, 0, 0);
 
@@ -158,8 +163,9 @@ public class Player : MonoBehaviour
     {
         if( collision.gameObject.CompareTag("PowerUp") )
         {
-            Power++;
-            Destroy(collision.gameObject);
+            // 파워업 아이템을 먹었으면
+            Power++;                        // 파워 증가 시키고
+            Destroy(collision.gameObject);  // 파워업 아이템 삭제
         }
     }
 
@@ -168,15 +174,15 @@ public class Player : MonoBehaviour
     //    Debug.Log("OnCollisionExit2D");     // Collider와 접촉이 떨어지는 순간 실행
     //}
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //Debug.Log("OnTriggerEnter2D");      // 트리거에 들어갔을 때 실행
-        if(collision.CompareTag("PowerUp"))
-        {
-            Power++;
-            Destroy(collision.gameObject);
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    //Debug.Log("OnTriggerEnter2D");      // 트리거에 들어갔을 때 실행
+    //    if(collision.CompareTag("PowerUp"))
+    //    {
+    //        Power++;
+    //        Destroy(collision.gameObject);
+    //    }
+    //}
 
     //private void OnTriggerExit2D(Collider2D collision)
     //{

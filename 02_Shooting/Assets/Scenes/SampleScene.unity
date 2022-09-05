@@ -561,13 +561,21 @@ PrefabInstance:
       propertyPath: spawnPrefab
       value: 
       objectReference: {fileID: 2335730861659641968, guid: 8834f6556c18cd84f93abfa0f991d12b, type: 3}
+    - target: {fileID: 686040558059080490, guid: f09565bdd10731140bf9ae6bbe490661, type: 3}
+      propertyPath: spawnPrefab_Normal
+      value: 
+      objectReference: {fileID: 2335730861659641968, guid: 8834f6556c18cd84f93abfa0f991d12b, type: 3}
+    - target: {fileID: 686040558059080490, guid: f09565bdd10731140bf9ae6bbe490661, type: 3}
+      propertyPath: spawnPrefab_Special
+      value: 
+      objectReference: {fileID: 2335730861659641968, guid: 8834f6556c18cd84f93abfa0f991d12b, type: 3}
     - target: {fileID: 686040558059080491, guid: f09565bdd10731140bf9ae6bbe490661, type: 3}
       propertyPath: m_Name
       value: AsteroidSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 686040558059080491, guid: f09565bdd10731140bf9ae6bbe490661, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f09565bdd10731140bf9ae6bbe490661, type: 3}

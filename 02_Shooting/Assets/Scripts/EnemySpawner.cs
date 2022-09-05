@@ -27,10 +27,10 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)    // 무한 반복
         {
-            GameObject prefab = spawnPrefab_Normal;
-            if( Random.value < 0.1f )
+            GameObject prefab = spawnPrefab_Normal; // 기본적으로 생성하는 것는 spawnPrefab_Normal
+            if ( Random.value < 0.1f )
             {
-                prefab = spawnPrefab_Special;                
+                prefab = spawnPrefab_Special;       // 10% 이하의 확률로 Special 적 생성
             }
 
             GameObject obj = Instantiate(prefab, transform);  // 생성하고 부모를 이 오브젝트로 설정
