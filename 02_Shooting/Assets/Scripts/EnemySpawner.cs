@@ -9,11 +9,12 @@ public class EnemySpawner : MonoBehaviour
 {
     // 필요한 변수가 무엇인가? -> Enemy 프리팹, 지속적으로 동작을 하는 시간 간격
     
-    public GameObject spawnPrefab;  // 생성할 적의 프리팹
+    public GameObject spawnPrefab_Normal;  // 생성할 적의 프리팹
+    public GameObject spawnPrefab_Special;
     public float interval = 0.5f;   // 생성할 시간 간격
 
-    protected float minY = -4.0f;     // 스폰이 일어나는 최저 높이
-    protected float maxY = 4.0f;      // 스폰이 일어나는 최고 높이
+    public float minY = -4.0f;     // 스폰이 일어나는 최저 높이
+    public float maxY = 4.0f;      // 스폰이 일어나는 최고 높이
 
 
     // 필요한 기능은 무엇인가? -> Enemy 프리팹을 생성하는 코루틴
@@ -26,7 +27,13 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)    // 무한 반복
         {
-            GameObject obj = Instantiate(spawnPrefab, transform);  // 생성하고 부모를 이 오브젝트로 설정
+            GameObject prefab = spawnPrefab_Normal;
+            if( Random.value < 0.1f )
+            {
+                prefab = spawnPrefab_Special;                
+            }
+
+            GameObject obj = Instantiate(prefab, transform);  // 생성하고 부모를 이 오브젝트로 설정
             obj.transform.Translate(0, Random.Range(minY, maxY), 0);    // 스폰 생성 범위 안에서 랜덤으로 높이 정하기
             yield return new WaitForSeconds(interval);  // interval만큼 대기
         }

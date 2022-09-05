@@ -87,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dirChangeTime: 5
   moveSpeed: 2
-  selfDestroyTime: 10
+  selfDestroyTime: 30
 --- !u!1 &4906967129350994268
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,7 +27,7 @@ public class AsteroidSpawner : EnemySpawner
     {
         while (true)    // 무한 반복
         {
-            GameObject obj = Instantiate(spawnPrefab, transform);       // 생성하고 부모를 이 오브젝트로 설정
+            GameObject obj = Instantiate(spawnPrefab_Normal, transform);       // 생성하고 부모를 이 오브젝트로 설정
             obj.transform.Translate(0, Random.Range(minY, maxY), 0);    // 스폰 생성 범위 안에서 랜덤으로 높이 정하기
 
             Vector3 destPosition = destination.position + new Vector3(0.0f, Random.Range(minY, maxY), 0.0f);    // 목적지 위치 결정
