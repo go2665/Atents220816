@@ -16,6 +16,10 @@ public class Player : MonoBehaviour
     public GameObject bullet;
     public float speed = 1.0f;      // 플레이어의 이동 속도(초당 이동 속도)
     public float fireInterval = 0.5f;
+    public GameObject explosionPrefab;
+
+    bool isDead = false;
+
 
     Vector3 dir;                    // 이동 방향(입력에 따라 변경됨)
     float boost = 1.0f;
@@ -25,6 +29,7 @@ public class Player : MonoBehaviour
 
     Transform firePositionRoot;
     GameObject flash;
+    
 
     float fireAngle = 30.0f;
     int power = 0;
@@ -108,6 +113,11 @@ public class Player : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
+        InputDisable();
+    }
+
+    void InputDisable()
+    {
         inputActions.Player.Boost.canceled -= OnBoostOff;
         inputActions.Player.Boost.performed -= OnBoostOn;
         inputActions.Player.Fire.canceled -= OnFireStop;
@@ -142,21 +152,29 @@ public class Player : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        //transform.Translate(speed * Time.fixedDeltaTime * dir);
+        if (!isDead)
+        {
+            //transform.Translate(speed * Time.fixedDeltaTime * dir);
 
-        // 이 스크립트 파일이 들어 있는 게임 오브젝트에서 Rigidbody2D 컴포넌트를 찾아 리턴.(없으면 null)
-        // 그런데 GetComponent는 무거운 함수 => (Update나 FixedUpdate처럼 주기적 또는 자주 호출되는 함수 안에서는 안쓰는 것이 좋다)
-        // Rigidbody2D rigid = GetComponent<Rigidbody2D>();    
+            // 이 스크립트 파일이 들어 있는 게임 오브젝트에서 Rigidbody2D 컴포넌트를 찾아 리턴.(없으면 null)
+            // 그런데 GetComponent는 무거운 함수 => (Update나 FixedUpdate처럼 주기적 또는 자주 호출되는 함수 안에서는 안쓰는 것이 좋다)
+            // Rigidbody2D rigid = GetComponent<Rigidbody2D>();    
 
-        // rigid.AddForce(speed * Time.fixedDeltaTime * dir); // 관성이 있는 움직임을 할 때 유용
-        rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir); // 관성이 없는 움직임을 처리할 때 유용
+            // rigid.AddForce(speed * Time.fixedDeltaTime * dir); // 관성이 있는 움직임을 할 때 유용
+            rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir); // 관성이 없는 움직임을 처리할 때 유용
 
-        //fireTimeCount += Time.fixedDeltaTime;
-        //if ( isFiring && fireTimeCount > fireInterval )
-        //{
-        //    Instantiate(bullet, transform.position, Quaternion.identity);
-        //    fireTimeCount = 0.0f;
-        //}
+            //fireTimeCount += Time.fixedDeltaTime;
+            //if ( isFiring && fireTimeCount > fireInterval )
+            //{
+            //    Instantiate(bullet, transform.position, Quaternion.identity);
+            //    fireTimeCount = 0.0f;
+            //}
+        }
+        else
+        {
+            rigid.AddForce(Vector2.left * 0.1f, ForceMode2D.Impulse);   // 죽었을 때 뒤로 돌면서 튕겨나가기
+            rigid.AddTorque(10.0f);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -167,6 +185,21 @@ public class Player : MonoBehaviour
             Power++;                        // 파워 증가 시키고
             Destroy(collision.gameObject);  // 파워업 아이템 삭제
         }
+
+        if( collision.gameObject.CompareTag("Enemy") )
+        {
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        isDead = true;
+        GetComponent<Collider2D>().enabled = false;
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        InputDisable();
+        rigid.gravityScale = 1.0f;
+        rigid.freezeRotation = false;
     }
 
     //private void OnCollisionExit2D(Collision2D collision)
