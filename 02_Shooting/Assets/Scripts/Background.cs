@@ -20,7 +20,7 @@ public class Background : MonoBehaviour
 
     private void Update()
     {
-        float minusX = transform.position.x - Background_Width;
+        float minusX = transform.position.x - Background_Width; // Background의 위치에서 왼쪽으로 Background_Width만큼 이동한 위치
         //foreach (Transform slot in bgSlots)  // 속도가 그냥 for보다 빠름
         //{
         //    slot.Translate(scrollingSpeed * Time.deltaTime * -transform.right);
@@ -32,7 +32,7 @@ public class Background : MonoBehaviour
         //    }
         //}
 
-        for( int i=0; i<bgSlots.Length; i++)
+        for ( int i=0; i<bgSlots.Length; i++)
         {
             bgSlots[i].Translate(scrollingSpeed * Time.deltaTime * -transform.right);
             if (bgSlots[i].position.x < minusX)

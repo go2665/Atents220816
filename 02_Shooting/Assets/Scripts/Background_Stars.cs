@@ -20,8 +20,9 @@ public class Background_Stars : Background
 
     protected override void MoveRightEnd(int index)
     {
-        base.MoveRightEnd(index);
+        base.MoveRightEnd(index);   // 그냥 오른쪽 끝으로 옮기기
 
+        // 랜덤하게 플립시키기
         int rand = Random.Range(0, 4);
         spriteRenderers[index].flipX = ((rand & 0b_01) != 0);
         spriteRenderers[index].flipY = ((rand & 0b_10) != 0);
