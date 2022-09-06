@@ -125,4 +125,5 @@
 1. Background_Stars 완성하기
    1.1. bg-stars가 계속 스크롤링 되게 만든다.
    1.2. bg-stars는 오른쪽 끝으로 이동할 때 flipX와 flipY가 랜덤으로 변경된다.
-   시간 : 10시 30분까지
+   1.3. Background_Stars는 Background를 상속 받는다.
+   시간 : 10시 30분까지 -> 10시 50분까지
