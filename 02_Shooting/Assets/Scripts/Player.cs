@@ -118,7 +118,9 @@ public class Player : MonoBehaviour
     private Animator anim;
     private Collider2D bodyCollider;
     private SpriteRenderer spriteRenderer;
-    
+
+    // 델리게이트 --------------------------------------------------------------------------------------
+    public Action<int> onLifeChange;
 
     // 프로퍼티 ---------------------------------------------------------------------------------------
     /// <summary>
@@ -134,16 +136,23 @@ public class Player : MonoBehaviour
         set
         {
             // value는 지금 set하는 값
-            if (life > value)
+            if (life != value)  // 값에 변경이 일어났다.
             {
-                // life가 감소한 상황( 새로운 값(value)이 옛날 값(life)보다 작다 => 감소했다 )
-                StartCoroutine(EnterInvincibleMode());
-            }
+                if (life > value)
+                {
+                    // life가 감소한 상황( 새로운 값(value)이 옛날 값(life)보다 작다 => 감소했다 )
+                    StartCoroutine(EnterInvincibleMode());
+                }
 
-            life = value;
-            if (life <= 0) // 비교범위는 가능한 크게 잡는 쪽이 안전하다.
-            {
-                Dead();     // life 0보다 작거나 같으면 죽는다.
+                life = value;
+                if (life <= 0)  // 비교범위는 가능한 크게 잡는 쪽이 안전하다.
+                {
+                    life = 0;
+                    Dead();     // life 0보다 작거나 같으면 죽는다.
+                }
+
+                // (변수명)?. : 왼쪽 변수가 null이면 null. null이 아니면 (변수명) 맴버에 접근
+                onLifeChange?.Invoke(life);  // 라이프가 변경될 때 onLifeChange 델리게이트에 등록된 함수들을 실행시킨다.
             }
         }
         //int i = Life;   // i에다가 Life의 값을 가져와서 넣어라 => Life의 get이 실행된다. i = life; 와 같은 실행 결과가 된다.
