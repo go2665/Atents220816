@@ -12,15 +12,119 @@ public class Player : MonoBehaviour
     //Action del2;                  // 리턴타입이 void, 파라메터도 없는 델리게이트 del2를 만듬
     //Action<int> del3;             // 리턴타입이 void, 파라메터는 int 하나인 델리게이트 del3을 만듬
     //Func<int, float> del4;        // 리턴타입이 int고 파라메터는 float 하나인 델리게이트 del4를 만듬
-
-    public GameObject bullet;
-    public float speed = 1.0f;      // 플레이어의 이동 속도(초당 이동 속도)
-    public float fireInterval = 0.5f;
-    public GameObject explosionPrefab;
     
+    // public 변수(필드) ------------------------------------------------------------------------------
+    [Header("플레이어 스텟")]
+    /// <summary>
+    /// 플레이어의 이동 속도(초당 이동 속도)
+    /// </summary>
+    public float speed = 1.0f;
+
+    /// <summary>
+    /// 총알 발사 시간 간격
+    /// </summary>
+    public float fireInterval = 0.5f;
+
+    [Header("게임 기본 설정")]
+    /// <summary>
+    /// 초기 생명 개수
+    /// </summary>
     public int initialLife = 3;
-    int life;
-    int Life
+
+    /// <summary>
+    /// 피격시 무적 시간
+    /// </summary>
+    public float invincibleTime = 1.0f;
+
+    [Header("각종 프리팹")]
+    /// <summary>
+    /// 총알용 프리팹
+    /// </summary>
+    public GameObject bulletPrefab;
+
+    /// <summary>
+    /// 비행기 폭팔 이팩트용 프리팹
+    /// </summary>
+    public GameObject explosionPrefab;
+
+    // private 변수(필드) -----------------------------------------------------------------------------
+
+    // 생존 관련 ------------------------------------------------------------------
+    /// <summary>
+    /// 현재 생명수
+    /// </summary>
+    private int life;
+
+    /// <summary>
+    /// 플레이어의 사망여부(true면 사망, false면 살아있음)
+    /// </summary>
+    private bool isDead = false;
+
+    // 피격 관련 ------------------------------------------------------------------
+    /// <summary>
+    /// 무적 상태인지 표시용(true면 무적상태, false 일반상태)
+    /// </summary>
+    private bool isInvincibleMode = false;
+
+    /// <summary>
+    /// 무적상태에 들어간 후의 경과 시간(의 30배). 일종의 타이머
+    /// </summary>
+    private float timeElapsed = 0.0f;
+
+    // 이동 관련 ------------------------------------------------------------------
+    /// <summary>
+    /// 입력된 이동 방향
+    /// </summary>
+    private Vector3 dir;
+
+    /// <summary>
+    /// 부스트 속도(부스트 상태에 들어가면 2, 보통 상태일 때는 1)
+    /// </summary>
+    private float boost = 1.0f;
+
+    /// <summary>
+    /// InputSystem용 입력 액션맵
+    /// </summary>
+    private PlayerInputAction inputActions;
+
+    // 공격 관련 ------------------------------------------------------------------
+    /// <summary>
+    /// 총알이 발사될 위치와 회전을 가지고 있는 트랜스폼
+    /// </summary>
+    private Transform firePositionRoot;
+
+    /// <summary>
+    /// 총알이 발사될 때 보일 플래시 이팩트 게임 오브젝트
+    /// </summary>
+    private GameObject flash;
+
+    /// <summary>
+    /// 총알이 한번에 어려발 발사될 때 총알간의 사이 각도
+    /// </summary>
+    private float fireAngle = 30.0f;
+
+    /// <summary>
+    /// 파워업 아이템을 획득한 갯수(최대값은 3)
+    /// </summary>
+    private int power = 0;
+
+    /// <summary>
+    /// 총알 연사용 코루틴
+    /// </summary>
+    private IEnumerator fireCoroutine;    
+
+    // 컴포넌트들 --------------------------------------------------------------------------------------
+    private Rigidbody2D rigid;
+    private Animator anim;
+    private Collider2D bodyCollider;
+    private SpriteRenderer spriteRenderer;
+    
+
+    // 프로퍼티 ---------------------------------------------------------------------------------------
+    /// <summary>
+    /// 생명갯수 용 프로퍼티. 0~3 사이의 값을 가진다.
+    /// </summary>
+    private int Life
     {
         //get
         //{
@@ -29,40 +133,27 @@ public class Player : MonoBehaviour
         get => life;    // 위의 4줄과 같은 코드
         set
         {
-            if( life > value )
+            // value는 지금 set하는 값
+            if (life > value)
             {
                 // life가 감소한 상황( 새로운 값(value)이 옛날 값(life)보다 작다 => 감소했다 )
                 StartCoroutine(EnterInvincibleMode());
             }
 
             life = value;
-            if( life <= 0 ) // 비교범위는 가능한 크게 잡는 쪽이 안전하다.
+            if (life <= 0) // 비교범위는 가능한 크게 잡는 쪽이 안전하다.
             {
                 Dead();     // life 0보다 작거나 같으면 죽는다.
             }
         }
         //int i = Life;   // i에다가 Life의 값을 가져와서 넣어라 => Life의 get이 실행된다. i = life; 와 같은 실행 결과가 된다.
-        //Life = 3;       // Life에 3을 넣어라 => Life의 set이 실행된다. life = 3;과 같은 실행결과
+        //Life = 3;       // Life에 3을 넣어라 => Life의 set이 실행된다. life = 3;과 같은 실행결과        
     }
-    public float invincibleTime = 1.0f;
-    bool isInvincibleMode = false;
-    float timeElapsed = 0.0f;
-    bool isDead = false;
 
-
-    Vector3 dir;                    // 이동 방향(입력에 따라 변경됨)
-    float boost = 1.0f;
-
-    //bool isFiring = false;
-    //float fireTimeCount = 0.0f;
-
-    Transform firePositionRoot;
-    GameObject flash;
-    
-
-    float fireAngle = 30.0f;
-    int power = 0;
-    int Power
+    /// <summary>
+    /// 공격력 용 프로퍼티. 1~3 사이의 값을 가진다. 한번에 발사하는 총알의 숫자와 같다.
+    /// </summary>
+    private int Power
     {
         get => power;
         set
@@ -72,7 +163,7 @@ public class Player : MonoBehaviour
                 power = 3;
 
             // 기존에 있는 파이어 포지션 제거
-            while(firePositionRoot.childCount > 0)
+            while (firePositionRoot.childCount > 0)
             {
                 Transform temp = firePositionRoot.GetChild(0);  // firePositionRoot의 첫번째 자식을
                 temp.parent = null;         // 부모 제거하고
@@ -80,7 +171,7 @@ public class Player : MonoBehaviour
             }
 
             // 파워 등급에 맞기 새로 배치
-            for(int i=0; i<power; i++)
+            for (int i = 0; i < power; i++)
             {
                 GameObject firePos = new GameObject();  // 빈 오브젝트 생성하기
                 firePos.name = $"FirePosition_{i}";
@@ -91,24 +182,157 @@ public class Player : MonoBehaviour
                 // 파워가 1 일때  : 0도
                 // 파워가 2 일때  : -15도, +15도
                 // 파워가 3 일때  : -30도, 0도, +30도
-                firePos.transform.rotation = Quaternion.Euler(0,0, (power - 1) * (fireAngle * 0.5f) + i * -fireAngle);
+                firePos.transform.rotation = Quaternion.Euler(0, 0, (power - 1) * (fireAngle * 0.5f) + i * -fireAngle);
                 firePos.transform.Translate(1.0f, 0, 0);
 
             }
         }
     }
 
-    IEnumerator fireCoroutine;
 
-    Rigidbody2D rigid;
-    Animator anim;
-    Collider2D bodyCollider;
-    SpriteRenderer spriteRenderer;
-    // class A{};
-    // class B : A{};
-    // A test = new B();    // 된다. A의 자식인 B는 A타입 변수에 (참조를) 저장할 수 있다.
+    // 함수(메서드) ------------------------------------------------------------------------------------    
 
-    PlayerInputAction inputActions;
+    /// <summary>
+    /// 플레이어가 죽었을 때 실행될 일들
+    /// </summary>
+    private void Dead()
+    {
+        isDead = true;  // 죽었다고 표시
+        bodyCollider.enabled = false;   // 더 이상 충돌 안일어나게 만들기
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);  // 폭팔 이팩트 생성
+        InputDisable();                 // 입력 막고
+        rigid.gravityScale = 1.0f;      // 중력으로 떨어지게 만들기
+        rigid.freezeRotation = false;   // 회전 막아놓은 것 풀기
+        StopCoroutine(fireCoroutine);   // 총을 쏘던 중이면 더이상 쏘지 않게 처리
+    }
+
+    /// <summary>
+    /// 입력 막기. 액션맵을 비활성화하고 입력 이벤트에 연결된 함수들 제거
+    /// </summary>
+    private void InputDisable()
+    {
+        inputActions.Player.Boost.canceled -= OnBoostOff;
+        inputActions.Player.Boost.performed -= OnBoostOn;
+        inputActions.Player.Fire.canceled -= OnFireStop;
+        inputActions.Player.Fire.performed -= OnFireStart;
+        inputActions.Player.Move.canceled -= OnMove;    // 연결해 놓은 함수 해제(안전을 위해)
+        inputActions.Player.Move.performed -= OnMove;
+        inputActions.Player.Disable();  // 오브젝트가 사라질때 더 이상 입력을 받지 않도록 비활성화
+    }
+
+    // 코루틴용 함수 ------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// 충돌 막고 무적 모드 설정, 타이머 초기화를 진행한 후 invincibleTime초 후에 다시 원상 복구
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator EnterInvincibleMode()
+    {
+        bodyCollider.enabled = false;       // 충돌이 안일어나게 만들기
+        isInvincibleMode = true;            // 무적모드 켜기
+        timeElapsed = 0.0f;                 // 타이머 초기화
+
+        yield return new WaitForSeconds(invincibleTime);    // 무적시간 동안 대기
+
+        spriteRenderer.color = Color.white; // 원래 색으로 되돌리기
+        isInvincibleMode = false;           // 무적모드 끄기
+        bodyCollider.enabled = true;        // 충돌이 다시 발생하게 만들기
+    }
+
+    /// <summary>
+    /// 총알 연사용 코루틴 함수
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Fire()
+    {
+        //yield return null;      // 다음 프레임에 이어서 시작해라
+        //yield return new WaitForSeconds(1.0f);  // 1초 후에 이어서 시작해라
+
+        while (true)    // 무한하게 작업 반복
+        {
+            for (int i = 0; i < firePositionRoot.childCount; i++)
+            {
+                // bullet이라는 프리팹을 firePosition[i]의 위치에 firePosition[i]의 회전으로 만들어라
+                Instantiate(bulletPrefab, firePositionRoot.GetChild(i).position, firePositionRoot.GetChild(i).rotation);
+
+                // Instantiate(생성할 프리팹);    // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 만들어짐 
+                // Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
+            }
+            flash.SetActive(true);      // flash 켜고
+            StartCoroutine(FlashOff()); // 0.1초 후에 flash를 끄는 코루틴 실행
+
+            yield return new WaitForSeconds(fireInterval);  // 총알 발사 시간 간격만큼 대기
+        }
+    }
+
+    /// <summary>
+    /// 0.1초 후에 flash를 끄는 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator FlashOff()
+    {
+        yield return new WaitForSeconds(0.1f);  // 0.1초 대기
+        flash.SetActive(false); // flash 끄기
+    }
+
+    // 입력 처리용 함수 ----------------------------------------------------------------------------------
+
+    /// <summary>
+    /// 이동 입력 처리용 함수
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnMove(InputAction.CallbackContext context)
+    {
+        // Exception : 예외 상황( 무엇을 해야 할지 지정이 안되어있는 예외 일때 )
+        //throw new NotImplementedException();    // NotImplementedException 을 실행해라. => 코드 구현을 알려주기 위해 강제로 죽이는 코드
+
+        //Debug.Log("이동 입력");
+        dir = context.ReadValue<Vector2>();    // 어느 방향으로 움직여야 하는지를 입력받음
+
+        //dir.y > 0   // W를 눌렀다.
+        //dir.y == 0  // W,S 중 아무것도 안눌렀다.
+        //dir.y < 0   // S를 눌렀다.
+        anim.SetFloat("InputY", dir.y);
+    }
+
+    /// <summary>
+    /// 총알 발사 시작 입력 처리용(Space를 눌렀을 때)
+    /// </summary>
+    /// <param name="_"></param>
+    private void OnFireStart(InputAction.CallbackContext _)
+    {
+        //Debug.Log("발사!");
+        StartCoroutine(fireCoroutine);  // 코루틴 실행
+    }
+
+    /// <summary>
+    /// 총알 발사 중지 입력 처리용(Space를 땠을 때)
+    /// </summary>
+    /// <param name="_"></param>
+    private void OnFireStop(InputAction.CallbackContext _)
+    {
+        StopCoroutine(fireCoroutine);   // 코루틴 정지
+    }
+
+    /// <summary>
+    /// 이동 부스트 발동용 입력 처리 함수(Shift눌렀을 때)
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnBoostOn(InputAction.CallbackContext context)
+    {
+        boost *= 2.0f;  // 이동 속도 계산에 들어가는 계수를 2로 변경
+    }
+
+    /// <summary>
+    /// 이동 부스트 발동 해제용 입력처리 함수(Shift 땠을 때)
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnBoostOff(InputAction.CallbackContext context)
+    {
+        boost = 1.0f;   // 이동 속도 계산에 들어가는 계수를 1로 복귀
+    }
+
+    // 유니티 이벤트 함수들 --------------------------------------------------------------------------------
     // Awake -> OnEnable -> Start : 대체적으로 이 순서
 
     /// <summary>
@@ -116,19 +340,24 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        inputActions = new PlayerInputAction();
-        rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
+        inputActions = new PlayerInputAction();     // 액션맵 인스턴스 생성
+
+        // 컴포넌트 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
+        // GetComponent는 무거운 함수
+        // => (Update나 FixedUpdate처럼 주기적 또는 자주 호출되는 함수 안에서는 안쓰는 것이 좋다)
+        // => Awake나 Start에서 한번만 하는 것이 좋다.
+        rigid = GetComponent<Rigidbody2D>();    
         anim = GetComponent<Animator>();
         bodyCollider = GetComponent<Collider2D>();  // CapsuleCollider2D가 Collider2D의 자식이라서 가능
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        firePositionRoot = transform.GetChild(0);
-        flash = transform.GetChild(1).gameObject;
-        flash.SetActive(false);
+        firePositionRoot = transform.GetChild(0);   // 발사 트랜스폼 찾기
+        flash = transform.GetChild(1).gameObject;   // flash 가져오기
+        flash.SetActive(false);                     // flash 비활성화
 
-        fireCoroutine = Fire();
+        fireCoroutine = Fire(); // 연사용 코루틴 저장
 
-        life = initialLife;
+        life = initialLife;     // 생명숫자도 초기화
     }
 
     /// <summary>
@@ -145,24 +374,12 @@ public class Player : MonoBehaviour
         inputActions.Player.Boost.canceled += OnBoostOff;
     }
 
-
     /// <summary>
     /// 이 스크립트가 들어있는 게임 오브젝트가 비활성화 되었을 때 호출
     /// </summary>
     private void OnDisable()
     {
-        InputDisable();
-    }
-
-    void InputDisable()
-    {
-        inputActions.Player.Boost.canceled -= OnBoostOff;
-        inputActions.Player.Boost.performed -= OnBoostOn;
-        inputActions.Player.Fire.canceled -= OnFireStop;
-        inputActions.Player.Fire.performed -= OnFireStart;
-        inputActions.Player.Move.canceled -= OnMove;    // 연결해 놓은 함수 해제(안전을 위해)
-        inputActions.Player.Move.performed -= OnMove;
-        inputActions.Player.Disable();  // 오브젝트가 사라질때 더 이상 입력을 받지 않도록 비활성화
+        InputDisable(); // 입력도 비활성화
     }
 
     /// <summary>
@@ -170,7 +387,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        Power = 1;
+        Power = 1;      // 시작할 때 파워를 1로 설정(발사 위치 갱신용)
     }
 
     /// <summary>
@@ -178,11 +395,11 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if( isInvincibleMode )
+        if( isInvincibleMode )  // 무적 상태용 코드
         {
-            timeElapsed += Time.deltaTime * 30.0f;
+            timeElapsed += Time.deltaTime * 30.0f;                  // 시간의 30배 누적
             float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;   // cos의 결과를 1~0으로 변경
-            spriteRenderer.color = new Color(1, 1, 1, alpha);
+            spriteRenderer.color = new Color(1, 1, 1, alpha);       // 알파값 변경
         }
     }
 
@@ -193,29 +410,23 @@ public class Player : MonoBehaviour
     {
         if (!isDead)
         {
-            //transform.Translate(speed * Time.fixedDeltaTime * dir);
-
-            // 이 스크립트 파일이 들어 있는 게임 오브젝트에서 Rigidbody2D 컴포넌트를 찾아 리턴.(없으면 null)
-            // 그런데 GetComponent는 무거운 함수 => (Update나 FixedUpdate처럼 주기적 또는 자주 호출되는 함수 안에서는 안쓰는 것이 좋다)
-            // Rigidbody2D rigid = GetComponent<Rigidbody2D>();    
-
-            // rigid.AddForce(speed * Time.fixedDeltaTime * dir); // 관성이 있는 움직임을 할 때 유용
-            rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir); // 관성이 없는 움직임을 처리할 때 유용
-
-            //fireTimeCount += Time.fixedDeltaTime;
-            //if ( isFiring && fireTimeCount > fireInterval )
-            //{
-            //    Instantiate(bullet, transform.position, Quaternion.identity);
-            //    fireTimeCount = 0.0f;
-            //}
+            // rigid.AddForce(boost * speed * Time.fixedDeltaTime * dir); // 관성이 있는 움직임을 할 때 유용
+            
+            // 관성이 없는 움직임을 처리할 때 유용
+            rigid.MovePosition(transform.position + boost * speed * Time.fixedDeltaTime * dir); 
         }
         else
         {
-            rigid.AddForce(Vector2.left * 0.1f, ForceMode2D.Impulse);   // 죽었을 때 뒤로 돌면서 튕겨나가기
+            // 죽었을 때의 연출용. 뒤로 돌면서 튕겨나가기
+            rigid.AddForce(Vector2.left * 0.1f, ForceMode2D.Impulse);   
             rigid.AddTorque(10.0f);
         }
     }
 
+    /// <summary>
+    /// 충돌이 발생했을 때 실행.(충돌한 순간)
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if( collision.gameObject.CompareTag("PowerUp") )
@@ -230,140 +441,7 @@ public class Player : MonoBehaviour
             // 적이랑 부딪치면 life가 1 감소한다.
             Life--;
             
-            //SpriteRenderer a;
-            //a.color = new Color(1, 1, 1, 0);  // 4번째인 알파값을 잘 수정하면 된다.
-
-            Debug.Log($"플레이어의 Life는 {life}");
+            //Debug.Log($"플레이어의 Life는 {life}");
         }
     }
-
-    IEnumerator EnterInvincibleMode()
-    {
-        bodyCollider.enabled = false;
-        isInvincibleMode = true;
-        timeElapsed = 0.0f;
-
-        yield return new WaitForSeconds(invincibleTime);    // 무적시간 동안 대기
-
-        spriteRenderer.color = Color.white; // 원래 색으로 되돌리기
-        isInvincibleMode = false;
-        bodyCollider.enabled = true;
-    }
-
-    void Dead()
-    {
-        isDead = true;  // 죽었다고 표시
-        GetComponent<Collider2D>().enabled = false;     // 더 이상 충돌 안일어나게 만들기
-        Instantiate(explosionPrefab, transform.position, Quaternion.identity);  // 폭팔 이팩트 생성
-        InputDisable();                 // 입력 막고
-        rigid.gravityScale = 1.0f;      // 중력으로 떨어지게 만들기
-        rigid.freezeRotation = false;   // 회전 막아놓은 것 풀기
-        StopCoroutine(fireCoroutine);   // 총을 쏘던 중이면 더이상 쏘지 않게 처리
-    }
-
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    Debug.Log("OnCollisionExit2D");     // Collider와 접촉이 떨어지는 순간 실행
-    //}
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    //Debug.Log("OnTriggerEnter2D");      // 트리거에 들어갔을 때 실행
-    //    if(collision.CompareTag("PowerUp"))
-    //    {
-    //        Power++;
-    //        Destroy(collision.gameObject);
-    //    }
-    //}
-
-    //private void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    Debug.Log("OnTriggerExit2D");       // 트리거에서 나갔을 때 실행
-    //}
-
-    private void OnMove(InputAction.CallbackContext context)
-    {
-        // Exception : 예외 상황( 무엇을 해야 할지 지정이 안되어있는 예외 일때 )
-        //throw new NotImplementedException();    // NotImplementedException 을 실행해라. => 코드 구현을 알려주기 위해 강제로 죽이는 코드
-
-        //Debug.Log("이동 입력");
-        dir = context.ReadValue<Vector2>();    // 어느 방향으로 움직여야 하는지를 입력받음
-
-        //dir.y > 0   // W를 눌렀다.
-        //dir.y == 0  // W,S 중 아무것도 안눌렀다.
-        //dir.y < 0   // S를 눌렀다.
-        anim.SetFloat("InputY", dir.y);
-
-    }
-
-    private void OnFireStart(InputAction.CallbackContext _)
-    {
-        //Debug.Log("발사!");
-        //float value = Random.Range(0.0f, 10.0f);  // value에는 0.0 ~ 10.0의 랜덤값이 들어간다.
-        //isFiring = true;
-        StartCoroutine(fireCoroutine);
-        
-    }
-
-    private void OnFireStop(InputAction.CallbackContext _)
-    {
-        //isFiring = false;
-        //StopAllCoroutines();
-        StopCoroutine(fireCoroutine);
-    }
-
-    IEnumerator Fire()
-    {
-        //yield return null;      // 다음 프레임에 이어서 시작해라
-        //yield return new WaitForSeconds(1.0f);  // 1초 후에 이어서 시작해라
-
-        while (true)
-        {
-            for (int i = 0; i < firePositionRoot.childCount; i++)
-            {
-                // bullet이라는 프리팹을 firePosition[i]의 위치에 (0,0,0) 회전으로 만들어라
-                //GameObject bulletInstance = Instantiate(bullet, firePosition[i].position, Quaternion.identity);
-
-                // bullet이라는 프리팹을 firePosition[i]의 위치에 firePosition[i]의 회전으로 만들어라
-                GameObject bulletInstance = Instantiate(bullet, 
-                    firePositionRoot.GetChild(i).position, firePositionRoot.GetChild(i).rotation);
-
-                // Instantiate(생성할 프리팹);    // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 만들어짐 
-                // Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
-
-                //obj.transform;
-                // 힌트1. Instantiate의 파라메터가 가지는 의미를 생각할 것
-                // 힌트2. Instantiate의 결과로 받아오는 GameObject를 활용하는 방법을 생각할 것
-
-                // 총알의 회전 값으로 firePosition[i]의 회전값을 그대로 사용한다.
-                //bulletInstance.transform.rotation = firePosition[i].rotation;
-
-                //Vector3 angle = firePosition[i].rotation.eulerAngles; // 현재 회전 값을 x,y,z축별로 몇도씩 회전했는지 확인 가능
-                //Quaternion.Euler(10, 20, 30);     // x축으로 10도, y축으로 20도, z축으로 30도 회전하는 코드
-
-                //Time.timeScale = 0.0f;
-            }
-            flash.SetActive(true);
-            StartCoroutine(FlashOff());
-
-            yield return new WaitForSeconds(fireInterval);
-        }
-    }
-
-    IEnumerator FlashOff()
-    {
-        yield return new WaitForSeconds(0.1f);
-        flash.SetActive(false);
-    }
-
-    private void OnBoostOn(InputAction.CallbackContext context)
-    {
-        boost *= 2.0f;
-    }
-
-    private void OnBoostOff(InputAction.CallbackContext context)
-    {
-        boost = 1.0f;
-    }
-
 }

@@ -1135,6 +1135,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1691559466406857893, guid: 3652d9f11cdba8648b15a56bda8eebd3, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 352946123403857902, guid: d1ee858de8312644db57f761e663b746, type: 3}
+    - target: {fileID: 1691559466406857893, guid: 3652d9f11cdba8648b15a56bda8eebd3, type: 3}
       propertyPath: explosionPrefab
       value: 
       objectReference: {fileID: 1550340034180204004, guid: 83c2b28d41d124e45860319661da0c26, type: 3}
@@ -1181,6 +1185,10 @@ PrefabInstance:
     - target: {fileID: 1691559466406857894, guid: 3652d9f11cdba8648b15a56bda8eebd3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1691559466406857895, guid: 3652d9f11cdba8648b15a56bda8eebd3, type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6523069199050008515, guid: 3652d9f11cdba8648b15a56bda8eebd3, type: 3}
       propertyPath: m_SortingLayer
