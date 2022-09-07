@@ -136,7 +136,7 @@ public class Player : MonoBehaviour
         set
         {
             // value는 지금 set하는 값
-            if (life != value)  // 값에 변경이 일어났다.
+            if (life != value && !isDead)  // 값에 변경이 일어났다. 그리고 살아있다.
             {
                 if (life > value)
                 {
@@ -244,8 +244,8 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(invincibleTime);    // 무적시간 동안 대기
 
         spriteRenderer.color = Color.white; // 원래 색으로 되돌리기
-        isInvincibleMode = false;           // 무적모드 끄기
-        bodyCollider.enabled = true;        // 충돌이 다시 발생하게 만들기
+        isInvincibleMode = false;           // 무적모드 끄기        
+        bodyCollider.enabled = !isDead;     // 살아있을 때만 충돌이 다시 발생하게 만들기.
     }
 
     /// <summary>
