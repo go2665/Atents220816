@@ -29,6 +29,12 @@ public class Player : MonoBehaviour
         get => life;    // 위의 4줄과 같은 코드
         set
         {
+            if( life > value )
+            {
+                // life가 감소한 상황( 새로운 값(value)이 옛날 값(life)보다 작다 => 감소했다 )
+                StartCoroutine(EnterInvincibleMode());
+            }
+
             life = value;
             if( life <= 0 ) // 비교범위는 가능한 크게 잡는 쪽이 안전하다.
             {
@@ -38,7 +44,9 @@ public class Player : MonoBehaviour
         //int i = Life;   // i에다가 Life의 값을 가져와서 넣어라 => Life의 get이 실행된다. i = life; 와 같은 실행 결과가 된다.
         //Life = 3;       // Life에 3을 넣어라 => Life의 set이 실행된다. life = 3;과 같은 실행결과
     }
-    const float InvincibleTime = 1.0f;
+    public float invincibleTime = 1.0f;
+    bool isInvincibleMode = false;
+    float timeElapsed = 0.0f;
     bool isDead = false;
 
 
@@ -95,6 +103,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rigid;
     Animator anim;
     Collider2D bodyCollider;
+    SpriteRenderer spriteRenderer;
     // class A{};
     // class B : A{};
     // A test = new B();    // 된다. A의 자식인 B는 A타입 변수에 (참조를) 저장할 수 있다.
@@ -111,6 +120,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
         bodyCollider = GetComponent<Collider2D>();  // CapsuleCollider2D가 Collider2D의 자식이라서 가능
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         firePositionRoot = transform.GetChild(0);
         flash = transform.GetChild(1).gameObject;
@@ -166,14 +176,15 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 매 프레임마다 호출.
     /// </summary>
-    //private void Update()
-    //{
-    //    //transform.position += (speed * Time.deltaTime * dir);
-    //    //transform.Translate(speed * Time.deltaTime * dir);
-    //    //transform.Translate(speed * Time.deltaTime * dir.x, speed * Time.deltaTime * dir.y, 0);
-
-    //    //transform.position = dir;
-    //}
+    private void Update()
+    {
+        if( isInvincibleMode )
+        {
+            timeElapsed += Time.deltaTime * 30.0f;
+            float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;   // cos의 결과를 1~0으로 변경
+            spriteRenderer.color = new Color(1, 1, 1, alpha);
+        }
+    }
 
     /// <summary>
     /// 일정 시간 간격(물리 업데이트 시간 간격)으로 호출
@@ -218,12 +229,25 @@ public class Player : MonoBehaviour
         {
             // 적이랑 부딪치면 life가 1 감소한다.
             Life--;
-            bodyCollider.enabled = false;
+            
             //SpriteRenderer a;
             //a.color = new Color(1, 1, 1, 0);  // 4번째인 알파값을 잘 수정하면 된다.
 
             Debug.Log($"플레이어의 Life는 {life}");
         }
+    }
+
+    IEnumerator EnterInvincibleMode()
+    {
+        bodyCollider.enabled = false;
+        isInvincibleMode = true;
+        timeElapsed = 0.0f;
+
+        yield return new WaitForSeconds(invincibleTime);    // 무적시간 동안 대기
+
+        spriteRenderer.color = Color.white; // 원래 색으로 되돌리기
+        isInvincibleMode = false;
+        bodyCollider.enabled = true;
     }
 
     void Dead()
