@@ -17,7 +17,28 @@ public class Player : MonoBehaviour
     public float speed = 1.0f;      // 플레이어의 이동 속도(초당 이동 속도)
     public float fireInterval = 0.5f;
     public GameObject explosionPrefab;
-
+    
+    public int initialLife = 3;
+    int life;
+    int Life
+    {
+        //get
+        //{
+        //    return life;
+        //}
+        get => life;    // 위의 4줄과 같은 코드
+        set
+        {
+            life = value;
+            if( life <= 0 ) // 비교범위는 가능한 크게 잡는 쪽이 안전하다.
+            {
+                Dead();     // life 0보다 작거나 같으면 죽는다.
+            }
+        }
+        //int i = Life;   // i에다가 Life의 값을 가져와서 넣어라 => Life의 get이 실행된다. i = life; 와 같은 실행 결과가 된다.
+        //Life = 3;       // Life에 3을 넣어라 => Life의 set이 실행된다. life = 3;과 같은 실행결과
+    }
+    const float InvincibleTime = 1.0f;
     bool isDead = false;
 
 
@@ -73,6 +94,10 @@ public class Player : MonoBehaviour
 
     Rigidbody2D rigid;
     Animator anim;
+    Collider2D bodyCollider;
+    // class A{};
+    // class B : A{};
+    // A test = new B();    // 된다. A의 자식인 B는 A타입 변수에 (참조를) 저장할 수 있다.
 
     PlayerInputAction inputActions;
     // Awake -> OnEnable -> Start : 대체적으로 이 순서
@@ -85,12 +110,15 @@ public class Player : MonoBehaviour
         inputActions = new PlayerInputAction();
         rigid = GetComponent<Rigidbody2D>();    // 한번만 찾고 저장해서 계속 쓰기(메모리 더 쓰고 성능 아끼기)
         anim = GetComponent<Animator>();
+        bodyCollider = GetComponent<Collider2D>();  // CapsuleCollider2D가 Collider2D의 자식이라서 가능
 
         firePositionRoot = transform.GetChild(0);
         flash = transform.GetChild(1).gameObject;
         flash.SetActive(false);
 
         fireCoroutine = Fire();
+
+        life = initialLife;
     }
 
     /// <summary>
@@ -188,18 +216,25 @@ public class Player : MonoBehaviour
 
         if( collision.gameObject.CompareTag("Enemy") )
         {
-            Dead();
+            // 적이랑 부딪치면 life가 1 감소한다.
+            Life--;
+            bodyCollider.enabled = false;
+            //SpriteRenderer a;
+            //a.color = new Color(1, 1, 1, 0);  // 4번째인 알파값을 잘 수정하면 된다.
+
+            Debug.Log($"플레이어의 Life는 {life}");
         }
     }
 
     void Dead()
     {
-        isDead = true;
-        GetComponent<Collider2D>().enabled = false;
-        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-        InputDisable();
-        rigid.gravityScale = 1.0f;
-        rigid.freezeRotation = false;
+        isDead = true;  // 죽었다고 표시
+        GetComponent<Collider2D>().enabled = false;     // 더 이상 충돌 안일어나게 만들기
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);  // 폭팔 이팩트 생성
+        InputDisable();                 // 입력 막고
+        rigid.gravityScale = 1.0f;      // 중력으로 떨어지게 만들기
+        rigid.freezeRotation = false;   // 회전 막아놓은 것 풀기
+        StopCoroutine(fireCoroutine);   // 총을 쏘던 중이면 더이상 쏘지 않게 처리
     }
 
     //private void OnCollisionExit2D(Collision2D collision)
