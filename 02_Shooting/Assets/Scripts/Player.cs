@@ -208,6 +208,7 @@ public class Player : MonoBehaviour
     {
         isDead = true;  // 죽었다고 표시
         bodyCollider.enabled = false;   // 더 이상 충돌 안일어나게 만들기
+        gameObject.layer = LayerMask.NameToLayer("Player"); // 레이어도 플레이어로 원상복구
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);  // 폭팔 이팩트 생성
         InputDisable();                 // 입력 막고
         rigid.gravityScale = 1.0f;      // 중력으로 떨어지게 만들기
@@ -237,7 +238,8 @@ public class Player : MonoBehaviour
     /// <returns></returns>
     IEnumerator EnterInvincibleMode()
     {
-        bodyCollider.enabled = false;       // 충돌이 안일어나게 만들기
+        //bodyCollider.enabled = false;       // 충돌이 안일어나게 만들기
+        gameObject.layer = LayerMask.NameToLayer("Invincible");
         isInvincibleMode = true;            // 무적모드 켜기
         timeElapsed = 0.0f;                 // 타이머 초기화
 
@@ -245,7 +247,8 @@ public class Player : MonoBehaviour
 
         spriteRenderer.color = Color.white; // 원래 색으로 되돌리기
         isInvincibleMode = false;           // 무적모드 끄기        
-        bodyCollider.enabled = !isDead;     // 살아있을 때만 충돌이 다시 발생하게 만들기.
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        //bodyCollider.enabled = !isDead;     // 살아있을 때만 충돌이 다시 발생하게 만들기.
     }
 
     /// <summary>
