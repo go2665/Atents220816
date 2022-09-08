@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class ScorePanel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
+
+// 점수를 표시하기 위해 필요한 것
+// 1. 적 별로 격추했을 때 점수
+// 2. 내가 얻은 점수의 합
