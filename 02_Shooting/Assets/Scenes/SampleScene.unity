@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 11573399}
+  - component: {fileID: 11573400}
   m_Layer: 5
   m_Name: ScorePanel
   m_TagString: Untagged
@@ -160,6 +161,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &11573400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11573398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1032d78be75d0347baccedda5f65526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &14653534
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +588,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 261.4787, y: 100}
+  m_SizeDelta: {x: 238.3022, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &259605429
 MonoBehaviour:
@@ -1916,7 +1929,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 228.8251, y: 100}
+  m_SizeDelta: {x: 231.2648, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1834057669
 MonoBehaviour:
@@ -1972,8 +1985,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 4
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
