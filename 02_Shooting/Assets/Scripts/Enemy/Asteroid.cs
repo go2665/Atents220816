@@ -102,6 +102,7 @@ public class Asteroid : MonoBehaviour
 
             if (hitPoint <= 0)
             {
+                onDead?.Invoke(score);
                 Crush();
             }
         }
@@ -109,8 +110,6 @@ public class Asteroid : MonoBehaviour
 
     void Crush()
     {
-        onDead?.Invoke(score);
-
         explosion.SetActive(true);
         explosion.transform.parent = null;
 
