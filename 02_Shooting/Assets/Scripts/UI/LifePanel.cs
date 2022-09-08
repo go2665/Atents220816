@@ -19,7 +19,7 @@ public class LifePanel : MonoBehaviour
         // GameObject.FindObjectOfType<>();    // 타입으로 찾기
         
         Player player = FindObjectOfType<Player>(); // 타입으로 Player 찾고
-        player.onLifeChange += Refresh;             // 델리게이트에 함수 등록
+        player.onLifeChange += Refresh;             // 델리게이트에 함수 등록        
     }
 
     private void Refresh(int life)

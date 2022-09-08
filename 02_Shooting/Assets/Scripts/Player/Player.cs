@@ -369,7 +369,7 @@ public class Player : MonoBehaviour
 
         fireCoroutine = Fire(); // 연사용 코루틴 저장
 
-        life = initialLife;     // 생명숫자도 초기화
+        
     }
 
     /// <summary>
@@ -399,7 +399,8 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        Power = 1;      // 시작할 때 파워를 1로 설정(발사 위치 갱신용)
+        Power = 1;          // 시작할 때 파워를 1로 설정(발사 위치 갱신용)
+        Life = initialLife; // 생명숫자도 초기화
     }
 
     /// <summary>
