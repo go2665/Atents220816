@@ -26,6 +26,7 @@ public class Asteroid : MonoBehaviour
     public int hitPoint = 3;
 
     GameObject explosion;
+    private System.Action<int> onDead;
 
     private void Awake()
     {
@@ -66,6 +67,9 @@ public class Asteroid : MonoBehaviour
     {
         explosion = transform.GetChild(0).gameObject;
 
+        Player player = FindObjectOfType<Player>();
+        onDead += player.AddScore;
+
         StartCoroutine(SelfCrush());
     }
 
@@ -105,6 +109,8 @@ public class Asteroid : MonoBehaviour
 
     void Crush()
     {
+        onDead?.Invoke(score);
+
         explosion.SetActive(true);
         explosion.transform.parent = null;
 

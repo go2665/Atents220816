@@ -15,12 +15,17 @@ public class Enemy : MonoBehaviour
     public float amplitude = 1;     // 사인으로 변경되는 위아래 차이. 원래 sin은 -1~+1인데 그것을 변경하는 변수
     public float frequency = 1;     // 사인 그래프가 한번 도는데 걸리는 시간.
 
+    private System.Action<int> onDead;
+
     private void Start()
     {
         explosion = transform.GetChild(0).gameObject;
         spawnY = transform.position.y;
         timeElapsed = 0.0f;
         //explosion.SetActive(false); // 활성화 상태를 끄기(비활성화)
+
+        Player player = FindObjectOfType<Player>();
+        onDead += player.AddScore;
     }
 
     private void Update()
@@ -41,6 +46,8 @@ public class Enemy : MonoBehaviour
     {
         if( collision.gameObject.CompareTag("Bullet") )
         {
+            onDead?.Invoke(score);
+
             //GameObject obj = Instantiate(explosion, transform.position, Quaternion.identity);
             //Destroy(obj, 0.42f);
             explosion.SetActive(true);  // 총알에 맞았을 때 익스플로젼을 활성화 시키고
