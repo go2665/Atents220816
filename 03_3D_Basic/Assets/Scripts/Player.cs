@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
     public float rotateSpeed = 180.0f;
+    public float jumpPower = 3.0f;
 
     float moveDir = 0.0f;
     float rotateDir = 0.0f;
@@ -27,10 +28,13 @@ public class Player : MonoBehaviour
         inputActions.Player.Enable();   // Player 액션맵에 들어있는 액션들을 처리하겠다.
         inputActions.Player.Move.performed += OnMoveInput;  // Move 액션에 연결된 키가 눌러졌을 때 실행되는 함수를 연결(바인딩)
         inputActions.Player.Move.canceled += OnMoveInput;
+        inputActions.Player.Jump.performed += OnJumpInput;
     }
+
 
     private void OnDisable()
     {
+        inputActions.Player.Jump.performed -= OnJumpInput;
         inputActions.Player.Move.canceled -= OnMoveInput;
         inputActions.Player.Move.performed -= OnMoveInput;  // 바인딩 해제
         inputActions.Player.Disable();  // Player 액션맵에 있는 액션들은 처리하지 않겠다.
@@ -50,6 +54,12 @@ public class Player : MonoBehaviour
         rotateDir = input.x;    // a : -1,  d : +1   좌회전인지 우회전인지 결정
     }
 
+    private void OnJumpInput(InputAction.CallbackContext _)
+    {
+        // 플레이어의 위쪽 방향(up)으로 jumpPower만큼 즉시 힘을 추가한다.
+        rigid.AddForce(transform.up * jumpPower, ForceMode.Impulse);
+    }
+
     void Move()
     {
         // 리지드바디로 이동 설정
@@ -62,7 +72,7 @@ public class Player : MonoBehaviour
         //rigid.MoveRotation(rigid.rotation * Quaternion.Euler(0, rotateDir * rotateSpeed * Time.fixedDeltaTime, 0));
         rigid.MoveRotation(rigid.rotation * Quaternion.AngleAxis(rotateDir * rotateSpeed * Time.fixedDeltaTime, transform.up));
 
-        // Quaternion.Euler(0, rotateDir * rotateSpeed * Time.fixedDeltaTime, 0) // x,z축은 회전 없과 y축 기준으로 회전
+        // Quaternion.Euler(0, rotateDir * rotateSpeed * Time.fixedDeltaTime, 0) // x,z축은 회전 없고 y축 기준으로 회전
         // Quaternion.AngleAxis(rotateDir * rotateSpeed * Time.fixedDeltaTime, transform.up) // 플레이어의 Y축 기준으로 회전
     }
 

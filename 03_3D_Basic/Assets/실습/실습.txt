@@ -14,3 +14,6 @@
   PlayerInputActions를 new를 통해 인스턴스를 만들어야 한다.
   Player ActionMap을 활성화 해줘야 한다.
   Player 액션맵의 액션(Move)에 함수를 연결해야 한다.
+
+3. 코드 확인하기
+  시간 : 2시 5분까지
