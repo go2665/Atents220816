@@ -9,6 +9,10 @@ public class GroundChecker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        onGrounded?.Invoke();
+        if (!other.CompareTag("Player"))
+        {
+            Debug.Log(other.gameObject);
+            onGrounded?.Invoke();
+        }
     }
 }
