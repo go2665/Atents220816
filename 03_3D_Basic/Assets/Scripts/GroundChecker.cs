@@ -11,7 +11,7 @@ public class GroundChecker : MonoBehaviour
     {
         if (!other.CompareTag("Player"))
         {
-            Debug.Log(other.gameObject);
+            //Debug.Log(other.gameObject);
             onGrounded?.Invoke();
         }
     }
