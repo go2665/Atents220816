@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
     {
         if (!isJumping) // 점프 중이 아닐 때만 점프
         {
+            isJumping = true;
             JumpStart();
         }
     }
@@ -95,8 +96,7 @@ public class Player : MonoBehaviour
     void JumpStart()
     {
         // 플레이어의 위쪽 방향(up)으로 jumpPower만큼 즉시 힘을 추가한다.(질량 영향있음)
-        rigid.AddForce(transform.up * jumpPower, ForceMode.Impulse);
-        isJumping = true;
+        rigid.AddForce(transform.up * jumpPower, ForceMode.Impulse);       
 
         checker.gameObject.SetActive(false);
     }
