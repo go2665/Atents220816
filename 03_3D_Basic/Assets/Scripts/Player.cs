@@ -8,19 +8,23 @@ public class Player : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
     public float rotateSpeed = 180.0f;
-    public float jumpPower = 3.0f;
+    public float jumpPower = 5.0f;
 
     float moveDir = 0.0f;
     float rotateDir = 0.0f;
+    bool isJumping = false;
 
     Rigidbody rigid;
 
     PlayerInputActions inputActions;                // PlayerInputActions타입이고 inputActions 이름을 가진 변수를 선언.
 
+
     private void Awake()
     {
         inputActions = new PlayerInputActions();    // 인스턴스 생성. 실제 메모리를 할당 받고 사용할 수 있도록 만드는 것.
         rigid = GetComponent<Rigidbody>();
+        GroundChecker groundChecker = GetComponentInChildren<GroundChecker>();
+        groundChecker.onGrounded += OnGround;
     }
 
     private void OnEnable()
@@ -56,8 +60,12 @@ public class Player : MonoBehaviour
 
     private void OnJumpInput(InputAction.CallbackContext _)
     {
-        // 플레이어의 위쪽 방향(up)으로 jumpPower만큼 즉시 힘을 추가한다.
-        rigid.AddForce(transform.up * jumpPower, ForceMode.Impulse);
+        if (!isJumping) // 점프 중이 아닐 때만 점프
+        {
+            // 플레이어의 위쪽 방향(up)으로 jumpPower만큼 즉시 힘을 추가한다.(질량 영향있음)
+            rigid.AddForce(transform.up * jumpPower, ForceMode.Impulse);
+            isJumping = true;
+        }
     }
 
     void Move()
@@ -74,6 +82,11 @@ public class Player : MonoBehaviour
 
         // Quaternion.Euler(0, rotateDir * rotateSpeed * Time.fixedDeltaTime, 0) // x,z축은 회전 없고 y축 기준으로 회전
         // Quaternion.AngleAxis(rotateDir * rotateSpeed * Time.fixedDeltaTime, transform.up) // 플레이어의 Y축 기준으로 회전
+    }
+
+    void OnGround()
+    {
+        isJumping = false;
     }
 
 }
