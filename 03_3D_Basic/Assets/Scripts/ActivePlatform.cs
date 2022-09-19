@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActivePlatform : Platform
+public class ActivePlatform : Platform, IUseableObject
 {
     bool playerIn = false;
 
@@ -11,8 +11,6 @@ public class ActivePlatform : Platform
         if (other.CompareTag("Player"))
         {
             playerIn = true;
-            Player player = other.GetComponent<Player>();
-            player.onObjectUse += Used;
         }
     }
 
@@ -21,14 +19,12 @@ public class ActivePlatform : Platform
         if (other.CompareTag("Player"))
         {
             playerIn = false;
-            Player player = other.GetComponent<Player>();
-            player.onObjectUse -= Used;
         }
     }
 
-    void Used()
+    public void Use()
     {
-        if( playerIn )
+        if( playerIn )  // 플레이어가 트리거안에 들어온 상태에서 사용해야 움직이기
         {
             isMoving = true;
         }

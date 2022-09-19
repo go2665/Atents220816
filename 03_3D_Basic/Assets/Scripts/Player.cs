@@ -16,13 +16,14 @@ public class Player : MonoBehaviour
 
     GroundChecker checker;
 
+    Vector3 usePosition = Vector3.zero; // 플레이어가 오브젝트 사용을 확인하는 캡슐의 아래지점
+    float useRadius = 0.5f;             // 플레이어가 오브젝트 사용을 확인하는 캡슐의 반지름
+    float useHeight = 2.0f;             // 플레이어가 오브젝트 사용을 확인하는 캡슐의 높이
+
     Rigidbody rigid;
     Animator anim;
 
     PlayerInputActions inputActions;                // PlayerInputActions타입이고 inputActions 이름을 가진 변수를 선언.
-
-    public Action onObjectUse;
-
 
     private void Awake()
     {
@@ -31,6 +32,8 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         checker = GetComponentInChildren<GroundChecker>();
         checker.onGrounded += OnGround;
+
+        usePosition = transform.forward;            // 기본적으로 플레이어의 앞
     }
 
     private void OnEnable()
@@ -83,6 +86,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {               
+        // 플레이어가 오브젝트를 사용하는 범위 표시
+        Gizmos.DrawWireSphere(transform.position + usePosition, useRadius);
+        Gizmos.DrawWireSphere(transform.position + usePosition + transform.up * useHeight, useRadius);
+    }
+
     private void OnMoveInput(InputAction.CallbackContext context)
     {
         Vector2 input = context.ReadValue<Vector2>();   // 입력된 값을 읽어오기
@@ -104,8 +114,22 @@ public class Player : MonoBehaviour
 
     private void OnUseInput(InputAction.CallbackContext _)
     {
-        anim.SetTrigger("Use");
-        onObjectUse?.Invoke();
+        anim.SetTrigger("Use"); // 아이템 사용 애니메이션 재생
+
+        Collider[] colliders = Physics.OverlapCapsule(      // 캡슐 모양에 겹치는 컬라이더가 있는지 체크
+            transform.position + usePosition,               // 캡슐의 아래구의 중심점
+            transform.position + usePosition + transform.up * useHeight,    // 캡슐의 위쪽구의 중심점
+            useRadius,                                      // 캡슐의 반지름
+            LayerMask.GetMask("UseableObject"));            // 체크할 레이어
+
+        if( colliders.Length > 0)   // 캡슐에 겹쳐진 UseableObject 컬라이더가 한개 이상이다.
+        {
+            IUseableObject useable = colliders[0].GetComponent<IUseableObject>();   // 여러개가 있어도 하나만 처리
+            if(useable != null)     // IUseableObject를 가진 오브젝트이면
+            {
+                useable.Use();      // 사용하기
+            }
+        }
     }
 
     void Move()
@@ -118,7 +142,10 @@ public class Player : MonoBehaviour
     {
         // 리지드바디로 회전 설정
         //rigid.MoveRotation(rigid.rotation * Quaternion.Euler(0, rotateDir * rotateSpeed * Time.fixedDeltaTime, 0));
-        rigid.MoveRotation(rigid.rotation * Quaternion.AngleAxis(rotateDir * rotateSpeed * Time.fixedDeltaTime, transform.up));
+
+        Quaternion rotate = Quaternion.AngleAxis(rotateDir * rotateSpeed * Time.fixedDeltaTime, transform.up);
+        rigid.MoveRotation(rigid.rotation * rotate);
+        usePosition = rotate * usePosition;
 
         // Quaternion.Euler(0, rotateDir * rotateSpeed * Time.fixedDeltaTime, 0) // x,z축은 회전 없고 y축 기준으로 회전
         // Quaternion.AngleAxis(rotateDir * rotateSpeed * Time.fixedDeltaTime, transform.up) // 플레이어의 Y축 기준으로 회전
@@ -139,7 +166,7 @@ public class Player : MonoBehaviour
 
     void OnMovingObject(Vector3 delta)
     {
-        Debug.Log("OnMovingObject");
+        //Debug.Log("OnMovingObject");
         rigid.velocity = Vector3.zero;              // 원래 플레이어의 벨로시티 제거
         rigid.MovePosition(rigid.position + delta); // 플렛폼이 이동한만큼 이동시키기
     }

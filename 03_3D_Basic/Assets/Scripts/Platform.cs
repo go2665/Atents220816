@@ -59,7 +59,7 @@ public class Platform : MonoBehaviour
             // 위치 최종 결정
             rigid.MovePosition(newPos);
 
-            Debug.Log("FixedUpdate");
+            //Debug.Log("FixedUpdate");
             // 델리게이트에 연결된 함수들 실행
             onMove?.Invoke(moveDelta);
         }

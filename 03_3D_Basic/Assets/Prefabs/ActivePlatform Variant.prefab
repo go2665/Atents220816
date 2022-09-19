@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ActivePlatform Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 3085922520201393715, guid: 6a1970b382ac981418a231a94e68b9c3, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3085922520201393719, guid: 6a1970b382ac981418a231a94e68b9c3, type: 3}
       propertyPath: m_RootOrder
       value: 0
