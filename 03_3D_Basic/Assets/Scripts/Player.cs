@@ -62,6 +62,24 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Platform"))
+        {
+            Platform platform = collision.gameObject.GetComponent<Platform>();
+            platform.onMove += OnMovingObject;      // 델리게이트 연결
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            Platform platform = collision.gameObject.GetComponent<Platform>();
+            platform.onMove -= OnMovingObject;      // 델리게이트 해제
+        }
+    }
+
     private void OnMoveInput(InputAction.CallbackContext context)
     {
         Vector2 input = context.ReadValue<Vector2>();   // 입력된 값을 읽어오기
@@ -110,4 +128,9 @@ public class Player : MonoBehaviour
         isJumping = false;
     }
 
+    void OnMovingObject(Vector3 delta)
+    {
+        rigid.velocity = Vector3.zero;              // 원래 플레이어의 벨로시티 제거
+        rigid.MovePosition(rigid.position + delta); // 플렛폼이 이동한만큼 이동시키기
+    }
 }
