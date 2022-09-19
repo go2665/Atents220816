@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
 
     PlayerInputActions inputActions;                // PlayerInputActions타입이고 inputActions 이름을 가진 변수를 선언.
 
+    public Action onObjectUse;
+
 
     private void Awake()
     {
@@ -37,11 +39,12 @@ public class Player : MonoBehaviour
         inputActions.Player.Move.performed += OnMoveInput;  // Move 액션에 연결된 키가 눌러졌을 때 실행되는 함수를 연결(바인딩)
         inputActions.Player.Move.canceled += OnMoveInput;
         inputActions.Player.Jump.performed += OnJumpInput;
+        inputActions.Player.Use.performed += OnUseInput;
     }
-
 
     private void OnDisable()
     {
+        inputActions.Player.Use.performed -= OnUseInput;
         inputActions.Player.Jump.performed -= OnJumpInput;
         inputActions.Player.Move.canceled -= OnMoveInput;
         inputActions.Player.Move.performed -= OnMoveInput;  // 바인딩 해제
@@ -99,6 +102,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnUseInput(InputAction.CallbackContext _)
+    {
+        anim.SetTrigger("Use");
+        onObjectUse?.Invoke();
+    }
+
     void Move()
     {
         // 리지드바디로 이동 설정
@@ -130,6 +139,7 @@ public class Player : MonoBehaviour
 
     void OnMovingObject(Vector3 delta)
     {
+        Debug.Log("OnMovingObject");
         rigid.velocity = Vector3.zero;              // 원래 플레이어의 벨로시티 제거
         rigid.MovePosition(rigid.position + delta); // 플렛폼이 이동한만큼 이동시키기
     }

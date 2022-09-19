@@ -10,10 +10,11 @@ public class Platform : MonoBehaviour
     public Transform destination;
     public float moveSpeed = 1.0f;
 
-    Rigidbody rigid;
-    bool isMoving = false;
-
     public Action<Vector3> onMove;
+
+    protected bool isMoving = false;
+
+    private Rigidbody rigid;    
 
     private void Awake()
     {
@@ -47,7 +48,7 @@ public class Platform : MonoBehaviour
             Vector3 newPos = rigid.position + moveDelta;
                         
             // 새로운 위치가 도착지점에 거의 근접하면
-            if( (destination.position - newPos).sqrMagnitude < 0.001f )
+            if( (destination.position - newPos).sqrMagnitude < 0.0025f )
             {
                 // 도착했다고 처리
                 isMoving = false;
@@ -58,6 +59,7 @@ public class Platform : MonoBehaviour
             // 위치 최종 결정
             rigid.MovePosition(newPos);
 
+            Debug.Log("FixedUpdate");
             // 델리게이트에 연결된 함수들 실행
             onMove?.Invoke(moveDelta);
         }
