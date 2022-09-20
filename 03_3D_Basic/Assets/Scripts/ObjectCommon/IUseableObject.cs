@@ -7,5 +7,8 @@ using UnityEngine;
 /// </summary>
 interface IUseableObject
 {
-    void Use(); // 오브젝트 사용하기
+    /// <summary>
+    /// 오브젝트가 사용될 때 실행될 함수
+    /// </summary>
+    void Use();
 }

@@ -42,3 +42,7 @@
    1.3. 문이 열린 상태에서 플레이어가 오브젝트 사용키(f키)를 누르면 문이 닫힌다.
    1.4. ActiveTwoWayDoor는 TwoWayDoor와 IUseableObject를 상속 받는다.
    시간 : 10시 50분까지 -> 11시 50분까지
+2. DoorKey 작성하기
+   2.1. DoorKey는 플레이어와 닿으면 사라진다.
+   2.2. DoorKey는 사라질 때 자신과 연결된 문을 연다.
+   시간 : 2시 10분까지
