@@ -27,9 +27,17 @@ public class ActiveDoor : Door, IUseableObject
     {
         if (playerIn)
         {
+            // 플레이어가 영역안에 들어왔는데 
             //Debug.Log("Use");
-            isDoorOpen = !isDoorOpen;
-            anim.SetBool("IsOpen", isDoorOpen);
+            if(isDoorOpen)
+            {
+                Close();    // 문이 열려있으면 문을 닫아라.
+            }
+            else
+            {
+                Open();     // 문이 닫혀있으면 문을 열어라.
+            }
+            isDoorOpen = !isDoorOpen;            
         }
     }
 }
