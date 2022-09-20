@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    Animator anim;
+    protected Animator anim;
 
     private void Awake()
     {

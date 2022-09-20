@@ -4,8 +4,32 @@ using UnityEngine;
 
 public class ActiveDoor : Door, IUseableObject
 {
+    bool playerIn = false;
+    bool isDoorOpen = false;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerIn = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerIn = false;
+        }
+    }
+
     public void Use()
     {
-        Debug.Log("Use");        
+        if (playerIn)
+        {
+            //Debug.Log("Use");
+            isDoorOpen = !isDoorOpen;
+            anim.SetBool("IsOpen", isDoorOpen);
+        }
     }
 }
