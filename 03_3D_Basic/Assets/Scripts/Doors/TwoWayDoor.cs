@@ -4,24 +4,16 @@ using UnityEngine;
 
 public class TwoWayDoor : Door
 {
-    bool openInFront = true;
+    protected bool openInFront = true;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             //Debug.Log("문이 열려야 한다.");
-            Vector3 playerToDoor = transform.position - other.transform.position;
-            if( Vector3.Angle(transform.forward, playerToDoor ) > 90.0f )
-            {
-                // 앞
-                openInFront = true;                
-            }
-            else
-            {
-                // 뒤
-                openInFront = false;                
-            }
+
+            openInFront = IsInFront(other.transform.position);
+            
             Open();
         }
     }
@@ -43,5 +35,16 @@ public class TwoWayDoor : Door
     public override void Close()
     {
         anim.SetTrigger("Close");
+    }
+
+    /// <summary>
+    /// 플레이어가 문 앞에 있는지 뒤에 있는지 체크
+    /// </summary>
+    /// <param name="playerPosition">플레이어 위치</param>
+    /// <returns>true면 문앞에 있고 false면 문 뒤에 있다.</returns>
+    protected bool IsInFront(Vector3 playerPosition)
+    {
+        Vector3 playerToDoor = transform.position - playerPosition;
+        return (Vector3.Angle(transform.forward, playerToDoor) > 90.0f);        
     }
 }
