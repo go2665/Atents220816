@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IFly, IDead
 {
     public float moveSpeed = 5.0f;
     public float rotateSpeed = 180.0f;
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
     GroundChecker checker;
 
-    Vector3 usePosition = Vector3.zero; // 플레이어가 오브젝트 사용을 확인하는 캡슐의 아래지점
+    Vector3 usePosition = Vector3.zero; // 플레이어가 오브젝트 사용을 확인하는 캡슐의 아래지점(플레이어 로컬 좌표 기준)
     float useRadius = 0.5f;             // 플레이어가 오브젝트 사용을 확인하는 캡슐의 반지름
     float useHeight = 2.0f;             // 플레이어가 오브젝트 사용을 확인하는 캡슐의 높이
 
@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     Animator anim;
 
     PlayerInputActions inputActions;                // PlayerInputActions타입이고 inputActions 이름을 가진 변수를 선언.
+
+    public Action onDie { get; set; }
 
     private void Awake()
     {
@@ -33,7 +35,7 @@ public class Player : MonoBehaviour
         checker = GetComponentInChildren<GroundChecker>();
         checker.onGrounded += OnGround;
 
-        usePosition = transform.rotation * transform.forward;   // 기본적으로 플레이어의 앞
+        usePosition = Vector3.forward;              // 플레이어 로컬 좌표기준으로 플레이어의 앞
     }
 
     private void OnEnable()
@@ -89,7 +91,7 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         // 플레이어가 오브젝트를 사용하는 범위 표시
-        Vector3 newUsePosition = transform.rotation * usePosition;
+        Vector3 newUsePosition = transform.rotation * usePosition;  // usePosition(로컬좌표)에 회전을 곱해서 월드좌표로 변환됨
         Gizmos.DrawWireSphere(transform.position + newUsePosition, useRadius);
         Gizmos.DrawWireSphere(transform.position + newUsePosition + transform.up * useHeight, useRadius);
     }
@@ -172,5 +174,23 @@ public class Player : MonoBehaviour
         //Debug.Log("OnMovingObject");
         rigid.velocity = Vector3.zero;              // 원래 플레이어의 벨로시티 제거
         rigid.MovePosition(rigid.position + delta); // 플렛폼이 이동한만큼 이동시키기
+    }
+
+    public void Fly(Vector3 flyVector)
+    {
+        rigid.velocity = Vector3.zero;
+        rigid.AddForce(flyVector, ForceMode.Impulse);
+    }
+
+    public void Die()
+    {
+        inputActions.Player.Disable();
+
+        rigid.constraints = RigidbodyConstraints.None;
+        rigid.angularDrag = 0.0f;
+        rigid.AddForceAtPosition(-transform.forward, transform.position + transform.up * 10.0f, ForceMode.Impulse);
+        rigid.AddTorque(transform.up * 3.0f, ForceMode.Impulse);
+
+        anim.SetTrigger("Die");
     }
 }
