@@ -13,8 +13,8 @@ public class TrapFire : TrapBase
 
     protected override void TrapActivate(GameObject target)
     {
-        ps.Play();
-        StartCoroutine(EffectStop());
+        ps.Play();      // 파티클 시스템 재생 시작
+        StartCoroutine(EffectStop());   // 파티클 시스템 끝내기 예약
 
         IDead deadTarget = target.GetComponent<IDead>();
         if (deadTarget != null)
@@ -25,7 +25,7 @@ public class TrapFire : TrapBase
 
     IEnumerator EffectStop()
     {
-        yield return new WaitForSeconds(1);
-        ps.Stop();
+        yield return new WaitForSeconds(1); // 1초 후에
+        ps.Stop();  // 파티클 시스템 종료
     }
 }
