@@ -13,6 +13,7 @@ public class TrapFire : TrapBase
 
     protected override void TrapActivate(GameObject target)
     {
+        //ps.Simulate(0);   // 파티클 시스템 재생 위치를 0초로 돌리는 작업
         ps.Play();      // 파티클 시스템 재생 시작
         StartCoroutine(EffectStop());   // 파티클 시스템 끝내기 예약
 
