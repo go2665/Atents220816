@@ -6,19 +6,27 @@ public class Blade : MonoBehaviour
 {
     public Waypoints waypoints;         // 따라다닐 웨이포인트들을 가지고 있는 클래스
     public float moveSpeed = 1.0f;      // 칼날 이동 속도
+    public float spinSpeed = 720.0f;
 
     Rigidbody rigid;
 
     Transform target;   // 목표로하는 웨이포인트의 트랜스폼
+    Transform bladeObj;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
+        bladeObj = transform.GetChild(0);
     }
 
     private void Start()
     {
         SetTarget(waypoints.CurrentWaypoint);   // 첫 웨이포인트 지정
+    }
+
+    private void Update()
+    {
+        bladeObj.Rotate(spinSpeed * Time.deltaTime, 0, 0);
     }
 
     private void FixedUpdate()
@@ -27,13 +35,22 @@ public class Blade : MonoBehaviour
                 
         Vector3 moveDelta = moveSpeed * Time.fixedDeltaTime * transform.forward; // 이번에 움직일 정도 계산                
         Vector3 newPos = rigid.position + moveDelta;    // 새로운 위치구하기        
-        rigid.MovePosition(newPos);                     // 새 위치로 이동
+        rigid.MovePosition(newPos);                     // 새 위치로 이동        
 
         // 새로운 위치가 도착지점에 거의 근접하면
         if ((target.position - newPos).sqrMagnitude < 0.0025f)
         {
             SetTarget(waypoints.MoveToNextWaypoint());  // 다음 웨이포인트로 목적지 설정
         }        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IDead dieTarget = other.GetComponent<IDead>();
+        if(dieTarget != null)
+        {
+            dieTarget.Die();
+        }
     }
 
     /// <summary>
