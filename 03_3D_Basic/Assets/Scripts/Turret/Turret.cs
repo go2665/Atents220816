@@ -45,7 +45,7 @@ public class Turret : MonoBehaviour
     {
         if (target != null)
         {
-            // 보간을 사용한 경우
+            // 보간을 사용한 경우(감속하며 회전)
             //Vector3 dir = target.position - barrelBody.position;    // 총구에서 플레이어의 위치로 가는 방향 벡터 계산
             //dir.y = 0;      // 방향 벡터에서 y축의 영향을 제거 => xz 평면상의 방향만 남음
 
@@ -55,13 +55,26 @@ public class Turret : MonoBehaviour
             //barrelBody.rotation = Quaternion.LookRotation(dir);     // 최종적인 방향을 바라보는 회전을 만들어서 총몸에 적용
 
 
-            // 각도를 사용하는 경우
+            // 각도를 사용하는 경우(등속도로 회전)
             Vector3 dir = target.position - barrelBody.position;    // 총구에서 플레이어의 위치로 가는 방향 벡터 계산
             dir.y = 0;
 
             targetAngle = Vector3.SignedAngle(initialForward, dir, barrelBody.up);
+            //if( Mathf.Abs(targetAngle) > 180.0f )
+            //{
+            //    if(targetAngle > 0)
+            //    {
+            //        targetAngle = -360.0f + targetAngle;
+            //    }
+            //    else
+            //    {
+            //        targetAngle = 360.0f - targetAngle;
+            //    }
+            //    //targetAngle = 360.0f - Mathf.Abs(targetAngle);
+            //}
+            
 
-            if( currentAngle < targetAngle )
+            if ( currentAngle < targetAngle )
             {
                 currentAngle += (turnSpeed * Time.deltaTime);
                 currentAngle = Mathf.Min(currentAngle, targetAngle);
