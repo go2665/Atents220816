@@ -60,26 +60,17 @@ public class Turret : MonoBehaviour
             dir.y = 0;
 
             targetAngle = Vector3.SignedAngle(initialForward, dir, barrelBody.up);
-            //if( Mathf.Abs(targetAngle) > 180.0f )
-            //{
-            //    if(targetAngle > 0)
-            //    {
-            //        targetAngle = -360.0f + targetAngle;
-            //    }
-            //    else
-            //    {
-            //        targetAngle = 360.0f - targetAngle;
-            //    }
-            //    //targetAngle = 360.0f - Mathf.Abs(targetAngle);
-            //}
-            
+            if (targetAngle < 0)
+            {
+                targetAngle = 360.0f + targetAngle;
+            }
 
-            if ( currentAngle < targetAngle )
+            if (currentAngle < targetAngle)
             {
                 currentAngle += (turnSpeed * Time.deltaTime);
                 currentAngle = Mathf.Min(currentAngle, targetAngle);
             }
-            else if( currentAngle > targetAngle)
+            else if (currentAngle > targetAngle)
             {
                 currentAngle -= (turnSpeed * Time.deltaTime);
                 currentAngle = Mathf.Max(currentAngle, targetAngle);
