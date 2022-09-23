@@ -4011,24 +4011,6 @@ Transform:
   m_Father: {fileID: 778619618}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1111202688 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7988772100368377241, guid: 33bce4b4e0dc32940bdf7e00125c9b76, type: 3}
-  m_PrefabInstance: {fileID: 4144376374752069981}
-  m_PrefabAsset: {fileID: 0}
---- !u!135 &1111202692
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1111202688}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1127508957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4789874288149714464, guid: fe7cc3f532e5473428c7eeb783d116a5, type: 3}
@@ -9120,8 +9102,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5915601669104550074, guid: 33bce4b4e0dc32940bdf7e00125c9b76, type: 3}
-      propertyPath: sightRadius
-      value: 5
+      propertyPath: turnSpeed
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7094716939187650701, guid: 33bce4b4e0dc32940bdf7e00125c9b76, type: 3}
       propertyPath: m_RootOrder
