@@ -10,6 +10,12 @@ public class Turret : MonoBehaviour
     public float turnSpeed = 2.0f;
     public float sightRadius = 5.0f;
 
+    public GameObject bulletPrefab;
+    public float fireInterval = 0.5f;
+
+    Transform fireTransform;
+    IEnumerator fireCoroutine;
+
     Transform target = null;
     Transform barrelBody;
 
@@ -20,6 +26,9 @@ public class Turret : MonoBehaviour
     private void Awake()
     {
         barrelBody = transform.GetChild(2);
+        fireTransform = barrelBody.GetChild(1);
+
+        fireCoroutine = PeriodFire();
     }
 
     private void Start()
@@ -27,6 +36,8 @@ public class Turret : MonoBehaviour
         initialForward = transform.forward;
         SphereCollider col = GetComponent<SphereCollider>();
         col.radius = sightRadius;
+
+        StartCoroutine(fireCoroutine);
     }
 
     /// <summary>
@@ -42,6 +53,27 @@ public class Turret : MonoBehaviour
     }
 
     private void Update()
+    {
+        LookTarget();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if( other.CompareTag("Player"))
+        {
+            target = other.transform;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            target = null;
+        }
+    }
+
+    private void LookTarget()
     {
         if (target != null)
         {
@@ -81,19 +113,19 @@ public class Turret : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Fire()
     {
-        if( other.CompareTag("Player"))
-        {
-            target = other.transform;
-        }
+        // 총알을 발사한다.
+        // 총알 프리팹. 총알이 발사될 방향과 위치. 총알이 발사되는 주기. 
+        Instantiate(bulletPrefab, fireTransform.position, fireTransform.rotation);
     }
 
-    private void OnTriggerExit(Collider other)
+    IEnumerator PeriodFire()
     {
-        if (other.CompareTag("Player"))
+        while (true)
         {
-            target = null;
+            Fire();
+            yield return new WaitForSeconds(fireInterval);
         }
     }
 }
