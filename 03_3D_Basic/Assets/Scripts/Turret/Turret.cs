@@ -15,6 +15,7 @@ public class Turret : MonoBehaviour
 
     Transform fireTransform;
     IEnumerator fireCoroutine;
+    WaitForSeconds waitFireInterval;
 
     Transform target = null;
     Transform barrelBody;
@@ -37,7 +38,9 @@ public class Turret : MonoBehaviour
         SphereCollider col = GetComponent<SphereCollider>();
         col.radius = sightRadius;
 
-        StartCoroutine(fireCoroutine);
+        waitFireInterval = new WaitForSeconds(fireInterval);
+        StartCoroutine(fireCoroutine);      // 코루틴을 자주 껏다 켰다 할 때는 코루틴을 변수에 저장하고 사용해야한다.
+        //StartCoroutine(PeriodFire());     // 이 코드는 PeriodFire()를 1회용으로 사용한다. 그래서 가비지가 생성된다.
     }
 
     /// <summary>
@@ -125,7 +128,7 @@ public class Turret : MonoBehaviour
         while (true)
         {
             Fire();
-            yield return new WaitForSeconds(fireInterval);
+            yield return waitFireInterval;  // 가비지를 줄이는 방식
         }
     }
 }
