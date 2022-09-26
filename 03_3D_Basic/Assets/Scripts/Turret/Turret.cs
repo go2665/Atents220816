@@ -12,10 +12,13 @@ public class Turret : MonoBehaviour
 
     public GameObject bulletPrefab;
     public float fireInterval = 0.5f;
+    public float fireAngle = 10.0f;
 
     Transform fireTransform;
     IEnumerator fireCoroutine;
     WaitForSeconds waitFireInterval;
+    bool isFiring = false;
+
 
     Transform target = null;
     Transform barrelBody;
@@ -39,7 +42,7 @@ public class Turret : MonoBehaviour
         col.radius = sightRadius;
 
         waitFireInterval = new WaitForSeconds(fireInterval);
-        StartCoroutine(fireCoroutine);      // 코루틴을 자주 껏다 켰다 할 때는 코루틴을 변수에 저장하고 사용해야한다.
+        //StartCoroutine(fireCoroutine);      // 코루틴을 자주 껏다 켰다 할 때는 코루틴을 변수에 저장하고 사용해야한다.
         //StartCoroutine(PeriodFire());     // 이 코드는 PeriodFire()를 1회용으로 사용한다. 그래서 가비지가 생성된다.
     }
 
@@ -113,7 +116,22 @@ public class Turret : MonoBehaviour
 
             Vector3 targetDir = Quaternion.Euler(0, currentAngle, 0) * initialForward;
             barrelBody.rotation = Quaternion.LookRotation(targetDir);
+
+            if(!isFiring && IsInFireAngle())
+            {
+                FireStart();
+            }
+            if( isFiring && !IsInFireAngle())
+            {
+                FireStop();
+            }
         }
+    }
+
+    bool IsInFireAngle()
+    {                
+        Vector3 dir = target.position - barrelBody.forward;
+        return Vector3.Angle(barrelBody.forward, dir) < fireAngle;
     }
 
     private void Fire()
@@ -130,5 +148,17 @@ public class Turret : MonoBehaviour
             Fire();
             yield return waitFireInterval;  // 가비지를 줄이는 방식
         }
+    }
+
+    private void FireStart()
+    {
+        isFiring = true;
+        StartCoroutine(fireCoroutine);
+    }
+
+    private void FireStop()
+    {
+        StopCoroutine(fireCoroutine);
+        isFiring = false;
     }
 }

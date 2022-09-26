@@ -16,4 +16,17 @@ public class Bullet : MonoBehaviour
     {
         rigid.velocity = transform.forward * initialSpeed;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if( collision.gameObject.CompareTag("Player") )
+        {
+            IDead playerDead = collision.gameObject.GetComponent<IDead>();
+            if(playerDead != null)
+            {
+                playerDead.Die();
+            }
+        }
+        Destroy(this.gameObject, 2.0f);
+    }
 }
