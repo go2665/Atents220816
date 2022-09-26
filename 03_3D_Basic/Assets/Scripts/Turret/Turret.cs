@@ -161,4 +161,9 @@ public class Turret : MonoBehaviour
         StopCoroutine(fireCoroutine);
         isFiring = false;
     }
+
+    private void OnDrawGizmos()
+    {
+        
+    }
 }
