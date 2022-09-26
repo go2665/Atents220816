@@ -130,7 +130,8 @@ public class Turret : MonoBehaviour
 
     bool IsInFireAngle()
     {                
-        Vector3 dir = target.position - barrelBody.forward;
+        Vector3 dir = target.position - barrelBody.position;
+        dir.y = 0.0f;
         return Vector3.Angle(barrelBody.forward, dir) < fireAngle;
     }
 
