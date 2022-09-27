@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
+using UnityEngine.SceneManagement;
 
 // 싱글톤
 // 1. 디자인 패턴 중 하나
@@ -48,6 +49,8 @@ public class Singleton<T> : MonoBehaviour where T : Component
             // 처음 만들어진 싱글톤 게임 오브젝트
             _instance = this as T;              // _instance에 이 스크립트의 객체 저장
             DontDestroyOnLoad(this.gameObject); // 씬이 사라지더라도 게임 오브젝트를 삭제하지 않게 하는 코드
+
+            SceneManager.sceneLoaded += OnSceneLoaded;  // 씬 로드가 완료되면 Initialize 함수 실행
         }
         else
         {
@@ -57,6 +60,16 @@ public class Singleton<T> : MonoBehaviour where T : Component
                 Destroy(this.gameObject);       // 내가 아닌 같은 종류의 오브젝트가 이미 있으면 자신을 바로 삭제
             }
         }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Initialize();
+    }
+
+    protected virtual void Initialize()
+    {
+
     }
 }
 
