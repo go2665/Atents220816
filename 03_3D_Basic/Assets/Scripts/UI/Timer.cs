@@ -48,6 +48,7 @@ public class Timer : MonoBehaviour
             CurrentTime += Time.deltaTime;
         }
     }
+
     void StartTimer()
     {
         isStart = true;
