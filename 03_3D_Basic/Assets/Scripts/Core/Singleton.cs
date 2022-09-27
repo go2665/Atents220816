@@ -21,38 +21,40 @@ public class Singleton<T> : MonoBehaviour where T : Component
         {
             if( _instance == null )
             {
-                // 한번도 호출된 적이 없다.
-
-                var obj = FindObjectOfType<T>();
+                // 한번도 사용된 적이 없다.
+                var obj = FindObjectOfType<T>();            // 같은 타입의 컴포넌트가 게임에 있는지 찾아보기
                 if(obj != null)
-                {
-                    // 이미 다른 객체가 있으니까 있는 객체를 사용한다.
-                    _instance = obj;
+                {                    
+                    _instance = obj;                        // 다른 객체가 있다. 그러면 있는 객체를 사용한다.
                 }
                 else
-                {
-                    // 다른 객체가 없다.
-                    GameObject gameObj = new GameObject();
+                {                    
+                    GameObject gameObj = new GameObject();  // 다른 객체가 없다. 없으면 새로 만든다.
                     gameObj.name = $"{typeof(T).Name}";
                     _instance = gameObj.AddComponent<T>();
                 }
             }
-            return _instance;
+            return _instance;   // 무조건 null이 아닌 값이 리턴된다.
         }
     }
 
+    /// <summary>
+    /// 오브젝트가 생성 완료된 직후에 호출(씬에 싱글톤 오브젝트가 여러개 배치된 상황일 때 처리를 위해 작성)
+    /// </summary>
     private void Awake()
     {
         if (_instance == null)
         {
-            _instance = this as T;
+            // 처음 만들어진 싱글톤 게임 오브젝트
+            _instance = this as T;              // _instance에 이 스크립트의 객체 저장
             DontDestroyOnLoad(this.gameObject); // 씬이 사라지더라도 게임 오브젝트를 삭제하지 않게 하는 코드
         }
         else
         {
+            // 첫번째 이후에 만들어진 싱글톤 게임 오브젝트
             if( _instance != this )
             {
-                Destroy(this.gameObject);   // 내가 아닌 같은 종류의 오브젝트가 이미 있으면 자신을 바로 삭제
+                Destroy(this.gameObject);       // 내가 아닌 같은 종류의 오브젝트가 이미 있으면 자신을 바로 삭제
             }
         }
     }
