@@ -124,17 +124,15 @@ public class Turret : MonoBehaviour
             }
             barrelBody.rotation = Quaternion.LookRotation(resultDir);
 
-            
-
-
-            //if (!isFiring && IsInFireAngle())
-            //{
-            //    FireStart();
-            //}
-            //if( isFiring && !IsInFireAngle())
-            //{
-            //    FireStop();
-            //}
+            // 플레이어가 발사각 안에 있으면 공격 시작. 없으면 중지
+            if (!isFiring && IsInFireAngle())
+            {
+                FireStart();
+            }
+            if (isFiring && !IsInFireAngle())
+            {
+                FireStop();
+            }
         }
     }
 
