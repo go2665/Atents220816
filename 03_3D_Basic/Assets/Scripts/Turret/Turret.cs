@@ -101,16 +101,30 @@ public class Turret : MonoBehaviour
             // 정방향일 때 0~180도. 역방향일 때 0~-180
             float betweenAngle = Vector3.SignedAngle(barrelBody.forward, barrelToPlayerDir, barrelBody.up);
 
-            float rotateDirection = 1.0f; // 일단 +방향(시계방향)으로 설정
-            if( betweenAngle < 0 )
+            Vector3 resultDir;
+            if( Mathf.Abs(betweenAngle) > 0.1f )   // 사이각이 일정 각도 이하인지 체크
             {
-                rotateDirection = -1.0f;    // betweenAngle이 -면 rotateDirection도 -1로
+                // 사이각이 충분히 벌어진 경우
+
+                float rotateDirection = 1.0f;   // 일단 +방향(시계방향)으로 설정
+                if (betweenAngle < 0)
+                {
+                    rotateDirection = -1.0f;    // betweenAngle이 -면 rotateDirection도 -1로
+                }
+
+                // 초당 turnSpeed만큼 회전하는데, rotateDirection로 시계방향으로 회전할지 반시계 방향으로 회전할지 결정
+                currentAngle += (rotateDirection * turnSpeed * Time.deltaTime);
+
+                resultDir = Quaternion.Euler(0, currentAngle, 0) * initialForward;
             }
+            else
+            {
+                // 사이각이 거의 0인 경우
+                resultDir = barrelToPlayerDir;
+            }
+            barrelBody.rotation = Quaternion.LookRotation(resultDir);
 
-            // 초당 turnSpeed만큼 회전하는데, rotateDirection로 시계방향으로 회전할지 반시계 방향으로 회전할지 결정
-            currentAngle += (rotateDirection * turnSpeed * Time.deltaTime);
-
-            barrelBody.rotation = Quaternion.LookRotation( Quaternion.Euler(0, currentAngle, 0) * initialForward );
+            
 
 
             //if (!isFiring && IsInFireAngle())
