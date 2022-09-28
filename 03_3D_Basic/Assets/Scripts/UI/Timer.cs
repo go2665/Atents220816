@@ -22,6 +22,8 @@ public class Timer : MonoBehaviour
         }
     }
 
+    public float ResultTime { get => currentTime; }
+
     private void Awake()
     {
         timeText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
