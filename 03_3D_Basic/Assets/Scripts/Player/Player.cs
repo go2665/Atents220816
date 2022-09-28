@@ -98,8 +98,6 @@ public class Player : MonoBehaviour, IFly, IDead
 
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        GameManager.Inst.GameStart();
-
         Vector2 input = context.ReadValue<Vector2>();   // 입력된 값을 읽어오기
         //Debug.Log(input);
         moveDir = input.y;      // w : +1,  s : -1   전진인지 후진인지 결정
@@ -110,8 +108,6 @@ public class Player : MonoBehaviour, IFly, IDead
 
     private void OnJumpInput(InputAction.CallbackContext _)
     {
-        GameManager.Inst.GameStart();
-
         if (!isJumping) // 점프 중이 아닐 때만 점프
         {
             isJumping = true;
@@ -121,8 +117,6 @@ public class Player : MonoBehaviour, IFly, IDead
 
     private void OnUseInput(InputAction.CallbackContext _)
     {
-        GameManager.Inst.GameStart();
-
         anim.SetTrigger("Use"); // 아이템 사용 애니메이션 재생
 
         Vector3 newUsePosition = transform.rotation * usePosition;
