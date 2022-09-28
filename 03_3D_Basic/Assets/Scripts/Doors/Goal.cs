@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
     public Action onGoalIn;
+    public string nextSceanName;
 
     ParticleSystem[] goalInEffects;
 
@@ -20,7 +22,8 @@ public class Goal : MonoBehaviour
         if( other.CompareTag("Player")) // 트리거 안에 플레이어가 들어왔을 때
         {
             PlayGoalInEffect();         // 골인 이팩트 터트리기
-            onGoalIn?.Invoke();
+            
+            onGoalIn?.Invoke();            
         }
     }
 
@@ -30,5 +33,16 @@ public class Goal : MonoBehaviour
         {
             effect.Play();
         }
+    }
+
+    IEnumerator Wait3Second()
+    {
+        yield return new WaitForSeconds(3.0f);
+        GoNextStage();
+    }
+
+    void GoNextStage()
+    {
+        SceneManager.LoadScene(nextSceanName);
     }
 }
