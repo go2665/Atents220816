@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 7
+  pitchMaxAngle: 45
 --- !u!50 &336000110
 Rigidbody2D:
   serializedVersion: 4
