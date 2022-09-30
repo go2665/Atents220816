@@ -12,7 +12,7 @@ public class Test_Pipe : MonoBehaviour
         if( Keyboard.current.digit1Key.wasPressedThisFrame )
         {
             pipe.transform.position = Vector3.zero;
-            pipe.ResetRandomHeight();
+            //pipe.ResetRandomHeight();
         }
     }
 }
