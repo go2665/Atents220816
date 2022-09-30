@@ -132,7 +132,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 27dc691d4ba86be4e9d0c9e6350751f5, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03af33048ee20934b8c263e0aa25f998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minHeight: -3
+  minHeight: -1.5
   maxHeight: 3
 --- !u!1 &3116001840927033920
 GameObject:
@@ -221,8 +221,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1580312897
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -868089047, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -305,8 +305,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1580312897
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 931611700, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
