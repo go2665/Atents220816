@@ -708,6 +708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imageNumber: {fileID: 1568064941}
+  inputField: {fileID: 2041118503}
 --- !u!224 &1705196367 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6916789735169528958, guid: b81bda8328274e848a9c51545e8f5861, type: 3}
