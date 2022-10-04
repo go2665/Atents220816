@@ -43,7 +43,6 @@ public class PipeRotator : MonoBehaviour
                 // 파이프의 위치가 왼쪽에 있으면 startPointX로 이동
                 // 파이프의 높이를 랜덤으로 변화시키기                
                 pipe.transform.position = new Vector3(startPointX, pipe.RandomHeight, 0);
-                
             }
         }
     }
