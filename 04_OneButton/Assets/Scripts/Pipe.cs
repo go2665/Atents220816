@@ -22,7 +22,9 @@ public class Pipe : MonoBehaviour
     /// <summary>
     /// 플레이어가 파이프를 통과하면 실행될 델리게이트
     /// </summary>
-    public System.Action onScored;
+    public System.Action<int> onScored;
+
+    public int point = 10;
 
     /// <summary>
     /// 랜덤함 위치를 반환하는 프로퍼티
@@ -59,7 +61,7 @@ public class Pipe : MonoBehaviour
         // 플레이어가 동과 했다면
         if(collision.CompareTag("Player"))
         {
-            onScored?.Invoke(); // 델리게이트 실행으로 알리기
+            onScored?.Invoke(point); // 델리게이트 실행으로 알리기
         }
     }
 }
