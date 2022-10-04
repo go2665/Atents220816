@@ -61,7 +61,11 @@ public class Pipe : MonoBehaviour
         // 플레이어가 동과 했다면
         if(collision.CompareTag("Player"))
         {
-            onScored?.Invoke(point); // 델리게이트 실행으로 알리기
+            Bird bird = collision.GetComponent<Bird>();
+            if (bird != null && !bird.IsDead)
+            {
+                onScored?.Invoke(point); // 델리게이트 실행으로 알리기
+            }
         }
     }
 }

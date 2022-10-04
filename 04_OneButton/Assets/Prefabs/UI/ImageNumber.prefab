@@ -90,7 +90,7 @@ MonoBehaviour:
   - {fileID: -1396181649, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
   - {fileID: -1807281847, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
   - {fileID: -1777258690, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
-  numberChangeSpeed: 2
+  numberChangeSpeed: 20
 --- !u!1001 &2571914948148355828
 PrefabInstance:
   m_ObjectHideFlags: 0

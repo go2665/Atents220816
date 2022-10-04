@@ -28,6 +28,11 @@ public class Bird : MonoBehaviour
     bool isDead = false;
 
     /// <summary>
+    /// 새가 죽었는지 살았는지 확인하는 프로퍼티
+    /// </summary>
+    public bool IsDead { get => isDead; }
+
+    /// <summary>
     /// InputSystem용 에셋 변수
     /// </summary>
     BirdInputActions inputActions;
