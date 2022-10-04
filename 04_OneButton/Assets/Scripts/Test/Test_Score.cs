@@ -66,52 +66,52 @@ public class Test_Score : MonoBehaviour
 
     private void TestInput9(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 9;
+        //imageNumber.Number = 9;
     }
 
     private void TestInput8(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 8;
+        //imageNumber.Number = 8;
     }
 
     private void TestInput7(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 7;
+        //imageNumber.Number = 7;
     }
 
     private void TestInput6(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 6;
+        //imageNumber.Number = 6;
     }
 
     private void TestInput5(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 5;
+        //imageNumber.Number = 5;
     }
 
     private void TestInput4(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 4;
+        //imageNumber.Number = 4;
     }
 
     private void TestInput3(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 123456;
+        //imageNumber.Number = 123456;
     }
 
     private void TestInput2(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 123;
+        //imageNumber.Number = 123;
     }
 
     private void TestInput1(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 12;
+        //imageNumber.Number = 12;
     }
 
     private void TestInput0(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 0;
+        //imageNumber.Number = 0;
     }
 
 }
