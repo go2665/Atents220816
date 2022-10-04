@@ -3,15 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Test_Score : MonoBehaviour
 {
     public ImageNumber imageNumber;
+    public TMP_InputField inputField;
+
     BirdInputActions inputActions;
 
     private void Awake()
     {
         inputActions = new BirdInputActions();
+    }
+
+    private void Start()
+    {
+        inputField.onValueChanged.AddListener(OnInputChanged);
+    }
+
+    private void OnInputChanged(string text)
+    {
+        if (text != "")
+        {
+            imageNumber.Number = int.Parse(text);
+        }
+        else
+        {
+            imageNumber.Number = 0;
+        }
     }
 
     private void OnEnable()
@@ -76,17 +96,17 @@ public class Test_Score : MonoBehaviour
 
     private void TestInput3(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 3;
+        imageNumber.Number = 123456;
     }
 
     private void TestInput2(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 2;
+        imageNumber.Number = 123;
     }
 
     private void TestInput1(InputAction.CallbackContext obj)
     {
-        imageNumber.Number = 1;
+        imageNumber.Number = 12;
     }
 
     private void TestInput0(InputAction.CallbackContext obj)
