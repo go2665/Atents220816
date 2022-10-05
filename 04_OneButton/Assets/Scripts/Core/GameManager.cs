@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public ImageNumber scoreUI;
+    ImageNumber scoreUI;
 
     Bird player;
     PipeRotator pipeRotator;
@@ -29,6 +29,8 @@ public class GameManager : Singleton<GameManager>
         player = FindObjectOfType<Bird>();
         pipeRotator = FindObjectOfType<PipeRotator>();
         pipeRotator?.AddPipeSoredDelegate(AddScore);
+
+        scoreUI = GameObject.FindGameObjectWithTag("Score").GetComponent<ImageNumber>();
     }
 
     void AddScore(int point)

@@ -40,7 +40,8 @@ public class GameOverPanel : MonoBehaviour
     }
 
     void Open()
-    {        
+    {
+        resultPanel.RefreshScore();
         StartCoroutine(OpenDelay());
     }
 

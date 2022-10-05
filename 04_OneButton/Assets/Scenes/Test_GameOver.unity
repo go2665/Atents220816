@@ -232,7 +232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8956560812846778479, guid: 86b55b129293d5a4f9bfc922326c47db, type: 3}
       propertyPath: m_Name
-      value: ImageNumber_Big
+      value: Score
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956560812846778479, guid: 86b55b129293d5a4f9bfc922326c47db, type: 3}
+      propertyPath: m_TagString
+      value: Score
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86b55b129293d5a4f9bfc922326c47db, type: 3}
@@ -2425,7 +2429,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966359628}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
