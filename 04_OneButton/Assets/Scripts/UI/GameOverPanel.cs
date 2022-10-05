@@ -9,9 +9,12 @@ public class GameOverPanel : MonoBehaviour
     ResultPanel resultPanel;
     Button nextButton;
     Button rankButton;
+    CanvasGroup canvasGroup;
 
     private void Awake()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
         resultPanel = GetComponentInChildren<ResultPanel>();
         nextButton = transform.GetChild(2).GetComponent<Button>();
         rankButton = transform.GetChild(3).GetComponent<Button>();
@@ -22,7 +25,7 @@ public class GameOverPanel : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetActive(false);
+        Close();
         GameManager.Inst.Player.onDead += Open;
     }
 
@@ -37,7 +40,23 @@ public class GameOverPanel : MonoBehaviour
     }
 
     void Open()
+    {        
+        StartCoroutine(OpenDelay());
+    }
+
+    void Close()
     {
-        gameObject.SetActive(true);
+        canvasGroup.alpha = 0.0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    IEnumerator OpenDelay()
+    {
+        yield return new WaitForSeconds(2);
+
+        canvasGroup.alpha = 1.0f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
     }
 }
