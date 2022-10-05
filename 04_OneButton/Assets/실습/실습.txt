@@ -33,3 +33,6 @@
 1. TestPanel에 InputField의 값이 변경되면 점수가 변경되게 작성하라.
 2. TestPanel에 DieButton을 누르면 TestBird가 사망하게 만들기
    시간 : 10시 20분까지
+
+3. ImageNumber의 IsInstanceSet이 동작하게 코드 수정하기
+   시간 : 1시 50분까지

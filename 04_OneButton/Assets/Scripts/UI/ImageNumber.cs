@@ -8,6 +8,7 @@ public class ImageNumber : MonoBehaviour
     public int expectedLength = 6;      // 예상되는 자리수
     public GameObject digitPrefab;      // 숫자 하나를 표현할 프리팹
     public Sprite[] numberImages = new Sprite[10];  // 숫자 0~9까지 있는 스프라이트
+    public bool isInstanceSet = false;  // 숫자를 즉시 세팅할 것인지 천천히 증가하게 할 것인지 설정(true면 숫자를 즉시 설정)
 
     List<Image> digits;     // 0번째가 1자리, 1번째가 10자리
     List<int> remainders;   // 숫자를 자리수별로 저장할 리스트
@@ -49,6 +50,10 @@ public class ImageNumber : MonoBehaviour
             {
                 // currentNumber의 방향이 감소일 때 목표인 Number 밑으로 내려간 경우 Number로 설정
                 currentNumber = Mathf.Max(currentNumber, Number);
+            }
+            if(isInstanceSet)
+            {
+                currentNumber = Number;
             }
 
             int tempNum = (int)currentNumber;   // 표시할 숫자 결정(currentNumber에서 소수점 제거한 숫자)
