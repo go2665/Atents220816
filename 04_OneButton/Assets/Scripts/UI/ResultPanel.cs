@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ResultPanel : MonoBehaviour
 {
+    public Sprite[] medalSprits;
+
     ImageNumber score;
     ImageNumber bestScore;
     Image newMarkImage;
@@ -20,6 +22,32 @@ public class ResultPanel : MonoBehaviour
 
     public void RefreshScore()
     {
-        score.Number = GameManager.Inst.Score;
+        int playerScore = GameManager.Inst.Score;
+        score.Number = playerScore;
+
+        if( playerScore >= 400 )
+        {
+            medalImage.sprite = medalSprits[0];
+            medalImage.color = Color.white;
+        }
+        else if( playerScore >= 300 )
+        {
+            medalImage.sprite = medalSprits[1];
+            medalImage.color = Color.white;
+        }
+        else if( playerScore >= 200 )
+        {
+            medalImage.sprite = medalSprits[2];
+            medalImage.color = Color.white;
+        }
+        else if( playerScore >= 100 )
+        {
+            medalImage.sprite = medalSprits[3];
+            medalImage.color = Color.white;
+        }
+        else
+        {
+            medalImage.color = Color.clear;
+        }
     }
 }

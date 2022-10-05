@@ -349,6 +349,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3226a47a09c4c8a488852604ae5b0abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  medalSprits:
+  - {fileID: 35685638, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
+  - {fileID: -483445479, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
+  - {fileID: -888303652, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
+  - {fileID: -1106907653, guid: ac6a9b212d7fe8c4e8ad3efacf374993, type: 3}
 --- !u!1001 &281568924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1023,6 +1028,14 @@ PrefabInstance:
     - target: {fileID: 8956560812846778473, guid: ffb0be0611f7b4c41bd1afe3c9f067ed, type: 3}
       propertyPath: m_ChildAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956560812846778473, guid: ffb0be0611f7b4c41bd1afe3c9f067ed, type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956560812846778473, guid: ffb0be0611f7b4c41bd1afe3c9f067ed, type: 3}
+      propertyPath: m_ChildForceExpandHeight
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8956560812846778478, guid: ffb0be0611f7b4c41bd1afe3c9f067ed, type: 3}
       propertyPath: m_Pivot.x

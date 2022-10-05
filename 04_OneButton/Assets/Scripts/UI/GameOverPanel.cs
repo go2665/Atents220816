@@ -54,7 +54,7 @@ public class GameOverPanel : MonoBehaviour
 
     IEnumerator OpenDelay()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.1f);
 
         canvasGroup.alpha = 1.0f;
         canvasGroup.interactable = true;
