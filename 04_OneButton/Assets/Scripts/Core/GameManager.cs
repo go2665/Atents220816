@@ -12,11 +12,11 @@ public class GameManager : Singleton<GameManager>
     public int Score
     {
         get => score;
-        //set
-        //{
-        //    score = value;
-        //    scoreUI.Number = score;
-        //}
+        private set
+        {
+            score = value;
+            scoreUI.Number = score;
+        }
     }
 
     protected override void Initialize()
@@ -27,7 +27,11 @@ public class GameManager : Singleton<GameManager>
 
     void AddScore(int point)
     {
-        score += point;
-        scoreUI.Number = score;
+        Score += point;
+    }
+
+    public void TestSetScore(int newScore)
+    {
+        Score = newScore;
     }
 }

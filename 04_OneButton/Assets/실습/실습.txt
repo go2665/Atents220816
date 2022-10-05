@@ -28,3 +28,8 @@
 10/4
 1. ImageNumber에 0을 했을 때 0은 표시가 되도록 수정하기
    시간 : 11시 45분까지 -> 55분까지
+
+10/5
+1. TestPanel에 InputField의 값이 변경되면 점수가 변경되게 작성하라.
+2. TestPanel에 DieButton을 누르면 TestBird가 사망하게 만들기
+   시간 : 10시 20분까지
