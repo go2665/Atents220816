@@ -37,23 +37,28 @@ public class ImageNumber : MonoBehaviour
     private void Update()
     {
         if ((int)currentNumber != Number )  // currentNumber가 Number와 같아졌는지 확인. 다를 때만 아래코드 실행
-        {
-            float dir = (currentNumber < Number) ? 1 : -1;                  // currentNumber가 변화하는 방향 구하기(증가 아니면 감소)
-            float speed = numberChangeSpeed/* * Mathf.Abs(Number - currentNumber)*/;  // 일단 고정 속도로
-            currentNumber += dir * speed * Time.deltaTime;  // 방향에 따라 초당 speed만큼 currentNumber 변화
-            if ( dir > 0 )
+        {     
+            if(isInstanceSet)   
             {
-                // currentNumber의 방향이 증가일 때 목표인 Number를 넘친 경우 Number로 설정
-                currentNumber = Mathf.Min(currentNumber, Number);
+                // 즉시 값을 올리는 설정일 경우
+                currentNumber = Number; // currentNumber를 바로 Number로 설정
             }
             else
             {
-                // currentNumber의 방향이 감소일 때 목표인 Number 밑으로 내려간 경우 Number로 설정
-                currentNumber = Mathf.Max(currentNumber, Number);
-            }
-            if(isInstanceSet)
-            {
-                currentNumber = Number;
+                // 값을 천천히 올리는 설정일 경우
+                float dir = (currentNumber < Number) ? 1 : -1;                  // currentNumber가 변화하는 방향 구하기(증가 아니면 감소)
+                float speed = numberChangeSpeed/* * Mathf.Abs(Number - currentNumber)*/;  // 일단 고정 속도로
+                currentNumber += dir * speed * Time.deltaTime;  // 방향에 따라 초당 speed만큼 currentNumber 변화
+                if (dir > 0)
+                {
+                    // currentNumber의 방향이 증가일 때 목표인 Number를 넘친 경우 Number로 설정
+                    currentNumber = Mathf.Min(currentNumber, Number);
+                }
+                else
+                {
+                    // currentNumber의 방향이 감소일 때 목표인 Number 밑으로 내려간 경우 Number로 설정
+                    currentNumber = Mathf.Max(currentNumber, Number);
+                }
             }
 
             int tempNum = (int)currentNumber;   // 표시할 숫자 결정(currentNumber에서 소수점 제거한 숫자)
