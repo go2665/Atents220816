@@ -119,4 +119,19 @@ public class Bird : MonoBehaviour
     {
         rigid.velocity = Vector2.up * jumpPower;    // 위쪽 방향으로 점프력만큼 velocity 변경
     }
+
+    // 테스트용 함수 -------------------------------------------------------------------------------
+    public void TestDie()
+    {
+        // 처음 죽었을 때만 처리하는 코드
+        if (!isDead)
+        {
+            // 아직 살아있다고 표시될 때만 실행
+            onDead?.Invoke();               // 사망 알림용 델리게이트 실행
+            inputActions.Bird.Disable();    // 죽었을 때 입력 막기
+            isDead = true;                  // 죽었다고 표시
+
+            Debug.Log("새가 죽었음");
+        }
+    }
 }

@@ -846,6 +846,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2019656648}
     m_Modifications:
+    - target: {fileID: 8956560811896043146, guid: 8c62f038c3f4d704da53bdef3eee65cd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956560811896043146, guid: 8c62f038c3f4d704da53bdef3eee65cd, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956560811896043146, guid: 8c62f038c3f4d704da53bdef3eee65cd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956560811896043146, guid: 8c62f038c3f4d704da53bdef3eee65cd, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8956560812846778478, guid: 8c62f038c3f4d704da53bdef3eee65cd, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1026,6 +1042,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1347490958}
+  - component: {fileID: 1347490959}
   m_Layer: 5
   m_Name: TestPanel
   m_TagString: Untagged
@@ -1057,6 +1074,18 @@ RectTransform:
   m_AnchoredPosition: {x: -723, y: 0}
   m_SizeDelta: {x: 350, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1347490959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347490957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e71dfa7b02632d94d9e67e326f3ccb5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1413062131
 GameObject:
   m_ObjectHideFlags: 0
