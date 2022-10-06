@@ -23,9 +23,10 @@ public class ResultPanel : MonoBehaviour
     public void RefreshScore()
     {
         int playerScore = GameManager.Inst.Score;
-        score.Number = playerScore;
+        score.Number = playerScore;                     // 현재 점수 설정
+        bestScore.Number = GameManager.Inst.BestScore;  // 최고 점수 설정(새가 죽을 때 최고점수는 자동으로 갱신된다.)
 
-        if( playerScore >= 400 )
+        if ( playerScore >= 400 )
         {
             medalImage.sprite = medalSprits[0];
             medalImage.color = Color.white;
