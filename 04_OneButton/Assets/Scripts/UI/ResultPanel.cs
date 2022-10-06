@@ -34,7 +34,12 @@ public class ResultPanel : MonoBehaviour
         // 그것을 방지하기 위해 OnDisable에서 실행
 
         // GameManager가 삭제되기 전에 연결 해제
-        GameManager.Inst.onBestScoreChange -= ShowNewMark;  // 이 패널이 닫힐 때(게임이 끝날 때) 델리게이트에 연결된 함수 해제
+        
+        GameManager temp = GameManager.Inst;
+        if (temp != null)
+        {
+            temp.onBestScoreChange -= ShowNewMark;      // 이 패널이 닫힐 때(게임이 끝날 때) 델리게이트에 연결된 함수 해제
+        }
     }
 
     private void ShowNewMark()

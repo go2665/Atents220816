@@ -14,7 +14,12 @@ public class GameManager : Singleton<GameManager>
     int score = 0;
     int bestScore = 0;
 
+    const int RankCount = 5;
+    int[] highScores = new int[RankCount];              //0번째 1등, 4번째 꼴등
+    string[] highScorerNames = new string[RankCount];
+
     public Action onBestScoreChange;        // 최고 점수 갱신했을 때 실행될 델리게이트
+    public Action onRankChange;
 
     public Bird Player => player;
     //public Bird Player { get => player};  // 위와 같은 코드
@@ -35,10 +40,14 @@ public class GameManager : Singleton<GameManager>
         private set => bestScore = value;        
     }
 
+    public int[] HighScores => highScores;
+    public string[] HighScorer => highScorerNames;
+
     protected override void Initialize()
     {
         player = FindObjectOfType<Bird>();
         player.onDead += BestScoreUpdate;       // 새가 죽을 때 최고 점수 갱신 시도
+        player.onDead += RankUpdate;            // 새가 죽을 때 랭크 갱신
 
         pipeRotator = FindObjectOfType<PipeRotator>();
         pipeRotator?.AddPipeSoredDelegate(AddScore);
@@ -100,6 +109,26 @@ public class GameManager : Singleton<GameManager>
             onBestScoreChange?.Invoke();    // 점수가 갱신되면 델리게이트에 연결된 함수들 실행
             SaveGameData();                 // 갱신한 점수로 저장
         }
+    }
+
+    public void RankUpdate()
+    {
+        for(int i=0;i<RankCount;i++)
+        {
+            if(highScores[i] < Score)   // 한 단계씩 비교해서 Score가 더 크면
+            {
+                for (int j = RankCount - 1; j > i; j--) // 그 아래 단계는 하나씩 뒤로 밀고
+                {
+                    highScores[j] = highScores[j - 1];
+                    highScorerNames[j] = highScorerNames[j - 1];
+                }
+                highScores[i] = Score;  // 새 Score 넣기
+                highScorerNames[i] = "";
+
+                onRankChange?.Invoke();
+                break;
+            }
+        }        
     }
 
     public void TestSetScore(int newScore)

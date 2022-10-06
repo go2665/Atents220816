@@ -41,4 +41,23 @@ public class Test_GameOver : Test_Base
             Debug.Log($"Load : {loadData.name}, {loadData.bestScore}"); 
         }
     }
+
+    protected override void TestInput3(InputAction.CallbackContext obj)
+    {
+        GameManager.Inst.TestSetScore(10);
+        GameManager.Inst.RankUpdate();
+        GameManager.Inst.TestSetScore(20);
+        GameManager.Inst.RankUpdate();
+        GameManager.Inst.TestSetScore(30);
+        GameManager.Inst.RankUpdate();
+        GameManager.Inst.TestSetScore(40);
+        GameManager.Inst.RankUpdate();
+        GameManager.Inst.TestSetScore(50);
+        GameManager.Inst.RankUpdate();
+
+        GameManager.Inst.TestSetScore(35);
+        GameManager.Inst.RankUpdate();
+
+        int i = 0;
+    }
 }
