@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -12,6 +13,8 @@ public class GameManager : Singleton<GameManager>
 
     int score = 0;
     int bestScore = 0;
+
+    public Action onBestScoreChange;        // 최고 점수 갱신했을 때 실행될 델리게이트
 
     public Bird Player => player;
     //public Bird Player { get => player};  // 위와 같은 코드
@@ -93,8 +96,9 @@ public class GameManager : Singleton<GameManager>
     {
         if(BestScore < Score)
         {
-            BestScore = Score;
-            SaveGameData();
+            BestScore = Score;              // 점수 갱신
+            onBestScoreChange?.Invoke();    // 점수가 갱신되면 델리게이트에 연결된 함수들 실행
+            SaveGameData();                 // 갱신한 점수로 저장
         }
     }
 
