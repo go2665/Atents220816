@@ -23,7 +23,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
         {
             if(isShutDown)
             {
-                Debug.LogWarning($"{typeof(T)} 싱글톤은 이미 삭제되었음.");
+                //Debug.LogWarning($"{typeof(T)} 싱글톤은 이미 삭제되었음.");
                 return null;
             }
 
@@ -69,10 +69,6 @@ public class Singleton<T> : MonoBehaviour where T : Component
         }
     }
 
-    private void OnDestroy()
-    {
-        isShutDown = true;
-    }
 
     private void OnApplicationQuit()
     {
