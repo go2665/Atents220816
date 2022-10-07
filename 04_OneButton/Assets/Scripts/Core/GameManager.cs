@@ -129,6 +129,11 @@ public class GameManager : Singleton<GameManager>
         onRankRefresh?.Invoke();
     }
 
+    public void SetHighScorerName(int rank, string name)
+    {
+
+    }
+
     public void TestSetScore(int newScore)
     {
         Score = newScore;

@@ -14,6 +14,7 @@ public class RankPanel : MonoBehaviour
         rankLines = GetComponentsInChildren<RankLine>();
         inputField = GetComponentInChildren<TMP_InputField>();
         inputField.gameObject.SetActive(false);
+        //inputField.onEndEdit
     }
 
     private void Start()
