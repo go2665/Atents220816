@@ -30,6 +30,7 @@ public class RankPanel : MonoBehaviour
         if (temp != null)
         {
             temp.onRankRefresh -= RankDataRefresh;
+            temp.onRankUpdate -= EnableNameInput;
         }
     }
 
@@ -43,7 +44,10 @@ public class RankPanel : MonoBehaviour
 
     private void EnableNameInput(int index)
     {
-        transform.position = new Vector3(transform.position.x, rankLines[index].transform.position.y, transform.position.z);
+        inputField.transform.position = 
+            new Vector3(inputField.transform.position.x, 
+            rankLines[index].transform.position.y, 
+            inputField.transform.position.z);
         inputField.gameObject.SetActive(true);
     }
 }

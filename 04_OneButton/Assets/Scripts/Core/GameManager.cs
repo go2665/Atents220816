@@ -122,7 +122,7 @@ public class GameManager : Singleton<GameManager>
                 //highScorerNames[i] = $"이름 {DateTime.Now.ToString("HH:mm:ss")}";
                 onRankUpdate?.Invoke(i);
 
-                SaveGameData();                 // 갱신한 점수로 저장
+                SaveGameData();         // 갱신한 점수로 저장
                 break;
             }
         }        
