@@ -45,9 +45,11 @@ public class GameManager : Singleton<GameManager>
         player.onDead += RankUpdate;            // 새가 죽을 때 랭크 갱신
 
         pipeRotator = FindObjectOfType<PipeRotator>();
-        pipeRotator?.AddPipeSoredDelegate(AddScore);
+        pipeRotator?.AddPipeScoredDelegate(AddScore);
 
         scoreUI = GameObject.FindGameObjectWithTag("Score").GetComponent<ImageNumber>();
+
+        Score = 0;
 
         LoadGameData();
     }
@@ -119,19 +121,19 @@ public class GameManager : Singleton<GameManager>
                     highScorerNames[j] = highScorerNames[j - 1];
                 }
                 highScores[i] = Score;  // 새 Score 넣기
-                //highScorerNames[i] = $"이름 {DateTime.Now.ToString("HH:mm:ss")}";
+                //highScorerNames[i] = $"이름 {DateTime.Now.ToString("HH:mm:ss")}";                
                 onRankUpdate?.Invoke(i);
-
-                SaveGameData();         // 갱신한 점수로 저장
                 break;
             }
         }        
-        onRankRefresh?.Invoke();
+        onRankRefresh?.Invoke();        // UI 표시 갱신
     }
 
     public void SetHighScorerName(int rank, string name)
     {
-
+        highScorerNames[rank] = name;   // 실제 데이터 변경
+        onRankRefresh?.Invoke();        // UI 표시 갱신
+        SaveGameData();                 // 갱신한 점수로 저장
     }
 
     public void TestSetScore(int newScore)

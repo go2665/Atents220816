@@ -47,7 +47,7 @@ public class PipeRotator : MonoBehaviour
         }
     }
 
-    public void AddPipeSoredDelegate(Action<int> del)
+    public void AddPipeScoredDelegate(Action<int> del)
     {
         foreach(Pipe pipe in pipes)
         {

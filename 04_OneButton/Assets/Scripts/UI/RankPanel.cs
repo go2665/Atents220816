@@ -8,13 +8,15 @@ public class RankPanel : MonoBehaviour
 {
     RankLine[] rankLines;
     TMP_InputField inputField;
+    int rank;
 
     private void Awake()
     {
         rankLines = GetComponentsInChildren<RankLine>();
         inputField = GetComponentInChildren<TMP_InputField>();
         inputField.gameObject.SetActive(false);
-        //inputField.onEndEdit
+        inputField.onEndEdit.AddListener(OnNameInputEnd);
+
     }
 
     private void Start()
@@ -45,10 +47,18 @@ public class RankPanel : MonoBehaviour
 
     private void EnableNameInput(int index)
     {
+        rank = index;
         inputField.transform.position = 
             new Vector3(inputField.transform.position.x, 
-            rankLines[index].transform.position.y, 
+            rankLines[rank].transform.position.y, 
             inputField.transform.position.z);
         inputField.gameObject.SetActive(true);
+    }
+
+    private void OnNameInputEnd(string text)
+    {
+        //Debug.Log($"Input text : {text}");
+        GameManager.Inst.SetHighScorerName(rank, text);
+        inputField.gameObject.SetActive(false);
     }
 }
