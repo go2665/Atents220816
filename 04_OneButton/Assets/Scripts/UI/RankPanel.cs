@@ -1,35 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 
 public class RankPanel : MonoBehaviour
 {
     RankLine[] rankLines;
+    TMP_InputField inputField;
 
     private void Awake()
     {
         rankLines = GetComponentsInChildren<RankLine>();
+        inputField = GetComponentInChildren<TMP_InputField>();
+        inputField.gameObject.SetActive(false);
     }
 
     private void Start()
     {
-        GameManager.Inst.onRankChange += RankDataUpdate;
+        GameManager.Inst.onRankRefresh += RankDataRefresh;  // 화면 갱신만
+        GameManager.Inst.onRankUpdate += EnableNameInput;   // 이름을 입력 받을 수 있게 하기
+        RankDataRefresh();
     }
+
 
     private void OnDisable()
     {
         GameManager temp = GameManager.Inst;
         if (temp != null)
         {
-            temp.onRankChange -= RankDataUpdate;
+            temp.onRankRefresh -= RankDataRefresh;
         }
     }
 
-    void RankDataUpdate()
+    void RankDataRefresh()
     {
         for(int i=0;i<rankLines.Length;i++)
         {
             rankLines[i].SetData(GameManager.Inst.HighScores[i], GameManager.Inst.HighScorer[i]);
         }
+    }
+
+    private void EnableNameInput(int index)
+    {
+        transform.position = new Vector3(transform.position.x, rankLines[index].transform.position.y, transform.position.z);
+        inputField.gameObject.SetActive(true);
     }
 }

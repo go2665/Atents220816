@@ -18,7 +18,8 @@ public class GameManager : Singleton<GameManager>
     string[] highScorerNames = new string[RankCount];
 
     public Action onBestScoreChange;        // 최고 점수 갱신했을 때 실행될 델리게이트
-    public Action onRankChange;
+    public Action onRankRefresh;            // 랭크 화면 갱신 요청
+    public Action<int> onRankUpdate;        // 새 기록 추가 알림
 
     public Bird Player => player;
     //public Bird Player { get => player};  // 위와 같은 코드
@@ -62,9 +63,9 @@ public class GameManager : Singleton<GameManager>
     void SaveGameData()
     {
         // Serializable로 되어 있는 클래스 만들기        
-        SaveData saveData = new();              // 해당 클래스의 인스턴스 만들기
-        saveData.highScores = highScores;         // 인스턴스에 데이터 기록
-        saveData.highScorerNames = new string[] { "임시 이름1", "임시 이름2", "임시 이름3", "임시 이름4", "임시 이름5"};
+        SaveData saveData = new();                  // 해당 클래스의 인스턴스 만들기
+        saveData.highScores = highScores;           // 인스턴스에 데이터 기록
+        saveData.highScorerNames = highScorerNames;
 
         string json = JsonUtility.ToJson(saveData);     // 해당 클래스를 json형식의 문자열로 변경
 
@@ -96,12 +97,13 @@ public class GameManager : Singleton<GameManager>
         else
         {
             highScores = new int[] { 0, 0, 0, 0, 0 };
-            highScorerNames = new string[] { "", "", "", "", "" };
-        }
+            highScorerNames = new string[] { "임시 이름1", "임시 이름2", "임시 이름3", "임시 이름4", "임시 이름5" };
+        }        
     }
 
     public void RankUpdate()
     {
+        // 뉴마크 표시할지 안할지 결정
         if (BestScore < Score)
         {
             onBestScoreChange?.Invoke();    // 점수가 갱신되면 델리게이트에 연결된 함수들 실행(뉴마크 보이기)
@@ -117,13 +119,14 @@ public class GameManager : Singleton<GameManager>
                     highScorerNames[j] = highScorerNames[j - 1];
                 }
                 highScores[i] = Score;  // 새 Score 넣기
-                highScorerNames[i] = "";
+                //highScorerNames[i] = $"이름 {DateTime.Now.ToString("HH:mm:ss")}";
+                onRankUpdate?.Invoke(i);
 
-                onRankChange?.Invoke();
                 SaveGameData();                 // 갱신한 점수로 저장
                 break;
             }
         }        
+        onRankRefresh?.Invoke();
     }
 
     public void TestSetScore(int newScore)
