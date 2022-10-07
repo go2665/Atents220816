@@ -166,6 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8185008898289134080}
   - component: {fileID: 8185008898289134083}
+  - component: {fileID: 1532503251}
   m_Layer: 5
   m_Name: RankPanel
   m_TagString: Untagged
@@ -213,6 +214,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f8ad355e8667946b761c98147d3d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &1532503251
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8185008898289134081}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8185008898315566268
 GameObject:
   m_ObjectHideFlags: 0

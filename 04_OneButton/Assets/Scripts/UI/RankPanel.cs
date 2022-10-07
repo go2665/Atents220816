@@ -8,7 +8,14 @@ public class RankPanel : MonoBehaviour
 {
     RankLine[] rankLines;
     TMP_InputField inputField;
+    CanvasGroup canvasGroup;
+
     int rank;
+
+    bool inputNameCompleted = false;
+
+    public bool InputNameCompleted => inputNameCompleted;
+    public int Rank => rank;
 
     private void Awake()
     {
@@ -16,16 +23,16 @@ public class RankPanel : MonoBehaviour
         inputField = GetComponentInChildren<TMP_InputField>();
         inputField.gameObject.SetActive(false);
         inputField.onEndEdit.AddListener(OnNameInputEnd);
-
+        canvasGroup = GetComponent<CanvasGroup>();
     }
 
     private void Start()
     {
         GameManager.Inst.onRankRefresh += RankDataRefresh;  // 화면 갱신만
         GameManager.Inst.onRankUpdate += EnableNameInput;   // 이름을 입력 받을 수 있게 하기
+        Close();
         RankDataRefresh();
     }
-
 
     private void OnDisable()
     {
@@ -35,6 +42,20 @@ public class RankPanel : MonoBehaviour
             temp.onRankRefresh -= RankDataRefresh;
             temp.onRankUpdate -= EnableNameInput;
         }
+    }
+
+    public void Open()
+    {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+    }
+
+    public void Close()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 
     void RankDataRefresh()
@@ -47,6 +68,9 @@ public class RankPanel : MonoBehaviour
 
     private void EnableNameInput(int index)
     {
+        inputNameCompleted = false;
+
+        Open();
         rank = index;
         inputField.transform.position = 
             new Vector3(inputField.transform.position.x, 
@@ -58,7 +82,12 @@ public class RankPanel : MonoBehaviour
     private void OnNameInputEnd(string text)
     {
         //Debug.Log($"Input text : {text}");
-        GameManager.Inst.SetHighScorerName(rank, text);
+        GameManager temp = GameManager.Inst;
+        if (temp != null)
+        {
+            temp.SetHighScorerName(rank, text);
+        }
         inputField.gameObject.SetActive(false);
+        inputNameCompleted = true;
     }
 }

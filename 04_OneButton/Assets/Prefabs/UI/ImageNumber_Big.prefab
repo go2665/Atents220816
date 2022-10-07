@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8956560812846778472}
   m_Layer: 5
   m_Name: ImageNumber_Big
-  m_TagString: Untagged
+  m_TagString: Score
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

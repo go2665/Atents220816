@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static System.Net.Mime.MediaTypeNames;
 
 public class GameOverPanel : MonoBehaviour
 {
     ResultPanel resultPanel;
+    RankPanel rankPanel;
     Button nextButton;
     Button rankButton;
     CanvasGroup canvasGroup;
@@ -16,6 +18,7 @@ public class GameOverPanel : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
 
         resultPanel = GetComponentInChildren<ResultPanel>();
+        rankPanel = GetComponentInChildren<RankPanel>();
         nextButton = transform.GetChild(2).GetComponent<Button>();
         rankButton = transform.GetChild(3).GetComponent<Button>();
 
@@ -31,12 +34,20 @@ public class GameOverPanel : MonoBehaviour
 
     void OnClick_Next()
     {
+        if( !rankPanel.InputNameCompleted)
+        {
+            GameManager temp = GameManager.Inst;
+            if (temp != null)
+            {
+                temp.SetHighScorerName(rankPanel.Rank, $"이름없음{Random.Range(0,10000)}");
+            }
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);   // 현재 열린 씬을 새로 열기
     }
 
     void OnClick_Rank()
     {
-
+        rankPanel.Open();
     }
 
     void Open()
