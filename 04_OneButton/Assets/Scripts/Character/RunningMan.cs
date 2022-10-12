@@ -52,7 +52,8 @@ public class RunningMan : MonoBehaviour
     {
         if(!isJump)
         {
-            rigid.velocity = Vector2.up * jumpPower;
+            //rigid.velocity = Vector2.up * jumpPower;
+            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             isJump = true;
             anim.SetBool("IsJump", isJump);
         }
