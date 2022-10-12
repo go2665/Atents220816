@@ -52,7 +52,6 @@ public class GameManager : Singleton<GameManager>
         pipeRotator?.AddPipeScoredDelegate(AddScore);
 
         scoreUI = GameObject.FindGameObjectWithTag("Score").GetComponent<ImageNumber>();
-
         Score = 0;
 
         LoadGameData();
@@ -142,7 +141,7 @@ public class GameManager : Singleton<GameManager>
 
     public void GameStart()
     {
-        onGameStart?.Invoke();      // 게임이 시작되었음을 알림        
+        onGameStart?.Invoke();      // 게임이 시작되었음을 알림   
     }
 
     public void TestSetScore(int newScore)
