@@ -42,6 +42,9 @@ public class Bird : MonoBehaviour
     /// </summary>
     Rigidbody2D rigid;
 
+    /// <summary>
+    /// 애니메이터
+    /// </summary>
     Animator anim;
 
 
@@ -55,8 +58,11 @@ public class Bird : MonoBehaviour
 
     private void Start()    // 첫번째 Update 함수가 실행되기 직전
     {
+        //Debug.Log("Bird - Start");
+        GameManager.Inst.onGameStart += OnGameStart;
+
         isDead = true;                             // 우선 살아있다고 표시
-        rigid.simulated = false;
+        rigid.simulated = false;    
     }
 
     private void OnEnable() // 오브젝트가 활성화 될 때
@@ -114,6 +120,16 @@ public class Bird : MonoBehaviour
         }        
     }
 
+    /// <summary>
+    /// 게임이 실행이 되었을 때 실행될 함수
+    /// </summary>
+    private void OnGameStart()
+    {
+        isDead = false;                 // 새를 살아있는 상태로 만들고
+        rigid.simulated = true;         // 리지드바디 물리 시뮬레이션 작동
+        anim.SetTrigger("GameStart");   // 새가 날개짓하도록 애니메이션 트리거 발동
+    }
+
     // 입력 처리용 함수 ----------------------------------------------------------------------------
     /// <summary>
     /// 점프 입력이 들어왔을 때 실행되는 함수
@@ -124,17 +140,15 @@ public class Bird : MonoBehaviour
         Jump();
     }
 
+    /// <summary>
+    /// 실제 점프를 하는 함수
+    /// </summary>
     public void Jump()
     {
         rigid.velocity = Vector2.up * jumpPower;    // 위쪽 방향으로 점프력만큼 velocity 변경
     }
 
-    public void OnGameStart()
-    {
-        isDead = false;
-        rigid.simulated = true;
-        anim.SetTrigger("GameStart");
-    }
+    
 
     // 테스트용 함수 -------------------------------------------------------------------------------
     public void TestDie()

@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager>
     public Action onBestScoreChange;        // 최고 점수 갱신했을 때 실행될 델리게이트
     public Action onRankRefresh;            // 랭크 화면 갱신 요청
     public Action<int> onRankUpdate;        // 새 기록 추가 알림
+    public Action onGameStart;
 
     public Bird Player => player;
     //public Bird Player { get => player};  // 위와 같은 코드
@@ -41,6 +42,9 @@ public class GameManager : Singleton<GameManager>
 
     protected override void Initialize()
     {
+        //Debug.Log("GameManager Initialize");
+        onGameStart = null;
+
         player = FindObjectOfType<Bird>();        
         player.onDead += RankUpdate;            // 새가 죽을 때 랭크 갱신
 
@@ -138,8 +142,7 @@ public class GameManager : Singleton<GameManager>
 
     public void GameStart()
     {
-        Player.OnGameStart();
-        pipeRotator.OnGameStart();
+        onGameStart?.Invoke();      // 게임이 시작되었음을 알림        
     }
 
     public void TestSetScore(int newScore)
