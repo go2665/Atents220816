@@ -15,6 +15,8 @@ public class RunningMan : MonoBehaviour
 
     bool isJump = true;
 
+    public Action onDead;
+
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
     private void Awake()    // 이 스크립트(컴포넌트)가 생성 완료 되었을 때
@@ -59,5 +61,6 @@ public class RunningMan : MonoBehaviour
     public void Die()
     {
         Debug.Log("사망");
+        onDead?.Invoke();        
     }
 }
