@@ -136,6 +136,12 @@ public class GameManager : Singleton<GameManager>
         SaveGameData();                 // 갱신한 점수로 저장
     }
 
+    public void GameStart()
+    {
+        Player.OnGameStart();
+        pipeRotator.OnGameStart();
+    }
+
     public void TestSetScore(int newScore)
     {
         Score = newScore;
