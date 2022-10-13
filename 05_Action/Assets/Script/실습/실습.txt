@@ -14,3 +14,11 @@
 2. 캐릭터가 회전을 할 때 즉시 회전하지 않고 천천히 회전이 일어난다.
 3. 키보드 입력을 중지했을 때 원래 정면을 바라보는 현상 제거하기
    시간 : 12시 20분까지
+
+10/14
+1. 이동 애니메이션 처리
+    4.1. 캐릭터가 이동을 하면 MoveFWD_Battle_InPlace_SwordAndShield 애니메이션 재생
+    4.2. 캐릭터가 이동을 하지 않으면 Idle_Battle_SwordAndShiled 애니메이션 재생
+    4.3. 쉬프트를 누르면 플레이어의 이동속도가 증가하고 이 때 이동하면 SprintFWD_Battle_InPlace_SwordAndShield 애니메이션 재생
+         (힌트 : 블랜드 트리)
+    시간 : 9시 50분까지
