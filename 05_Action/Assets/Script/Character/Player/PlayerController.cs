@@ -147,13 +147,21 @@ public class PlayerController : MonoBehaviour
         {
             // Walk모드면 Run모드로 전환
             moveMode = MoveMode.Run;
-            currentSpeed = runSpeed;   // 이동 속도도 달리는 속도로 변경         
+            currentSpeed = runSpeed;            // 이동 속도도 달리는 속도로 변경
+            if (inputDir != Vector3.zero)
+            {
+                anim.SetFloat("Speed", 1.0f);   // 움직이는 중일 때만 재생하는 애니메이션 변경
+            }
         }
         else
         {
             // Run모드면 Walk모드로 전환
             moveMode = MoveMode.Walk;
-            currentSpeed = walkSpeed;   // 이동 속도를 걷는 속도로 변경
+            currentSpeed = walkSpeed;           // 이동 속도를 걷는 속도로 변경
+            if (inputDir != Vector3.zero)
+            {
+                anim.SetFloat("Speed", 0.3f);   // 움직이는 중일 때만 재생하는 애니메이션 변경
+            }
         }
     }
 }
