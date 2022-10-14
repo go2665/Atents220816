@@ -19,6 +19,10 @@
 1. 이동 애니메이션 처리
     4.1. 캐릭터가 이동을 하면 MoveFWD_Battle_InPlace_SwordAndShield 애니메이션 재생
     4.2. 캐릭터가 이동을 하지 않으면 Idle_Battle_SwordAndShiled 애니메이션 재생
-    4.3. 쉬프트를 누르면 플레이어의 이동속도가 증가하고 이 때 이동하면 SprintFWD_Battle_InPlace_SwordAndShield 애니메이션 재생
-         (힌트 : 블랜드 트리)
+    4.3. 쉬프트를 누를 때마다 플레이어의 이동 모드를 변경한다.
+        4.3.1. MoveMode enum만들기
+        4.3.2. MoveMode.Walk와 MoveMode.Run 
+        4.3.3. MoveMode.Walk일 때는 MoveFWD_Battle_InPlace_SwordAndShield 재생
+        4.3.4. MoveMode.Run일 때는 SprintFWD_Battle_InPlace_SwordAndShield 재생
+    (힌트 : 블랜드 트리)
     시간 : 9시 50분까지
