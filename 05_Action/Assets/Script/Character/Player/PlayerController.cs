@@ -5,11 +5,35 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
-{
+{   
     /// <summary>
-    /// 이동속도
+    /// 걷는 이동 속도
     /// </summary>
-    public float moveSpeed = 3.0f;
+    public float walkSpeed = 3.0f;
+
+    /// <summary>
+    /// 달리는 이동 속도
+    /// </summary>
+    public float runSpeed = 5.0f;
+
+    /// <summary>
+    /// 현재 이동속도
+    /// </summary>
+    float currentSpeed = 3.0f;
+
+    /// <summary>
+    /// 이동 상태를 나타내는 enum
+    /// </summary>
+    enum MoveMode
+    {
+        Walk = 0,
+        Run
+    }
+
+    /// <summary>
+    /// 현재 이동 상태
+    /// </summary>
+    MoveMode moveMode = MoveMode.Walk;
 
     /// <summary>
     /// 회전 속도
@@ -31,10 +55,18 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     PlayerInputActions inputActions;
 
+    /// <summary>
+    /// 애니메이터 컴포넌트 캐싱용
+    /// </summary>
+    Animator anim;
+
     private void Awake()
     {
         // 컴포넌트 만들어졌을 때 인풋 액션 인스턴스 생성
         inputActions = new PlayerInputActions();
+
+        // 컴포넌트 찾아오기
+        anim = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -44,11 +76,13 @@ public class PlayerController : MonoBehaviour
         // 액션과 함수 연결
         inputActions.Player.Move.performed += OnMove;
         inputActions.Player.Move.canceled += OnMove;
+        inputActions.Player.MoveModeChange.performed += OnMoveModeChange;
     }
 
     private void OnDisable()
     {
         // 액션과 함수 연결 해제
+        inputActions.Player.MoveModeChange.performed -= OnMoveModeChange;
         inputActions.Player.Move.canceled -= OnMove;
         inputActions.Player.Move.performed -= OnMove;
         // 액션맵 비활성화
@@ -58,7 +92,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         // inputDir방향으로 초당 moveSpeed의 속도로 이동. 월드 스페이스 기준으로 이동
-        transform.Translate(moveSpeed * Time.deltaTime * inputDir, Space.World);
+        transform.Translate(currentSpeed * Time.deltaTime * inputDir, Space.World);
 
         // transform.rotation에서 targetRotation으로 초당 1/turnSpeed씩 보간.
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
@@ -86,6 +120,40 @@ public class PlayerController : MonoBehaviour
             inputDir = cameraYRotation * inputDir;  
 
             targetRotation = Quaternion.LookRotation(inputDir); // inputDir 방향으로 바라보는 회전 만들기
+
+            if (moveMode == MoveMode.Walk)
+            {
+                anim.SetFloat("Speed", 0.3f);   // Walk모드면 걷는 애니메이션
+            }
+            else
+            {
+                anim.SetFloat("Speed", 1.0f);   // Run모드면 달리는 애니메이션
+            }
+        }
+        else
+        {
+            anim.SetFloat("Speed", 0.0f);       // 입력이 안들어 왔으면 대기 애니메이션
+        }
+
+    }
+
+    /// <summary>
+    /// 쉬프트 키를 눌렀을 때 실행
+    /// </summary>
+    /// <param name="_"></param>
+    private void OnMoveModeChange(InputAction.CallbackContext _)
+    {
+        if( moveMode == MoveMode.Walk )
+        {
+            // Walk모드면 Run모드로 전환
+            moveMode = MoveMode.Run;
+            currentSpeed = runSpeed;   // 이동 속도도 달리는 속도로 변경         
+        }
+        else
+        {
+            // Run모드면 Walk모드로 전환
+            moveMode = MoveMode.Walk;
+            currentSpeed = walkSpeed;   // 이동 속도를 걷는 속도로 변경
         }
     }
 }
