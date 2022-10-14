@@ -26,8 +26,34 @@ public class RandomIdleSelector : StateMachineBehaviour
 
     int RandomSelect()
     {
-        int select = Random.Range(0,5);
-        Debug.Log(select);
+        float num = Random.Range(0.0f, 1.0f);
+        int select;
+        if (num < 0.7f)
+        {
+            // 70% 확률로 들어올 수 있다.
+            select = 0;
+        }
+        else if (num < 0.8f)
+        {
+            // 10% 확률로 들어올 수 있다.
+            select = 1;
+        }
+        else if (num < 0.87f)
+        {
+            // 7% 확률로 들어올 수 있다.
+            select = 2;
+        }
+        else if (num < 0.94f)
+        {
+            // 7% 확률로 들어올 수 있다.
+            select = 3;
+        }
+        else
+        {
+            // 6% 확률로 들어올 수 있다.
+            select = 4;
+        }        
+        //Debug.Log(select);
 
         return select;
     }
