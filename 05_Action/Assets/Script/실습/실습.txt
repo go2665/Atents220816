@@ -17,12 +17,22 @@
 
 10/14
 1. 이동 애니메이션 처리
-    4.1. 캐릭터가 이동을 하면 MoveFWD_Battle_InPlace_SwordAndShield 애니메이션 재생
-    4.2. 캐릭터가 이동을 하지 않으면 Idle_Battle_SwordAndShiled 애니메이션 재생
-    4.3. 쉬프트를 누를 때마다 플레이어의 이동 모드를 변경한다.
-        4.3.1. MoveMode enum만들기
-        4.3.2. MoveMode.Walk와 MoveMode.Run 
-        4.3.3. MoveMode.Walk일 때는 MoveFWD_Battle_InPlace_SwordAndShield 재생
-        4.3.4. MoveMode.Run일 때는 SprintFWD_Battle_InPlace_SwordAndShield 재생
+    1.1. 캐릭터가 이동을 하면 MoveFWD_Battle_InPlace_SwordAndShield 애니메이션 재생
+    1.2. 캐릭터가 이동을 하지 않으면 Idle_Battle_SwordAndShiled 애니메이션 재생
+    1.3. 쉬프트를 누를 때마다 플레이어의 이동 모드를 변경한다.
+        1.3.1. MoveMode enum만들기
+        1.3.2. MoveMode.Walk와 MoveMode.Run 
+        1.3.3. MoveMode.Walk일 때는 MoveFWD_Battle_InPlace_SwordAndShield 재생
+        1.3.4. MoveMode.Run일 때는 SprintFWD_Battle_InPlace_SwordAndShield 재생
     (힌트 : 블랜드 트리)
     시간 : 9시 50분까지 -> 10시 15분까지
+
+
+2. 랜덤으로 idle 애니메이션이 선택 될 때 다른 확률로 선택되게 만들기
+   2.1. RandomSelect의 결과가 다른 확률로 결정
+    2.1.1. 0은 70% 확률
+    2.1.2. 1은 20% 확률
+    2.1.3. 2는 4% 확률
+    2.1.4. 3은 3% 확률
+    2.1.5. 4는 3% 확률
+    시간 : 1시 5분까지
