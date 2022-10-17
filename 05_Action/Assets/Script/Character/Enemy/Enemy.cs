@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]   // 필수적으로 필요한 컴포넌트가 있을 때 자동으로 넣어주는 유니티 속성(Attribute)
 [RequireComponent(typeof(Animator))]
@@ -18,11 +19,6 @@ public class Enemy : MonoBehaviour
     /// </summary>
     Transform moveTarget;
 
-    /// <summary>
-    /// 지금 적이 이동하는 방향(바라보는 방향)
-    /// MoveTarget이 갱신될 때 함께 갱신됨
-    /// </summary>
-    Vector3 lookDir;
     // --------------------------------------------------------------------------------------------
 
     // 이동 관련 변수 ------------------------------------------------------------------------------
@@ -31,10 +27,6 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public float moveSpeed = 3.0f;
 
-    /// <summary>
-    /// 초당 이동 속도
-    /// </summary>
-    float moveSpeedPerSecond;   // 계속 연산되는 부분이라 한번만 계산한 후 저장해놓는 용도
     // --------------------------------------------------------------------------------------------
 
     // 상태 관련 변수 ------------------------------------------------------------------------------
@@ -44,8 +36,8 @@ public class Enemy : MonoBehaviour
     // --------------------------------------------------------------------------------------------
 
     // 컴포넌트 캐싱용 변수 -------------------------------------------------------------------------
-    Rigidbody rigid;
     Animator anim;
+    NavMeshAgent agent;
     // --------------------------------------------------------------------------------------------
 
     // 추가 데이터 타입 ----------------------------------------------------------------------------
@@ -79,7 +71,7 @@ public class Enemy : MonoBehaviour
         set
         {
             moveTarget = value;
-            lookDir = (moveTarget.position - transform.position).normalized;    // lookDir도 함께 갱신
+            //lookDir = (moveTarget.position - transform.position).normalized;    // lookDir도 함께 갱신
         }
     }
 
@@ -104,11 +96,14 @@ public class Enemy : MonoBehaviour
             switch (state)  // 새로운 상태(새로운 상태로 들어가면서 해야 할 일 처리)
             {
                 case EnemyState.Wait:
+                    agent.isStopped = true;
                     waitTimer = waitTime;       // 타이머 초기화
                     anim.SetTrigger("Stop");    // 가만히 있는 애니메이션 재생
                     stateUpdate = Update_Wait;  // FixedUpdate에서 실행될 델리게이트 변경
                     break;
                 case EnemyState.Patrol:
+                    agent.isStopped = false;
+                    agent.SetDestination(MoveTarget.position);
                     anim.SetTrigger("Move");    // 이동하는 애니메이션 재생
                     stateUpdate = Update_Patrol;// FixedUpdate에서 실행될 델리게이트 변경
                     break;
@@ -138,13 +133,13 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         // 컴포넌트 찾기
-        rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
     {
-        moveSpeedPerSecond = moveSpeed * Time.fixedDeltaTime;   // 자주 사용하는 연산 미리 계산해서 저장해 놓기
+        agent.speed = moveSpeed;
 
         // waypoints가 없을 때를 대비한 코드
         if (waypoints != null)
@@ -171,14 +166,12 @@ public class Enemy : MonoBehaviour
     /// </summary>
     void Update_Patrol()
     {
-        // 이동 처리
-        rigid.MovePosition(transform.position + moveSpeedPerSecond * lookDir);  // 위치변경
-        rigid.rotation = Quaternion.Slerp(rigid.rotation, Quaternion.LookRotation(lookDir), 0.2f);  // 이동하는 방향 바라보기
-
         // 도착 확인
-        if ((transform.position - moveTarget.position).sqrMagnitude < 0.01f)
+        // agent.pathPending : 경로 계산이 진행중인지 확인. true면 아직 경로 계산 중 
+        // agent.remainingDistance : 도착지점까지 남아있는 거리
+        // agent.stoppingDistance : 도착지점에 도착했다고 인정되는 거리
+        if ( !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance )  // 경로 계산이 완료됬고 아직 도착지점으로 인정되는 거리까지 이동하지 않았다.
         {
-            transform.position = moveTarget.position;   // 정확한 웨이포인트 지점에 이동 시키기 위해 강제 이동
             MoveTarget = waypoints.MoveNext();          // 다음 웨이포인트 지점을 MoveTarget으로 설정
             State = EnemyState.Wait;                    // 대기 상태로 변경
         }
