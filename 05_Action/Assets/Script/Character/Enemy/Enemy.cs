@@ -29,6 +29,10 @@ public class Enemy : MonoBehaviour
 
     // --------------------------------------------------------------------------------------------
 
+    // 추적 관련 변수 ------------------------------------------------------------------------------
+    public float sightRange = 10.0f;
+    // --------------------------------------------------------------------------------------------
+
     // 상태 관련 변수 ------------------------------------------------------------------------------
     EnemyState state;               // 현재 적의 상태(대기 상태냐 순찰 상태냐)
     public float waitTime = 1.0f;   // 목적지에 도착했을 때 기다리는 시간
@@ -184,4 +188,29 @@ public class Enemy : MonoBehaviour
     {
         WaitTimer -= Time.fixedDeltaTime;   // 시간 지속적으로 감소
     }
+
+    bool SearchPlayer()
+    {
+        bool result = false;
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
+        if( colliders.Length > 0 )
+        {
+            // Player가 sightRange 안에 있다.
+            Debug.Log("Player 찾았다.");
+        }
+
+        //LayerMask.GetMask("Player","Water","UI");        // 리턴 2^6+2^4+2^5 = 64+16+32 = 112
+        //LayerMask.NameToLayer("Player");    // 리턴 6
+
+
+
+        return result;
+    }
+
+    public void Test()
+    {
+        SearchPlayer();
+    }
+
 }
