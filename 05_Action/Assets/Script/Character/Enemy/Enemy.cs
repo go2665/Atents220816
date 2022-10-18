@@ -194,6 +194,10 @@ public class Enemy : MonoBehaviour
         WaitTimer -= Time.fixedDeltaTime;   // 시간 지속적으로 감소
     }
 
+    /// <summary>
+    /// 플레이어를 감지하는 함수
+    /// </summary>
+    /// <returns>적이 플레이어를 감지하면 true. 아니면 false</returns>
     bool SearchPlayer()
     {
         bool result = false;
