@@ -198,23 +198,64 @@ public class Enemy : MonoBehaviour
     {
         bool result = false;
 
+        // 특정 범위안에 존재하는지 확인
         Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
         if( colliders.Length > 0 )
         {
             // Player가 sightRange 안에 있다.
             //Debug.Log("Player가 시야범위안에 들어왔다.");
 
-            Vector3 playerPos = colliders[0].transform.position;
-            float angle = Vector3.Angle(transform.forward, playerPos - transform.position);
-            if( sightHalfAngle > angle )
+            Vector3 playerPos = colliders[0].transform.position;    // 플레이어의 위치
+            Vector3 toPlayerDir = playerPos - transform.position;   // 플레이어로 가는 방향
+            
+            // 시야각 안에 플레이어가 있는지 확인
+            if(IsInSightAngle(toPlayerDir))
             {
                 // 시야각 안에 player가 있다.
-                //Debug.Log("Player가 시야각안에 들어왔다.");
-                result = true;
+
+                // 시야가 다른 물체로 인해 막혔는지 확인
+                if(!IsSightBlocked(toPlayerDir))
+                {
+                    // 시야가 다른 몰체로 인해 막히지 않았다.
+                    result = true;
+                }                
             }
         }
         //LayerMask.GetMask("Player","Water","UI"); // 리턴 2^6+2^4+2^5 = 64+16+32 = 112
         //LayerMask.NameToLayer("Player");          // 리턴 6
+        return result;
+    }
+
+    /// <summary>
+    /// 대상이 시야각안에 들어와 있는지 확인하는 함수
+    /// </summary>
+    /// <param name="toTargetDir">대상으로 가는 방향 벡터</param>
+    /// <returns>true면 대상이 시야각안에 있다. false면 없다.</returns>
+    bool IsInSightAngle(Vector3 toTargetDir)
+    {        
+        float angle = Vector3.Angle(transform.forward, toTargetDir);    // forward 벡터와 플레어어로 가는 방향 벡터의 사이각 구하기
+        return (sightHalfAngle > angle);
+    }
+
+    /// <summary>
+    /// 플레이어를 바라보는 시야가 막혔는지 확인하는 함수
+    /// </summary>
+    /// <param name="toTargetDir">대상으로 가는 방향 벡터</param>
+    /// <returns>true면 시야가 막혀있다. false면 아니다.</returns>
+    bool IsSightBlocked(Vector3 toTargetDir)
+    {
+        bool result = true;
+        // 레이 만들기 : 시작점 = 적의 위치 + 적의 눈높이, 방향 = 적에서 플레이어로 가는 방향
+        Ray ray = new(transform.position + transform.up * 0.5f, toTargetDir);
+        if (Physics.Raycast(ray, out RaycastHit hit, sightRange))
+        {
+            // 레이에 부딪친 컬라이더가 있다.
+            if (hit.collider.CompareTag("Player"))
+            {
+                // 그 컬라이더가 플레이어이다.
+                result = false;
+            }
+        }
         return result;
     }
 
@@ -228,16 +269,13 @@ public class Enemy : MonoBehaviour
     private void OnDrawGizmos()
     {
 #if UNITY_EDITOR
+        Handles.color = Color.green;        // 기본적으로 녹색
+        Handles.DrawWireDisc(transform.position, transform.up, sightRange);     // 시야 반경만큼 원 그리기
+
         if (SearchPlayer()) // 플레이어가 보이는지 여부에 따라 색상 지정
         {
             Handles.color = Color.red;      // 보이면 빨간색
         }
-        else
-        {
-            Handles.color = Color.green;    // 안보이면 녹색
-        }
-
-        Handles.DrawWireDisc(transform.position, transform.up, sightRange);     // 시야 반경만큼 원 그리기
 
         Vector3 forward = transform.forward * sightRange;                               // 앞쪽 방향으로 시야 범위만큼 가는 벡터
         Handles.DrawDottedLine(transform.position, transform.position + forward, 2.0f); // 중심선 그리기
@@ -246,7 +284,9 @@ public class Enemy : MonoBehaviour
         Quaternion q2 = Quaternion.AngleAxis(sightHalfAngle, transform.up); // up벡터를 축으로 시계방향으로 sightHalfAngle만큼 회전
 
         Handles.DrawLine(transform.position, transform.position + q1 * forward);    // 중심선을 반시계방향으로 회전시켜서 그리기
-        Handles.DrawLine(transform.position, transform.position + q2 * forward);    // 중심선을 시계방햐으로 회전시켜서 그리기
+        Handles.DrawLine(transform.position, transform.position + q2 * forward);    // 중심선을 시계방향으로 회전시켜서 그리기
+
+        Handles.DrawWireArc(transform.position, transform.up, q1 * forward, sightHalfAngle * 2, sightRange, 5.0f);  // 호 그리기
 #endif
     }
 
