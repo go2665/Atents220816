@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+#if UNITY_EDITOR
+using UnityEditor;  // UNITY_EDITOR라는 전처리기가 설정되어있을 때만 실행버전에 넣어라
+#endif
+
 [RequireComponent(typeof(Rigidbody))]   // 필수적으로 필요한 컴포넌트가 있을 때 자동으로 넣어주는 유니티 속성(Attribute)
 [RequireComponent(typeof(Animator))]
 public class Enemy : MonoBehaviour
@@ -198,10 +202,10 @@ public class Enemy : MonoBehaviour
         {
             // Player가 sightRange 안에 있다.
             Debug.Log("Player 찾았다.");
-        }
+        }        
 
-        //LayerMask.GetMask("Player","Water","UI");        // 리턴 2^6+2^4+2^5 = 64+16+32 = 112
-        //LayerMask.NameToLayer("Player");    // 리턴 6
+        //LayerMask.GetMask("Player","Water","UI"); // 리턴 2^6+2^4+2^5 = 64+16+32 = 112
+        //LayerMask.NameToLayer("Player");          // 리턴 6
 
 
 
@@ -211,6 +215,20 @@ public class Enemy : MonoBehaviour
     public void Test()
     {
         SearchPlayer();
+        //Debug.Log(this.gameObject.layer);
+        //this.gameObject.layer = 0b_0000_0000_0000_0000_0000_0000_0000_1101;
+    }
+
+    private void OnDrawGizmos()
+    {
+#if UNITY_EDITOR
+        //Gizmos.DrawWireSphere(transform.position, sightRange);
+        Handles.color = Color.green;
+        Handles.DrawDottedLine(transform.position, transform.position + transform.forward * sightRange, 2.0f);
+
+        Handles.color = Color.red;
+        Handles.DrawWireDisc(transform.position, transform.up, sightRange);
+#endif
     }
 
 }
