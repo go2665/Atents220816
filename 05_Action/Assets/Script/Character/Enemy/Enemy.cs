@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour
 
     // 추적 관련 변수 ------------------------------------------------------------------------------
     public float sightRange = 10.0f;
+    public float sightHalfAngle = 50.0f;
     // --------------------------------------------------------------------------------------------
 
     // 상태 관련 변수 ------------------------------------------------------------------------------
@@ -201,14 +202,19 @@ public class Enemy : MonoBehaviour
         if( colliders.Length > 0 )
         {
             // Player가 sightRange 안에 있다.
-            Debug.Log("Player 찾았다.");
-        }        
+            //Debug.Log("Player가 시야범위안에 들어왔다.");
 
+            Vector3 playerPos = colliders[0].transform.position;
+            float angle = Vector3.Angle(transform.forward, playerPos - transform.position);
+            if( sightHalfAngle > angle )
+            {
+                // 시야각 안에 player가 있다.
+                //Debug.Log("Player가 시야각안에 들어왔다.");
+                result = true;
+            }
+        }
         //LayerMask.GetMask("Player","Water","UI"); // 리턴 2^6+2^4+2^5 = 64+16+32 = 112
         //LayerMask.NameToLayer("Player");          // 리턴 6
-
-
-
         return result;
     }
 
@@ -222,12 +228,25 @@ public class Enemy : MonoBehaviour
     private void OnDrawGizmos()
     {
 #if UNITY_EDITOR
-        //Gizmos.DrawWireSphere(transform.position, sightRange);
-        Handles.color = Color.green;
-        Handles.DrawDottedLine(transform.position, transform.position + transform.forward * sightRange, 2.0f);
+        if (SearchPlayer()) // 플레이어가 보이는지 여부에 따라 색상 지정
+        {
+            Handles.color = Color.red;      // 보이면 빨간색
+        }
+        else
+        {
+            Handles.color = Color.green;    // 안보이면 녹색
+        }
 
-        Handles.color = Color.red;
-        Handles.DrawWireDisc(transform.position, transform.up, sightRange);
+        Handles.DrawWireDisc(transform.position, transform.up, sightRange);     // 시야 반경만큼 원 그리기
+
+        Vector3 forward = transform.forward * sightRange;                               // 앞쪽 방향으로 시야 범위만큼 가는 벡터
+        Handles.DrawDottedLine(transform.position, transform.position + forward, 2.0f); // 중심선 그리기
+
+        Quaternion q1 = Quaternion.AngleAxis(-sightHalfAngle, transform.up);// up벡터를 축으로 반시계방향으로 sightHalfAngle만큼 회전
+        Quaternion q2 = Quaternion.AngleAxis(sightHalfAngle, transform.up); // up벡터를 축으로 시계방향으로 sightHalfAngle만큼 회전
+
+        Handles.DrawLine(transform.position, transform.position + q1 * forward);    // 중심선을 반시계방향으로 회전시켜서 그리기
+        Handles.DrawLine(transform.position, transform.position + q2 * forward);    // 중심선을 시계방햐으로 회전시켜서 그리기
 #endif
     }
 
