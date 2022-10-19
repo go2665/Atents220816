@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
     CharacterController cc;
 
+    
+
     private void Awake()
     {
         // 컴포넌트 만들어졌을 때 인풋 액션 인스턴스 생성
@@ -80,11 +82,13 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.performed += OnMove;
         inputActions.Player.Move.canceled += OnMove;
         inputActions.Player.MoveModeChange.performed += OnMoveModeChange;
+        inputActions.Player.Attack.performed += OnAttack;
     }
 
     private void OnDisable()
     {
         // 액션과 함수 연결 해제
+        inputActions.Player.Attack.performed -= OnAttack;
         inputActions.Player.MoveModeChange.performed -= OnMoveModeChange;
         inputActions.Player.Move.canceled -= OnMove;
         inputActions.Player.Move.performed -= OnMove;
@@ -166,5 +170,19 @@ public class PlayerController : MonoBehaviour
                 anim.SetFloat("Speed", 0.3f);   // 움직이는 중일 때만 재생하는 애니메이션 변경
             }
         }
+    }
+
+    /// <summary>
+    /// 스페이스 키나 마우스 왼클릭 했을 때 실행
+    /// </summary>
+    /// <param name="_"></param>
+    private void OnAttack(InputAction.CallbackContext _)
+    {
+        //Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime); // 현재 재생중인 애니메이션의 진행 상태를 알려줌(0~1)
+        
+        int comboState = anim.GetInteger("ComboState"); // ComboState를 애니메이터에서 읽어와서 
+        comboState++;   // 콤보 상태 1 증가 시키기        
+        anim.SetInteger("ComboState", comboState);      // 애니메이터에 증가된 콤보 상태 설정
+        anim.SetTrigger("Attack");                      // Attack 트리거 발동
     }
 }
