@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     Animator anim;
 
+    CharacterController cc;
+
     private void Awake()
     {
         // 컴포넌트 만들어졌을 때 인풋 액션 인스턴스 생성
@@ -67,6 +69,7 @@ public class PlayerController : MonoBehaviour
 
         // 컴포넌트 찾아오기
         anim = GetComponent<Animator>();
+        cc = GetComponent<CharacterController>();
     }
 
     private void OnEnable()
@@ -91,8 +94,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // inputDir방향으로 초당 moveSpeed의 속도로 이동. 월드 스페이스 기준으로 이동
-        transform.Translate(currentSpeed * Time.deltaTime * inputDir, Space.World);
+        // inputDir방향으로 초당 moveSpeed의 속도로 이동.
+        cc.Move(currentSpeed * Time.deltaTime * inputDir);
 
         // transform.rotation에서 targetRotation으로 초당 1/turnSpeed씩 보간.
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);

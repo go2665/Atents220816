@@ -615,7 +615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855052669661678444, guid: dc37783ff986d28488093e21e340ad19, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.88
+      value: 7.19
       objectReference: {fileID: 0}
     - target: {fileID: 8855052669661678444, guid: dc37783ff986d28488093e21e340ad19, type: 3}
       propertyPath: m_LocalPosition.y
@@ -623,7 +623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855052669661678444, guid: dc37783ff986d28488093e21e340ad19, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.88
+      value: -3.1
       objectReference: {fileID: 0}
     - target: {fileID: 8855052669661678444, guid: dc37783ff986d28488093e21e340ad19, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1159,9 +1159,5 @@ PrefabInstance:
       propertyPath: waypoints
       value: 
       objectReference: {fileID: 269266597}
-    - target: {fileID: 2840615028560006835, guid: c8833be5f3cd7e94eb45cd711d7268e6, type: 3}
-      propertyPath: sightRange
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8833be5f3cd7e94eb45cd711d7268e6, type: 3}
