@@ -38,12 +38,15 @@ public class Player : MonoBehaviour, IBattle, IHealth
             if (hp != value)
             {
                 hp = value;
-                onHealthChange?.Invoke();
 
                 if(hp < 0)
                 {
                     Die();
                 }
+
+                hp = Mathf.Clamp(hp, 0.0f, maxHP);
+
+                onHealthChange?.Invoke(hp/maxHP);
             }
         }
     }
@@ -52,7 +55,7 @@ public class Player : MonoBehaviour, IBattle, IHealth
     // --------------------------------------------------------------------------------------------
 
     // 델리게이트 ----------------------------------------------------------------------------------
-    public Action onHealthChange { get; set; }
+    public Action<float> onHealthChange { get; set; }
     public Action onDie { get; set; }
     // --------------------------------------------------------------------------------------------
 

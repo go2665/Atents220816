@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     /// <summary>
     /// HP가 변경될 때 실행될 델리게이트
     /// </summary>
-    public Action onHealthChange { get; set; }
+    public Action<float> onHealthChange { get; set; }
 
     /// <summary>
     /// 적이 죽을 때 실행될 델리게이트
@@ -111,12 +111,14 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
             if (hp != value)
             {
                 hp = value;
-                onHealthChange?.Invoke();
 
                 if (hp < 0)
                 {
                     Die();
                 }
+                hp = Mathf.Clamp(hp, 0.0f, maxHP);
+
+                onHealthChange?.Invoke(hp/maxHP);
             }
         }
     }
@@ -387,7 +389,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         //this.gameObject.layer = 0b_0000_0000_0000_0000_0000_0000_0000_1101;
     }
 
-    void Test_HP_Change()
+    void Test_HP_Change(float ratio)
     {
         Debug.Log($"{gameObject.name}의 HP가 {HP}로 변경되었습니다.");
     }
