@@ -10,7 +10,7 @@ using UnityEditor;  // UNITY_EDITOR라는 전처리기가 설정되어있을 때
 
 [RequireComponent(typeof(Rigidbody))]   // 필수적으로 필요한 컴포넌트가 있을 때 자동으로 넣어주는 유니티 속성(Attribute)
 [RequireComponent(typeof(Animator))]
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IBattle, IHealth
 {
     // 웨이포인트 관련 변수 -------------------------------------------------------------------------   
     /// <summary>
@@ -74,8 +74,24 @@ public class Enemy : MonoBehaviour
     }
     // --------------------------------------------------------------------------------------------
 
+    // 전투용 데이터 -------------------------------------------------------------------------------
+    public float attackPower = 10.0f;      // 공격력
+    public float defencePower = 3.0f;      // 방어력
+    public float maxHP = 100.0f;    // 최대 HP
+    float hp = 100.0f;              // 현재 HP
+    // --------------------------------------------------------------------------------------------
+
     // 델리게이트 ----------------------------------------------------------------------------------
-    
+    /// <summary>
+    /// HP가 변경될 때 실행될 델리게이트
+    /// </summary>
+    public Action onHealthChange { get; set; }
+
+    /// <summary>
+    /// 적이 죽을 때 실행될 델리게이트
+    /// </summary>
+    public Action onDie { get; set; }
+
     /// <summary>
     /// 상태별 업데이터 함수를 가질 델리게이트
     /// </summary>
@@ -83,6 +99,29 @@ public class Enemy : MonoBehaviour
     // --------------------------------------------------------------------------------------------
 
     // 프로퍼티 -----------------------------------------------------------------------------------
+    public float AttackPower => attackPower;
+
+    public float DefencePower => defencePower;
+
+    public float HP
+    {
+        get => hp;
+        set
+        {
+            if (hp != value)
+            {
+                hp = value;
+                onHealthChange?.Invoke();
+
+                if (hp < 0)
+                {
+                    Die();
+                }
+            }
+        }
+    }
+
+    public float MaxHP => maxHP;
 
     /// <summary>
     /// 이동할 목적지(웨이포인트)를 나타내는 프로퍼티
@@ -184,6 +223,10 @@ public class Enemy : MonoBehaviour
         // 값 초기화 작업      
         State = EnemyState.Wait;    // 기본 상태 설정(wait)
         anim.ResetTrigger("Stop");  // 트리거가 쌓이는 현상을 방지
+
+        // 테스트 코드
+        onHealthChange += Test_HP_Change;
+        onDie += Test_Die;
     }
 
     private void FixedUpdate()
@@ -310,11 +353,48 @@ public class Enemy : MonoBehaviour
         return result;
     }
 
+    /// <summary>
+    /// 공격용 함수
+    /// </summary>
+    /// <param name="target">공격할 대상</param>
+    public void Attack(IBattle target)
+    {
+        target?.Defence(AttackPower);
+    }
+
+    /// <summary>
+    /// 방어용 함수
+    /// </summary>
+    /// <param name="damage">현재 입은 데미지</param>
+    public void Defence(float damage)
+    {
+        // 기본 공식 : 실제 입는 데미지 = 적 공격 데미지 - 방어력
+        HP -= (damage - DefencePower);
+    }
+
+    /// <summary>
+    /// 죽었을 때 실행될 함수
+    /// </summary>
+    public void Die()
+    {
+        onDie?.Invoke();
+    }
+
     public void Test()
     {
         SearchPlayer();
         //Debug.Log(this.gameObject.layer);
         //this.gameObject.layer = 0b_0000_0000_0000_0000_0000_0000_0000_1101;
+    }
+
+    void Test_HP_Change()
+    {
+        Debug.Log($"{gameObject.name}의 HP가 {HP}로 변경되었습니다.");
+    }
+
+    void Test_Die()
+    {
+        Debug.Log($"{gameObject.name}이 죽었습니다.");
     }
 
     private void OnDrawGizmos()
@@ -340,5 +420,6 @@ public class Enemy : MonoBehaviour
         Handles.DrawWireArc(transform.position, transform.up, q1 * forward, sightHalfAngle * 2, sightRange, 5.0f);  // 호 그리기
 #endif
     }
+
 
 }

@@ -20,10 +20,10 @@ public class Player : MonoBehaviour, IBattle, IHealth
     /// </summary>
     Collider weaponBlade;
 
-    float attackPower = 10.0f;      // 공격력
-    float defencePower = 3.0f;      // 방어력
-    float hp = 100.0f;              // 현재 HP
+    public float attackPower = 10.0f;      // 공격력
+    public float defencePower = 3.0f;      // 방어력
     public float maxHP = 100.0f;    // 최대 HP
+    float hp = 100.0f;              // 현재 HP
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     public float AttackPower => attackPower;
@@ -127,7 +127,7 @@ public class Player : MonoBehaviour, IBattle, IHealth
     public void Defence(float damage)
     {
         // 기본 공식 : 실제 입는 데미지 = 적 공격 데미지 - 방어력
-        HP -= (damage - defencePower);
+        HP -= (damage - DefencePower);
     }
 
     /// <summary>
