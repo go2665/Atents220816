@@ -53,8 +53,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     // 상태 관련 변수 ------------------------------------------------------------------------------
     EnemyState state = EnemyState.Patrol; // 현재 적의 상태(대기 상태냐 순찰 상태냐)
     public float waitTime = 1.0f;   // 목적지에 도착했을 때 기다리는 시간
-    float waitTimer;                // 남아있는 기다려야 하는 시간
-    bool isAlive = true;
+    float waitTimer;                // 남아있는 기다려야 하는 시간    
     // --------------------------------------------------------------------------------------------
 
     // 컴포넌트 캐싱용 변수 -------------------------------------------------------------------------
@@ -71,7 +70,8 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     {
         Wait = 0,   // 대기 상태
         Patrol,     // 순찰 상태
-        Chase       // 추적 상태            
+        Chase,      // 추적 상태
+        Dead        // 사망 상태
     }
     // --------------------------------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
             {
                 hp = value;
 
-                if (isAlive && hp < 0)
+                if (State != EnemyState.Dead && hp < 0)
                 {
                     Die();
                 }
@@ -178,6 +178,11 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
                         anim.SetTrigger("Move");    // 이동하는 애니메이션 재생
                         stateUpdate = Update_Chase; // FixedUpdate에서 실행될 델리게이트 변경
                         break;
+                    case EnemyState.Dead:
+                        agent.isStopped = true;     // 길찾기 정지
+                        anim.SetTrigger("Die");     // 사망 애니메이션 재생
+                        stateUpdate = Update_Dead;  // FixedUpdate에서 실행될 델리게이트 변경
+                        break;
                     default:
                         break;
                 }
@@ -226,7 +231,6 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         // 값 초기화 작업      
         State = EnemyState.Wait;    // 기본 상태 설정(wait)
         anim.ResetTrigger("Stop");  // 트리거가 쌓이는 현상을 방지
-        isAlive = true;
 
         // 테스트 코드
         onHealthChange += Test_HP_Change;
@@ -236,7 +240,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     private void FixedUpdate()
     {
         // 매번 추적대상을 찾기
-        if(SearchPlayer())
+        if(State != EnemyState.Dead && SearchPlayer())
         {
             State = EnemyState.Chase;   // 추적 대상이 있으면 추적 상태로 변경
         }
@@ -282,6 +286,13 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         {
             State = EnemyState.Wait;    // 추적 대상이 없으면 잠시 대기
         }
+    }
+    
+    /// <summary>
+    /// Dead 상태일 때 실행될 업데이트 함수
+    /// </summary>
+    private void Update_Dead()
+    {
     }
 
     /// <summary>
@@ -373,7 +384,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     public void Defence(float damage)
     {
         // 기본 공식 : 실제 입는 데미지 = 적 공격 데미지 - 방어력
-        if (isAlive)
+        if (State != EnemyState.Dead)
         {
             anim.SetTrigger("Hit");
             HP -= (damage - DefencePower);
@@ -385,8 +396,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     /// </summary>
     public void Die()
     {
-        isAlive = false;
-        anim.SetTrigger("Die");
+        State = EnemyState.Dead;
         onDie?.Invoke();
     }
 
