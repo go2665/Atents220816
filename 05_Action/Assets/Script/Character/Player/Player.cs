@@ -16,6 +16,11 @@ public class Player : MonoBehaviour, IBattle, IHealth
     Transform weapon_r;
 
     /// <summary>
+    /// 방패가 붙어있을 게임 오브젝트의 트랜스폼
+    /// </summary>
+    Transform weapon_l;
+
+    /// <summary>
     /// 무기가 데미지를 주는 영역의 트리거
     /// </summary>
     Collider weaponBlade;
@@ -61,7 +66,8 @@ public class Player : MonoBehaviour, IBattle, IHealth
 
     private void Awake()
     {        
-        weapon_r = GetComponentInChildren<WeaponPosition>().transform;  // 무기가 붙는 위치를 컴포넌트로 찾기
+        weapon_r = GetComponentInChildren<WeaponPosition>().transform;  // 무기가 붙는 위치를 컴포넌트의 타입으로 찾기
+        weapon_l = GetComponentInChildren<ShildPosition>().transform;   // 방패가 붙는 위치를 컴포넌트의 타입으로 찾기
 
         // 장비교체가 일어나면 새로 설정해야 한다.
         weaponPS = weapon_r.GetComponentInChildren<ParticleSystem>();   // 무기에 붙어있는 파티클 시스템 가져오기
@@ -112,6 +118,16 @@ public class Player : MonoBehaviour, IBattle, IHealth
         {
             weaponBlade.enabled = false;
         }
+    }
+
+    /// <summary>
+    /// 무기와 방패를 표시하거나 표시하지 않는 함수
+    /// </summary>
+    /// <param name="isShow">ture면 표시하고, false면 표시하지 않는다.</param>
+    public void ShowWeaponAndSheild(bool isShow)
+    {
+        weapon_r.gameObject.SetActive(isShow);
+        weapon_l.gameObject.SetActive(isShow);
     }
 
     /// <summary>
