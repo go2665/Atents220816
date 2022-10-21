@@ -136,6 +136,8 @@ public class PlayerController : MonoBehaviour
             {
                 anim.SetFloat("Speed", 1.0f);   // Run모드면 달리는 애니메이션
             }
+
+            inputDir.y = -2.0f;     // 강제로 바닥에 내려가도록 처리
         }
         else
         {
