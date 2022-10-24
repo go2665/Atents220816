@@ -25,10 +25,13 @@ public class Player : MonoBehaviour, IBattle, IHealth
     /// </summary>
     Collider weaponBlade;
 
+    Animator anim;  // 애니메이터 컴포넌트
+
     public float attackPower = 10.0f;      // 공격력
     public float defencePower = 3.0f;      // 방어력
     public float maxHP = 100.0f;    // 최대 HP
     float hp = 100.0f;              // 현재 HP
+    bool isAlive = true;            // 살았는지 죽었는지 확인용
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     public float AttackPower => attackPower;
@@ -40,7 +43,7 @@ public class Player : MonoBehaviour, IBattle, IHealth
         get => hp;
         set
         {
-            if (hp != value)
+            if (isAlive && hp != value) // 살아있고 HP가 변경되었을 때만 실행
             {
                 hp = value;
 
@@ -56,8 +59,9 @@ public class Player : MonoBehaviour, IBattle, IHealth
         }
     }
 
+    // 프로퍼티 ------------------------------------------------------------------------------------
     public float MaxHP => maxHP;
-    // --------------------------------------------------------------------------------------------
+    public bool IsAlive => isAlive;
 
     // 델리게이트 ----------------------------------------------------------------------------------
     public Action<float> onHealthChange { get; set; }
@@ -65,7 +69,9 @@ public class Player : MonoBehaviour, IBattle, IHealth
     // --------------------------------------------------------------------------------------------
 
     private void Awake()
-    {        
+    {
+        anim = GetComponent<Animator>();
+
         weapon_r = GetComponentInChildren<WeaponPosition>().transform;  // 무기가 붙는 위치를 컴포넌트의 타입으로 찾기
         weapon_l = GetComponentInChildren<ShildPosition>().transform;   // 방패가 붙는 위치를 컴포넌트의 타입으로 찾기
 
@@ -77,6 +83,7 @@ public class Player : MonoBehaviour, IBattle, IHealth
     private void Start()
     {
         hp = maxHP;
+        isAlive = true;
     }
 
     /// <summary>
@@ -145,8 +152,11 @@ public class Player : MonoBehaviour, IBattle, IHealth
     /// <param name="damage">현재 입은 데미지</param>
     public void Defence(float damage)
     {
-        // 기본 공식 : 실제 입는 데미지 = 적 공격 데미지 - 방어력
-        HP -= (damage - DefencePower);
+        if (isAlive)                // 살아있을 때만 데미지 입음.
+        {
+            anim.SetTrigger("Hit"); // 피격 애니메이션 재생            
+            HP -= (damage - DefencePower);  // 기본 공식 : 실제 입는 데미지 = 적 공격 데미지 - 방어력
+        }
     }
 
     /// <summary>
@@ -154,6 +164,9 @@ public class Player : MonoBehaviour, IBattle, IHealth
     /// </summary>
     public void Die()
     {
+        isAlive = false;
+        anim.SetLayerWeight(1, 0.0f);       // 애니메이션 레이어 가중치 제거
+        anim.SetBool("IsAlive", isAlive);   // 죽었다고 표시해서 사망 애니메이션 재생
         onDie?.Invoke();
     }
 }

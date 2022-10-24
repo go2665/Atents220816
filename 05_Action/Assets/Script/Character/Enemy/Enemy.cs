@@ -419,12 +419,14 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
 
         yield return new WaitForSeconds(1.5f);  // 슬라임 사망 애니메이션이 1.33초라 그 이후에 떨어짐
 
+        // 바닥 아래로 떨어트리기
         agent.enabled = false;          // 네브메시 에이전트 컴포넌트를 끄기
         bodyCollider.enabled = false;   // 컬라이더 컴포넌트 끄기
         rigid.isKinematic = false;      // 키네마틱 끄기
         rigid.drag = 10.0f;             // 마찰력은 천천히 떨어질 정도로
 
         yield return new WaitForSeconds(1.5f);  // 1.5초 뒤에
+        // 삭제 처리
         Destroy(dieEffect.gameObject);  // 이팩트 삭제
         Destroy(this.gameObject);       // 적도 삭제
     }
