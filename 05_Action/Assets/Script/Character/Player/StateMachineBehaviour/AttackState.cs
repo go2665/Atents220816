@@ -8,6 +8,7 @@ public class AttackState : StateMachineBehaviour
     // 이 상태머신에 들어왔을 때(Entry했을 때) 실행
     override public void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
     {
+        GameManager.Inst.Player.ShowWeaponAndSheild(true);  // 무기 보이게 하기
         GameManager.Inst.Player.WeaponEffectSwitch(true);   // 무기 이팩트 켜기
     }
 
