@@ -33,7 +33,7 @@ public class FollowCamera : MonoBehaviour
         else
         {
             float delta = dieSpeed * Time.deltaTime;
-            transform.position = Vector3.Lerp(transform.position, diePosition, delta);
+            transform.position = Vector3.Slerp(transform.position, diePosition, delta);
             transform.rotation = Quaternion.Slerp(transform.rotation, dieRotation, delta);
         }
     }

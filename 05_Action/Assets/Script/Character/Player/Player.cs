@@ -165,6 +165,7 @@ public class Player : MonoBehaviour, IBattle, IHealth
     public void Die()
     {
         isAlive = false;
+        ShowWeaponAndSheild(true);
         anim.SetLayerWeight(1, 0.0f);       // 애니메이션 레이어 가중치 제거
         anim.SetBool("IsAlive", isAlive);   // 죽었다고 표시해서 사망 애니메이션 재생
         onDie?.Invoke();

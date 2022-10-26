@@ -9,7 +9,7 @@ public class Test_Battle : TestBase
 
     private void Start()
     {
-        player = GameManager.Inst.Player;
+        player = GameManager.Inst.Player;        
     }
 
     protected override void Test1(InputAction.CallbackContext _)
