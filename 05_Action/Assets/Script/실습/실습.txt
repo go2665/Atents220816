@@ -127,6 +127,16 @@
 2. 플레이어가 아이템 주위에서 E키를 누르면 아이템이 사라진다.
    시간 : 12시까지
 
-
 3. 코드 확인
    시간 : 1시 50분까지
+
+
+주말과제
+1. ItemFactory에 MakeItem 함수를 오버로딩하고 MakeItems 함수를 추가한다.
+   1.1. MakeItem 함수 만들기
+        1.1.1. 생성할 위치를 지정(파라메터 2개: ItemIDCode code, Vector3 position)
+        1.1.2. 생성할 위치에 노이즈 추가 가능(파라메터 3개: ItemIDCode code, Vector3 position, bool randomNoise)
+   1.2. MakeItems 함수 만들기
+        1.2.1. 생성할 갯수를 지정(파라메터 2개: ItemIDCode code, int count)
+        1.2.2. 생성할 위치와 갯수를 지정(파라메터 3개: ItemIDCode code, Vector3 position, int count)
+        1.2.3. 생성할 위치에 노이즈 추가 가능(파라메터 4개: ItemIDCode code, Vector3 position, int count, bool randomNoise)

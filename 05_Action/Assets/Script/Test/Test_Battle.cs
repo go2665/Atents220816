@@ -28,5 +28,7 @@ public class Test_Battle : TestBase
         //GameManager.Inst.ItemData.TestItemData[0]
 
         //GameManager.Inst.ItemData[ItemIDCode.Ruby];
+
+        GameObject obj = ItemFactory.MakeItem(ItemIDCode.Ruby);
     }
 }
