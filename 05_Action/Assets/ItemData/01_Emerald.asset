@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2b47a929babde449a30cf1c2c691ec, type: 3}
+  m_Name: 01_Emerald
+  m_EditorClassIdentifier: 
+  id: 1
+  itemName: "\uC5D0\uBA54\uB784\uB4DC"
+  modelPrefab: {fileID: 3841066470805140976, guid: a8f84d0260497734886273ef6dba5b85, type: 3}
+  value: 200
