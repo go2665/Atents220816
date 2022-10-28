@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5922443616456723205}
   - component: {fileID: 5922443616456723202}
   m_Layer: 0
-  m_Name: TempItem_Ruby
+  m_Name: TempItem_02_Sapphire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3834496ce3f7942bd1d8172333413c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3841066470805140976, guid: 3da510e7117c0c34390469b95f0de116, type: 3}
+  prefab: {fileID: 3841066470805140976, guid: a0c67ca571af38644a4902187ad212b4, type: 3}
