@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5922443616456723205}
   - component: {fileID: 5922443616456723202}
-  m_Layer: 0
+  - component: {fileID: 8394812458634037659}
+  m_Layer: 9
   m_Name: TempItem_02_Sapphire
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -45,3 +46,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 3841066470805140976, guid: a0c67ca571af38644a4902187ad212b4, type: 3}
+--- !u!135 &8394812458634037659
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922443616456723204}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 1, z: 0}
