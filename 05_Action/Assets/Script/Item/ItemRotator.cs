@@ -29,6 +29,8 @@ public class ItemRotator : MonoBehaviour
         //Mathf.Rad2Deg * pi; // 180도
 
         timeElapsed += Time.deltaTime * 2;  // 시간은 계속 누적시킴( 한번 왕복하는데 3.1415....... 초가 걸린다)
+        newPosition.x = transform.parent.position.x;                            // 부모의 x,z 위치는 계속 적용
+        newPosition.z = transform.parent.position.z;
         newPosition.y = minHeight + (1 - Mathf.Cos(timeElapsed)) * halfDiff;    // 높이값은 cos 그래프를 이용해 계산
         transform.position = newPosition;   // 계산이 끝난 newPosition으로 위치 옮기기
 

@@ -83,6 +83,21 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     float hp = 100.0f;              // 현재 HP    
 
 
+    // 아이템 드랍용 데이터 -------------------------------------------------------------------------
+    [System.Serializable]    
+    public struct ItemDropInfo          // 드랍 아이템 정보
+    {
+        public ItemIDCode id;           // 아이템 종류
+        [Range(0.0f,1.0f)]
+        public float dropPercentage;    // 아이템 드랍 확율
+    }
+
+    /// <summary>
+    /// 이 몬스터가 드랍할 아이템의 종류
+    /// </summary>    
+    public ItemDropInfo[] dropItems;
+
+
     // 델리게이트 ----------------------------------------------------------------------------------
     /// <summary>
     /// HP가 변경될 때 실행될 델리게이트
@@ -407,10 +422,13 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         MakeDropItem();
     }
 
+    /// <summary>
+    /// 아이템 드랍 함수
+    /// </summary>
     void MakeDropItem()
     {
         float percentage = UnityEngine.Random.Range(0.0f, 1.0f);
-        uint index;
+        int index;
         if( percentage < 0.6f )
         {
             // 60% 확률로 들어옴
@@ -499,6 +517,26 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         Handles.DrawWireArc(transform.position, transform.up, q1 * forward, sightHalfAngle * 2, sightRange, 5.0f);  // 호 그리기
 #endif
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 인스펙터 창에서 성공적으로 값이 변경되었을 때 실행
+    /// </summary>
+    private void OnValidate()
+    {
+        // 드랍 아이템의 드랍 확률의 합을 1로 만들기
+        float total = 0.0f;
+        foreach(var item in dropItems)
+        {
+            total += item.dropPercentage;   // 전체 합 구하기
+        }
+
+        for(int i=0;i<dropItems.Length;i++)
+        {
+            dropItems[i].dropPercentage /= total;   // 전체 합으로 나누어서 최종합을 1로 만들기
+        }
+    }
+#endif
 
 
 }

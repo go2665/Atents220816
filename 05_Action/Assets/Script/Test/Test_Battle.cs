@@ -33,6 +33,7 @@ public class Test_Battle : TestBase
         GameObject obj2 = ItemFactory.MakeItem(ItemIDCode.Emerald, new Vector3(0,0,1.2f));
         GameObject obj3 = ItemFactory.MakeItem(ItemIDCode.Emerald, new Vector3(0,0,1.2f), true);
 
-        ItemFactory.MakeItem(0);
+        GameObject[] obj4 = ItemFactory.MakeItem(ItemIDCode.Sapphire, 5);
+        GameObject[] obj5 = ItemFactory.MakeItem(ItemIDCode.Sapphire, 5, new Vector3(0,0,2), true);
     }
 }
