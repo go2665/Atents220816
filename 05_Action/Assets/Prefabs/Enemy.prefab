@@ -671,6 +671,11 @@ MonoBehaviour:
   attackPower: 10
   defencePower: 3
   maxHP: 100
+  dropItems:
+  - id: 0
+    dropPercentage: 0.90004444
+  - id: 1
+    dropPercentage: 0.09995557
 --- !u!195 &6819093267690730187
 NavMeshAgent:
   m_ObjectHideFlags: 0

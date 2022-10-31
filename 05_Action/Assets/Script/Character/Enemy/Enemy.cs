@@ -427,27 +427,32 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     /// </summary>
     void MakeDropItem()
     {
-        float percentage = UnityEngine.Random.Range(0.0f, 1.0f);
-        int index;
-        if( percentage < 0.6f )
+        float percentage = UnityEngine.Random.Range(0.0f, 1.0f);    // 드랍할 아이템을 결정하기 위한 랜덤 숫자 가져오기
+        int index = 0;  // 드랍할 (내가 가지고 있는) 아이템의 인덱스
+        float max = 0;  // 가장 드랍할 확율이 높은 아이템을 찾기 위한 임시값
+        for (int i = 0; i < dropItems.Length; i++)
         {
-            // 60% 확률로 들어옴
-            index = 0;
-        }
-        else if( percentage < 0.9f )
-        {
-            // 30% 확율로 들어옴
-            index = 1;
-        }
-        else
-        {
-            // 10% 확률로 들어옴
-            index = 2;
+            if( max < dropItems[i].dropPercentage )
+            {
+                max = dropItems[i].dropPercentage;  // 가장 드랍 확율이 높은 아이템 찾기
+                index = i;                          // index의 디폴트 값은 가장 드랍 확율이 높은 아이템
+            }
         }
 
-        GameObject obj = ItemFactory.MakeItem(index);
-        obj.transform.position = transform.position;
-        obj.transform.rotation = transform.rotation;
+        float checkPercentage = 0.0f;               // 아이템의 드랍 확율을 누적하는 임시 값
+        for(int i=0;i<dropItems.Length;i++)
+        {
+            checkPercentage += dropItems[i].dropPercentage; // checkPercentage를 단계별로 계속 누적 시킴
+            
+            // checkPercentage와 percentage 비교 (랜덤 숫자가 누적된 확율보다 낮은지 확인, 낮으면 해당 아이템 생성)
+            if ( percentage <= checkPercentage)    
+            {
+                index = i;  // 생성할 아이템 결정
+                break;      // for문 종료
+            }
+        }
+
+        GameObject obj = ItemFactory.MakeItem(dropItems[index].id, transform.position, true); // 선택된 아이템 생성        
     }
 
     /// <summary>
@@ -524,18 +529,23 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     /// </summary>
     private void OnValidate()
     {
-        // 드랍 아이템의 드랍 확률의 합을 1로 만들기
-        float total = 0.0f;
-        foreach(var item in dropItems)
+        if (State != EnemyState.Dead)
         {
-            total += item.dropPercentage;   // 전체 합 구하기
-        }
+            // 드랍 아이템의 드랍 확률의 합을 1로 만들기
+            float total = 0.0f;
+            foreach (var item in dropItems)
+            {
+                total += item.dropPercentage;   // 전체 합 구하기
+            }
 
-        for(int i=0;i<dropItems.Length;i++)
-        {
-            dropItems[i].dropPercentage /= total;   // 전체 합으로 나누어서 최종합을 1로 만들기
+            for (int i = 0; i < dropItems.Length; i++)
+            {
+                dropItems[i].dropPercentage /= total;   // 전체 합으로 나누어서 최종합을 1로 만들기
+            }
         }
     }
+    
+    
 #endif
 
 
