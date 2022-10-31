@@ -10,7 +10,7 @@ public class ItemFactory
     static int itemCount = 0;   // 생성된 아이템 총 갯수. 아이템 생성 아이디의 역할도 함.
 
     // 함수의 구성 요소 : 이름, 파라메터, 리턴값, 바디(코드)
-    // overloading : 이름, 리턴값이 같은 함수 만드는 것
+    // overloading : 이름은 같은데 파라메터가 다른 함수 만드는 것
     // overriding : 이름, 파라메터, 리턴값이 같은 함수를 만드는 것
 
     /// <summary>
@@ -124,4 +124,37 @@ public class ItemFactory
         return obj;
     }
 
+    /// <summary>
+    /// 아이템 ID를 이용해 아이템을 한번에 여러개 생성하는 함수
+    /// </summary>
+    /// <param name="id">생성할 아이템의 아이템 아이디</param>
+    /// <param name="count">생성할 갯수</param>
+    /// <returns>생성된 아이템들이 담긴 배열</returns>
+    public static GameObject[] MakeItem(int id, int count)
+    {
+        GameObject[] objs = new GameObject[count];  // 배열 만들고
+        for (int i = 0; i < count; i++)
+        {
+            objs[i] = MakeItem(id);                 // count만큼 반복해서 아이템 생성
+        }
+        return objs;                                // 생성한 것 리턴
+    }
+
+    /// <summary>
+    /// 아이템 ID를 이용해 특정 위치에 아이템을 한번에 여러개 생성하는 함수
+    /// </summary>
+    /// <param name="id">생성할 아이템의 아이템 id</param>
+    /// <param name="count">생성할 갯수</param>
+    /// <param name="position">생성할 기준 위치</param>
+    /// <param name="randomNoise">위치에 랜덤성을 더할지 여부. true면 약간의 랜덤성을 더한다. 기본값은 false</param>
+    /// <returns>생성된 아이템들이 담긴 배열</returns>
+    public static GameObject[] MakeItem(int id, int count, Vector3 position, bool randomNoise = false)
+    {
+        GameObject[] objs = new GameObject[count];  // 배열 만들고
+        for (int i = 0; i < count; i++)
+        {
+            objs[i] = MakeItem(id, position, randomNoise);    // count만큼 반복해서 아이템 생성. 위치와 노이즈도 적용
+        }
+        return objs;                                // 생성한 것 리턴
+    }
 }
