@@ -7,10 +7,10 @@ using UnityEngine;
 /// </summary>
 public class Item : MonoBehaviour
 {
-    public ItemData data;
+    public ItemData data;   // 아이템의 정보
 
     private void Start()
     {
-        Instantiate(data.modelPrefab, transform.position, transform.rotation, transform);
+        Instantiate(data.modelPrefab, transform.position, transform.rotation, transform);   // 아이템의 외형 추가
     }
 }
