@@ -140,3 +140,7 @@
         1.2.1. 생성할 갯수를 지정(파라메터 2개: ItemIDCode code, int count)
         1.2.2. 생성할 위치와 갯수를 지정(파라메터 3개: ItemIDCode code, Vector3 position, int count)
         1.2.3. 생성할 위치에 노이즈 추가 가능(파라메터 4개: ItemIDCode code, Vector3 position, int count, bool randomNoise)
+
+10/31
+1. dropItems를 이용해 아이템을 드랍하게끔 MakeDropItem함수 수정
+   시간 : 12시까지
