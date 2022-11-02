@@ -23,6 +23,9 @@ public class ItemSlot
     public bool IsEmpty => (slotItemData == null);
     public uint Index => slotIndex;
 
+    public ItemData ItemData => slotItemData;
+    public uint ItemCount => itemCount;
+
 
     public ItemSlot(uint index)
     {

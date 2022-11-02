@@ -42,6 +42,8 @@ public class Inventory
 
     public bool AddItem(ItemData data)
     {
+        // 같은 종류의 아이템을 합치려면 어떻게 해야 하는가?
+
         bool result = false;
 
         ItemSlot emptySlot = FindEmptySlot();
@@ -77,5 +79,15 @@ public class Inventory
             }
         }
         return result;
+    }
+
+    public void PrintInventory()
+    {
+        // 출력 예시 : [ 루비(1), 사파이어(1), 에메랄드(2), (빈칸), (빈칸), (빈칸) ]
+        string printText = "[";
+
+        // ItemsSlot 전부 확인해서 이름과 갯수를 printText에 추가
+
+        Debug.Log(printText);
     }
 }
