@@ -37,11 +37,21 @@ public class Inventory
 
     // 아이템 추가
 
+    /// <summary>
+    /// 아이템을 인벤토리에 1개 추가하는 함수
+    /// </summary>
+    /// <param name="code">추가될 아이템의 코드</param>
+    /// <returns>성공여부(true면 성공, false면 실패)</returns>
     public bool AddItem(ItemIDCode code)
     {
         return AddItem(dataManager[code]);
     }
 
+    /// <summary>
+    /// 아이템을 인벤토리에 1개 추가하는 함수
+    /// </summary>
+    /// <param name="data">추가될 아이템 데이터</param>
+    /// <returns>성공여부(true면 성공, false면 실패)</returns>
     public bool AddItem(ItemData data)
     {
         // 같은 종류의 아이템을 합치려면 어떻게 해야 하는가?
@@ -53,8 +63,7 @@ public class Inventory
         {
             // 비어있는 슬롯을 찾았다.
             emptySlot.AssignSlotItem(data);
-            result = true;
-            Debug.Log($"인벤토리 {emptySlot.Index}번 슬롯에 \"{data.itemName}\" 아이템 추가");
+            result = true;            
         }
         else
         {
@@ -65,10 +74,37 @@ public class Inventory
         return result;
     }
 
-    // 아이템 버리기
+    /// <summary>
+    /// 특정 슬롯에서 아이템을 제거하는 함수
+    /// </summary>
+    /// <param name="slotIndex">아이템을 제거할 함수</param>
+    /// <returns>true면 성공, false면 실패</returns>
+    public bool ClearItem(uint slotIndex)
+    {
+        bool result = false;
+
+        if(IsValidSlotIndex(slotIndex))
+        {
+            ItemSlot slot = slots[slotIndex];
+            slot.ClearSlotItem();
+            return true;
+        }
+        else
+        {
+            Debug.Log($"실패 : {slotIndex}는 잘못된 인덱스입니다.");
+        }
+        
+
+        return result;
+    }
+
     // 아이템 사용
     // 아이템 이동
 
+    /// <summary>
+    /// 비어있는 슬롯을 찾는 함수
+    /// </summary>
+    /// <returns>비어있는 함수를 찾으면 null이 아니고 비어있는 함수가 없으면 null</returns>
     private ItemSlot FindEmptySlot()
     {
         ItemSlot result = null;
@@ -82,6 +118,13 @@ public class Inventory
         }
         return result;
     }
+
+    /// <summary>
+    /// 파라메터로 받은 인덱스가 적절한 인덱스인지 판단하는 함수
+    /// </summary>
+    /// <param name="index">확인할 인덱스</param>
+    /// <returns>true면 사용가능한 인덱스, false면 사용불가능한 인덱스</returns>
+    private bool IsValidSlotIndex(uint index) => (index < SlotCount);
 
     public void PrintInventory()
     {
