@@ -58,17 +58,49 @@ public class Inventory
 
         bool result = false;
 
-        ItemSlot emptySlot = FindEmptySlot();
-        if(emptySlot != null)
+        // 같은 종류의 아이템이 있는가?
+        // 있으면 -> 갯수 증가
+        // 없으면 -> 새 슬롯에 아이템 넣기
+
+        ItemSlot targetSlot = FindSameItem(data);
+        if(targetSlot != null)
         {
-            // 비어있는 슬롯을 찾았다.
-            emptySlot.AssignSlotItem(data);
-            result = true;            
+            // 같은 종류의 아이템이 있다.
+            targetSlot.IncreaseSlotItem();  // 갯수 증가
+            result = true;
         }
         else
         {
-            // 인벤토리가 가득 찼다.
-            Debug.Log($"인벤토리가 가득 찼습니다.");
+            // 인벤토리에 같은 종류의 아이템이 없다.
+            ItemSlot emptySlot = FindEmptySlot();
+            if (emptySlot != null)
+            {
+                // 비어있는 슬롯을 찾았다.
+                emptySlot.AssignSlotItem(data);
+                result = true;
+            }
+            else
+            {
+                // 인벤토리가 가득 찼다.
+                Debug.Log($"인벤토리가 가득 찼습니다.");
+            }
+        }      
+
+        return result;
+    }
+
+    public bool RemoveItem(uint slotIndex, uint decreaseCount = 1)
+    {
+        bool result = false;
+        if( IsValidSlotIndex(slotIndex) )
+        {
+            ItemSlot slot = slots[slotIndex];
+            slot.DecreaseSlotItem(decreaseCount);
+            result = true;
+        }
+        else
+        {
+            Debug.Log($"실패 : {slotIndex}는 잘못된 인덱스입니다.");
         }
 
         return result;
@@ -117,6 +149,27 @@ public class Inventory
             }
         }
         return result;
+    }
+
+    /// <summary>
+    /// 인벤토리에 파라메터와 같은 종류의 아이템이 있는지 찾아보는 함수
+    /// </summary>
+    /// <param name="itemData">찾을 아이템</param>
+    /// <returns>찾았으면 null이 아닌값(찾는 아이템이 들어있는 슬롯), 찾지 못했으면 null</returns>
+    private ItemSlot FindSameItem(ItemData itemData)
+    {
+        ItemSlot findSlot = null;
+
+        foreach(var slot in slots)
+        {
+            if( slot.ItemData == itemData )
+            {
+                findSlot = slot;
+                break;
+            }
+        }
+
+        return findSlot;
     }
 
     /// <summary>

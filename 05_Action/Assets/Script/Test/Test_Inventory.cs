@@ -17,6 +17,7 @@ public class Test_Inventory : TestBase
         inven.AddItem(ItemIDCode.Ruby);
         inven.AddItem(ItemIDCode.Emerald);
         inven.AddItem(ItemIDCode.Sapphire);
+
         inven.AddItem(ItemIDCode.Emerald);
         inven.AddItem(ItemIDCode.Ruby);
     }
@@ -31,5 +32,11 @@ public class Test_Inventory : TestBase
         inven.ClearItem(1);
         inven.ClearItem(3);
         inven.ClearItem(15);
+    }
+
+    protected override void Test4(InputAction.CallbackContext _)
+    {
+        inven.RemoveItem(0);
+        inven.RemoveItem(1, 3);
     }
 }
