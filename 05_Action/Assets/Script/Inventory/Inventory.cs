@@ -78,8 +78,8 @@ public class Inventory
         ItemSlot targetSlot = FindSameItem(data);
         if(targetSlot != null)
         {
-            // 같은 종류의 아이템이 있다.            
-            result = (targetSlot.IncreaseSlotItem() == 0);    // 갯수 증가 시도. 결과에 따라 result 변경
+            // 같은 종류의 아이템이 있다.                        
+            result = targetSlot.IncreaseSlotItem(out uint _);    // 갯수 증가 시도. 결과에 따라 result 변경
         }
         else
         {
@@ -138,7 +138,7 @@ public class Inventory
                 if(slot.ItemData == data)   //같은 종류의 아이템이 있는가?
                 {
                     // 같은 종류의 아이템이 들어있으면 갯수만 추가                    
-                    result = (slot.IncreaseSlotItem() == 0);    // 갯수 증가 시도. 결과에 따라 result 변경
+                    result = slot.IncreaseSlotItem(out uint _);    // 갯수 증가 시도. 결과에 따라 result 변경
                 }
                 else
                 {
@@ -219,8 +219,8 @@ public class Inventory
             if (fromSlot.ItemData == toSlot.ItemData)
             {
                 // from과 to가 같은 아이템을 가지고 있으면 to에서 아이템 합치기
-                uint overCount = toSlot.IncreaseSlotItem(fromSlot.ItemCount);   // 아이템 증가 시도한 후 넘친 갯수 받아오기
-                fromSlot.DecreaseSlotItem(fromSlot.ItemCount - overCount);      // from에서 to에 증가된 분량 만큼만 감소시키기
+                toSlot.IncreaseSlotItem(out uint overCount, fromSlot.ItemCount);    // 아이템 증가 시도한 후 넘친 갯수 받아오기
+                fromSlot.DecreaseSlotItem(fromSlot.ItemCount - overCount);          // from에서 to에 증가된 분량 만큼만 감소시키기
                 Debug.Log($"인벤토리의 {from}슬롯에서 {to}슬롯으로 아이템 합치기 성공");
             }
             else

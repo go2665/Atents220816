@@ -106,29 +106,34 @@ public class ItemSlot
     /// <summary>
     /// 이 슬롯에 아이템 갯수를 증가시키는 함수
     /// </summary>
-    /// <param name="count">증가시킬 아이템 갯수</param>
-    /// <returns>최대치를 넘어선 수. 리턴이 0이면 전부 다 증가시킨 경우.</returns>
-    public uint IncreaseSlotItem(uint count = 1)
+    /// <param name="overCount">넘친 갯수</param>
+    /// <param name="increaseCount">증가시킬 아이템 갯수</param>
+    /// <returns>증가 성공 여부. 다 넣는 것에 성공하면 true, 넘치면 false</returns>
+    public bool IncreaseSlotItem(out uint overCount, uint increaseCount = 1)
     {
-        int overCount = 0;  // 아이템을 추가하려고 하는데 넘친 갯수
+        bool result;        // 다 넣는 것에 성공하면 true, 넘치면 false
+        int over = 0;       // 아이템을 추가하려고 하는데 넘친 갯수
 
-        uint newCount = ItemCount + count;
-        overCount = (int)(newCount) - (int)ItemData.maxStackCount;
-        if( overCount > 0 )
+        uint newCount = ItemCount + increaseCount;              // 우선 증가한 갯수
+        over = (int)(newCount) - (int)ItemData.maxStackCount;   // 넘친 갯수 계산
+        if( over > 0 )
         {
             // 아이템 최대 갯수를 넘쳤다.
             ItemCount = ItemData.maxStackCount; // 최대치까지만 적용
-            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 최대치까지 증가. 현재 {ItemCount}개. {overCount}개 넘침.");
+            overCount = (uint)over;             // 넘친 갯수 저장
+            result = false;                     // 넘쳤으니 결과는 false
+            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 최대치까지 증가. 현재 {ItemCount}개. {over}개 넘침.");
         }
         else
         {
             // 충분히 추가할 수 있다.
             ItemCount = newCount;   // 아이템 갯수 변경
-            overCount = 0;          // underflow방지용
-            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {count}개만큼 증가. 현재 {ItemCount}개");
+            overCount = 0;          // underflow방지용. 넘친 갯수 0으로 설정
+            result = true;          // 다 추가했으니 결과는 true
+            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {increaseCount}개만큼 증가. 현재 {ItemCount}개");
         }
 
-        return (uint)overCount; // 넘친 갯수 리턴
+        return result;
     }
 
     /// <summary>
