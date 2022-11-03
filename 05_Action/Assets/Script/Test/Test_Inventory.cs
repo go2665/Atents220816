@@ -39,4 +39,11 @@ public class Test_Inventory : TestBase
         inven.RemoveItem(0);
         inven.RemoveItem(1, 3);
     }
+
+    protected override void Test5(InputAction.CallbackContext _)
+    {
+        inven.AddItem(ItemIDCode.Ruby, 9);
+        inven.AddItem(ItemIDCode.Emerald, 8);
+        inven.AddItem(ItemIDCode.Sapphire, 20);
+    }
 }

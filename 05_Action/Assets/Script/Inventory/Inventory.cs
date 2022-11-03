@@ -82,25 +82,64 @@ public class Inventory
             else
             {
                 // 인벤토리가 가득 찼다.
-                Debug.Log($"인벤토리가 가득 찼습니다.");
+                Debug.Log($"실패 : 인벤토리가 가득 찼습니다.");
             }
         }      
 
         return result;
     }
 
+    /// <summary>
+    /// 아이템을 인벤토리의 특정 슬롯에 1개 추가하는 함수
+    /// </summary>
+    /// <param name="code">추가할 아이템 코드</param>
+    /// <param name="index">아이템이 추가될 슬롯의 인덱스</param>
+    /// <returns>true면 성공, false면 실패</returns>
     public bool AddItem(ItemIDCode code, uint index)
     {
         return AddItem(dataManager[code], index);
     }
 
+    /// <summary>
+    /// 아이템을 인벤토리의 특정 슬롯에 1개 추가하는 함수
+    /// </summary>
+    /// <param name="data">추가할 아이템 데이터</param>
+    /// <param name="index">아이템이 추가될 슬롯의 인덱스</param>
+    /// <returns>true면 성공, false면 실패</returns>
     public bool AddItem(ItemData data, uint index)
     {
         bool result = false;
 
-        // 인덱스가 적절한가?
-        // 해당 슬롯에 아이템이 있는가?
-        // 해당 슬롯에 아이템이 있으면 같은 종류의 아이템이 있는가?
+        if(IsValidSlotIndex(index))         // 인덱스가 적절한가?
+        {
+            ItemSlot slot = slots[index];   // 해당 인덱스의 슬롯 가져오기
+
+            if(slot.IsEmpty)                // 해당 슬롯이 비어있는가?
+            {
+                // 비어있으면 그냥 아이템을 넣는다.
+                slot.AssignSlotItem(data);
+                result = true;
+            }
+            else
+            {
+                // 슬롯이 비어있지 않다.
+                if(slot.ItemData == data)   //같은 종류의 아이템이 있는가?
+                {
+                    // 같은 종류의 아이템이 들어있으면 갯수만 추가
+                    slot.IncreaseSlotItem();
+                    result = true;
+                }
+                else
+                {
+                    // 다른 종류의 아이템이 들어있으면 그냥 실패
+                    Debug.Log($"실패 : 인벤토리 {index}번 슬롯에 다른 아이템이 들어있습니다.");
+                }
+            }
+        }
+        else
+        {
+            Debug.Log($"실패 : {index}는 잘못된 인덱스입니다.");
+        }
 
         return result;
     }
