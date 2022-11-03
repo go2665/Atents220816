@@ -107,13 +107,28 @@ public class ItemSlot
     /// 이 슬롯에 아이템 갯수를 증가시키는 함수
     /// </summary>
     /// <param name="count">증가시킬 아이템 갯수</param>
-    public void IncreaseSlotItem(uint count = 1)
+    /// <returns>최대치를 넘어선 수. 리턴이 0이면 전부 다 증가시킨 경우.</returns>
+    public uint IncreaseSlotItem(uint count = 1)
     {
-        if (!IsEmpty)   // 슬롯이 비어있지 않을 때만 가능
+        int overCount = 0;  // 아이템을 추가하려고 하는데 넘친 갯수
+
+        uint newCount = ItemCount + count;
+        overCount = (int)(newCount) - (int)ItemData.maxStackCount;
+        if( overCount > 0 )
         {
-            ItemCount += count;
+            // 아이템 최대 갯수를 넘쳤다.
+            ItemCount = ItemData.maxStackCount; // 최대치까지만 적용
+            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 최대치까지 증가. 현재 {ItemCount}개. {overCount}개 넘침.");
+        }
+        else
+        {
+            // 충분히 추가할 수 있다.
+            ItemCount = newCount;   // 아이템 갯수 변경
+            overCount = 0;          // underflow방지용
             Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {count}개만큼 증가. 현재 {ItemCount}개");
         }
+
+        return (uint)overCount; // 넘친 갯수 리턴
     }
 
     /// <summary>
@@ -122,21 +137,18 @@ public class ItemSlot
     /// <param name="count">감소시킬 아이템 갯수</param>
     public void DecreaseSlotItem(uint count = 1)
     {
-        if (!IsEmpty)   // 슬롯이 비어있지 않을 때만 가능
-        {
-            int newCount = (int)ItemCount - (int)count; // underflow를 대비해서 부호있는 인티저로 처리
+        int newCount = (int)ItemCount - (int)count; // underflow를 대비해서 부호있는 인티저로 처리
 
-            if (newCount < 1)
-            {
-                // 새로운 갯수가 0이하면 슬롯을 비우기
-                ClearSlotItem();
-            }
-            else
-            {
-                // 갯수가 남아있으면 해당 갯수로 설정
-                ItemCount = (uint)newCount;
-                Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {count}개만큼 감소. 현재 {ItemCount}개");
-            }
+        if (newCount < 1)
+        {
+            // 새로운 갯수가 0이하면 슬롯을 비우기
+            ClearSlotItem();
+        }
+        else
+        {
+            // 갯수가 남아있으면 해당 갯수로 설정
+            ItemCount = (uint)newCount;
+            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {count}개만큼 감소. 현재 {ItemCount}개");
         }
     }
 

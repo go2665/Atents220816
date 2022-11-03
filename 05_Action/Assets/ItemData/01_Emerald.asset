@@ -16,3 +16,4 @@ MonoBehaviour:
   itemName: "\uC5D0\uBA54\uB784\uB4DC"
   modelPrefab: {fileID: 3841066470805140976, guid: a8f84d0260497734886273ef6dba5b85, type: 3}
   value: 200
+  maxStackCount: 3

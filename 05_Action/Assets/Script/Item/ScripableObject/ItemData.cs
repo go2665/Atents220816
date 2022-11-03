@@ -9,4 +9,5 @@ public class ItemData : ScriptableObject
     public string itemName = "아이템";   // 아이템의 이름
     public GameObject modelPrefab;      // 아이템의 외형을 표시할 프리팹
     public uint value;                  // 아이템의 가격
+    public uint maxStackCount = 1;      // 인벤토리 한칸에 들어갈 수 있는 최대 누적 갯수
 }

@@ -45,6 +45,11 @@ public class Test_Inventory : TestBase
         inven.PrintInventory();
         inven.MoveItem(5, 1);   // 아무일 없음
         inven.PrintInventory();
+
+        inven.AddItem(ItemIDCode.Sapphire, 0);  // 0:사파1, 1:사파1, 2:에메2, 9:루비2
+        inven.PrintInventory();
+        inven.MoveItem(0, 1);   // 1:사파2, 2:에메2, 9:루비2
+        inven.PrintInventory();
     }
 
     protected override void Test4(InputAction.CallbackContext _)
@@ -55,8 +60,9 @@ public class Test_Inventory : TestBase
 
     protected override void Test5(InputAction.CallbackContext _)
     {
-        inven.AddItem(ItemIDCode.Ruby, 9);
-        inven.AddItem(ItemIDCode.Emerald, 8);
-        inven.AddItem(ItemIDCode.Sapphire, 20);
+        //inven.AddItem(ItemIDCode.Ruby, 9);
+        //inven.AddItem(ItemIDCode.Emerald, 8);
+        //inven.AddItem(ItemIDCode.Sapphire, 20);
+
     }
 }
