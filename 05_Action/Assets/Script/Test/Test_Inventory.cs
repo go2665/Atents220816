@@ -14,24 +14,37 @@ public class Test_Inventory : TestBase
 
     protected override void Test1(InputAction.CallbackContext _)
     {
+        inven.PrintInventory();
+    }
+
+    protected override void Test2(InputAction.CallbackContext _)
+    {
         inven.AddItem(ItemIDCode.Ruby);
         inven.AddItem(ItemIDCode.Emerald);
         inven.AddItem(ItemIDCode.Sapphire);
 
         inven.AddItem(ItemIDCode.Emerald);
         inven.AddItem(ItemIDCode.Ruby);
-    }
 
-    protected override void Test2(InputAction.CallbackContext _)
-    {
         inven.PrintInventory();
     }
 
     protected override void Test3(InputAction.CallbackContext _)
     {
-        inven.ClearItem(1);
-        inven.ClearItem(3);
-        inven.ClearItem(15);
+        Test2(_);               // 0:루비2, 1:에메2, 2:사파1
+
+        inven.MoveItem(0, 9);   // 1:에메2, 2:사파1, 9:루비2
+        inven.PrintInventory();
+        inven.MoveItem(9, 15);  // 실행 안됨
+        inven.PrintInventory();
+
+        inven.MoveItem(1, 2);   // 1:사파1, 2:에메2, 9:루비2
+        inven.PrintInventory();
+
+        inven.MoveItem(5, 6);   // 아무일 없음
+        inven.PrintInventory();
+        inven.MoveItem(5, 1);   // 아무일 없음
+        inven.PrintInventory();
     }
 
     protected override void Test4(InputAction.CallbackContext _)

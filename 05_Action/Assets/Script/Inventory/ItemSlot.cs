@@ -89,9 +89,18 @@ public class ItemSlot
     /// <param name="count">설정된 갯수</param>
     public void AssignSlotItem(ItemData data, uint count = 1)
     {
-        ItemCount = count;
-        ItemData = data;
-        Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {ItemCount}개 설정");
+        if (data != null)   
+        {
+            // data가 null이 아니면 파라메터대로 설정
+            ItemCount = count;
+            ItemData = data;
+            Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {ItemCount}개 설정");
+        }
+        else
+        {
+            // data가 null이면 비우는 함수 수행
+            ClearSlotItem();
+        }
     }
 
     /// <summary>
