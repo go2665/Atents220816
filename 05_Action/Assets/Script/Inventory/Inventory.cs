@@ -89,13 +89,35 @@ public class Inventory
         return result;
     }
 
+    public bool AddItem(ItemIDCode code, uint index)
+    {
+        return AddItem(dataManager[code], index);
+    }
+
+    public bool AddItem(ItemData data, uint index)
+    {
+        bool result = false;
+
+        // 인덱스가 적절한가?
+        // 해당 슬롯에 아이템이 있는가?
+        // 해당 슬롯에 아이템이 있으면 같은 종류의 아이템이 있는가?
+
+        return result;
+    }
+
+    /// <summary>
+    /// 아이템을 특정 인벤토리 슬롯에서 특정 갯수만큼 제거하는 함수
+    /// </summary>
+    /// <param name="slotIndex">아이템을 제거할 슬롯의 인덱스</param>
+    /// <param name="decreaseCount">제거할 갯수(기본적으로 1)</param>
+    /// <returns>성공이면 true, 실패면 false</returns>
     public bool RemoveItem(uint slotIndex, uint decreaseCount = 1)
     {
         bool result = false;
-        if( IsValidSlotIndex(slotIndex) )
+        if( IsValidSlotIndex(slotIndex) )   // 적절한 인덱스일 때
         {
-            ItemSlot slot = slots[slotIndex];
-            slot.DecreaseSlotItem(decreaseCount);
+            ItemSlot slot = slots[slotIndex];       // 해당 슬롯에
+            slot.DecreaseSlotItem(decreaseCount);   // decreaseCount만큼 아이템 갯수 감소
             result = true;
         }
         else

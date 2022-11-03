@@ -71,8 +71,11 @@ public class ItemSlot
 
 
     // 델리게이트 ----------------------------------------------------------------------------------
+    
     public Action onSlotItemChange;
 
+
+    // 함수들 --------------------------------------------------------------------------------------
 
     public ItemSlot(uint index)
     {
@@ -89,16 +92,6 @@ public class ItemSlot
         ItemCount = count;
         ItemData = data;
         Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {ItemCount}개 설정");
-    }
-
-    /// <summary>
-    /// 이 슬롯에서 아이템을 제거하는 함수
-    /// </summary>
-    public void ClearSlotItem()
-    {
-        ItemData = null;
-        ItemCount = 0;
-        Debug.Log($"인벤토리 {slotIndex}번 슬롯을 비웁니다.");
     }
 
     /// <summary>
@@ -136,5 +129,15 @@ public class ItemSlot
                 Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {count}개만큼 감소. 현재 {ItemCount}개");
             }
         }
+    }
+
+    /// <summary>
+    /// 이 슬롯에서 아이템을 제거하는 함수
+    /// </summary>
+    public void ClearSlotItem()
+    {
+        ItemData = null;
+        ItemCount = 0;
+        Debug.Log($"인벤토리 {slotIndex}번 슬롯을 비웁니다.");
     }
 }
