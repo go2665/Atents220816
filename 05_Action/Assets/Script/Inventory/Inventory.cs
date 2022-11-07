@@ -35,6 +35,13 @@ public class Inventory
 
     public ItemSlot TempSlot => tempSlot;
 
+    /// <summary>
+    /// 특정 번째의 ItemSlot을 돌려주는 인덱서
+    /// </summary>
+    /// <param name="index">돌려줄 슬롯의 위치</param>
+    /// <returns>index번째에 있는 ItemSlot</returns>
+    public ItemSlot this[uint index] => slots[index];
+
     // 함수들 --------------------------------------------------------------------------------------
 
     public Inventory(int size = Default_Inventory_Size)
