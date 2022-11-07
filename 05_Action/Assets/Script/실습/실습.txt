@@ -163,3 +163,9 @@
 2. public void MoveItem(uint from, uint to); 함수 수정하기
    2.1. from에 있는 아이템과 to에 있는 아이템이 같을 경우 to에 합쳐지도록 처리
    시간 : 12시 20분까지
+
+
+
+11/7
+1. Inventory의 크기가 기본값과 다를 때 ItemSlots UI안에 슬롯들이 모두 들어가게 하려면 어떻게 해야 하는가?(생각해보기)
+   시간 : 12시 45분까지

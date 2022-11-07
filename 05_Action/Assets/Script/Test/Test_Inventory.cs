@@ -6,11 +6,14 @@ using UnityEngine.InputSystem;
 public class Test_Inventory : TestBase
 {
     public InventoryUI inventoryUI;
+
+    [Range(1, 30)]
+    public int invenSize = 10;
     Inventory inven;
 
     private void Start()
     {
-        inven = new Inventory(10);
+        inven = new Inventory(invenSize);
         inventoryUI.InitializeInventory(inven);
     }
 

@@ -12,6 +12,11 @@ public class ItemSlotUI : MonoBehaviour
     public uint ID => id;
     public ItemSlot ItemSlot => itemSlot;
 
+    /// <summary>
+    /// 슬롯 초기화 함수
+    /// </summary>
+    /// <param name="id">슬롯의 ID</param>
+    /// <param name="slot">이 UI가 보여줄 ItemSlot</param>
     public void InitializeSlot(uint id, ItemSlot slot)
     {
         this.id = id;
