@@ -880,7 +880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 1829097834}
-  invenSize: 30
+  invenSize: 6
 --- !u!4 &1282154242
 Transform:
   m_ObjectHideFlags: 0

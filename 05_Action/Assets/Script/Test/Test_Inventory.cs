@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,8 @@ public class Test_Inventory : TestBase
 
     protected override void Test2(InputAction.CallbackContext _)
     {
+        Test_AddItemForUI();
+        inventoryUI.InitializeInventory(inven);
     }    
 
     protected override void Test3(InputAction.CallbackContext _)
@@ -33,6 +36,7 @@ public class Test_Inventory : TestBase
     protected override void Test4(InputAction.CallbackContext _)
     {
     }
+    
     protected override void Test5(InputAction.CallbackContext _)
     {
         //inven.AddItem(ItemIDCode.Ruby, 9);
@@ -40,6 +44,28 @@ public class Test_Inventory : TestBase
         //inven.AddItem(ItemIDCode.Sapphire, 20);
 
     }
+
+
+    void Test_AddItemForUI()
+    {
+        inven.ClearInventory();
+
+        inven.AddItem(ItemIDCode.Ruby);
+        inven.AddItem(ItemIDCode.Ruby);
+        inven.AddItem(ItemIDCode.Ruby);
+        inven.AddItem(ItemIDCode.Ruby);
+        inven.AddItem(ItemIDCode.Emerald);
+        inven.AddItem(ItemIDCode.Emerald);
+        inven.AddItem(ItemIDCode.Sapphire);
+
+        inven.AddItem(ItemIDCode.Ruby, 5);
+        inven.AddItem(ItemIDCode.Ruby, 5);
+        inven.AddItem(ItemIDCode.Ruby, 5);
+        inven.AddItem(ItemIDCode.Ruby, 5);
+
+        inven.PrintInventory();
+    }
+
 
     private void Test_AddItem()
     {

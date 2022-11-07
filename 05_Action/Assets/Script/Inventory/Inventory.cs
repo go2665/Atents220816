@@ -203,10 +203,20 @@ public class Inventory
         else
         {
             Debug.Log($"실패 : {slotIndex}는 잘못된 인덱스입니다.");
-        }
-        
+        }       
 
         return result;
+    }
+
+    /// <summary>
+    /// 인벤토리의 모든 아이템을 비우는 함수
+    /// </summary>
+    public void ClearInventory()
+    {
+        foreach(var slot in slots)
+        {
+            slot.ClearSlotItem();
+        }
     }
 
     /// <summary>
