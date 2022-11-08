@@ -6,12 +6,24 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    // ItemSlotUI가 있는 프리팹. 인벤토리 크기 변화에 대비해서 가지고 있기.
+    /// <summary>
+    /// ItemSlotUI가 있는 프리팹. 인벤토리 크기 변화에 대비해서 가지고 있기.
+    /// </summary>
     public GameObject slotPrefab;
 
+    /// <summary>
+    /// 이 UI가 보여줄 인벤토리
+    /// </summary>
     Inventory inven;
 
+    /// <summary>
+    /// 이 인벤토리에 있는 아이템 슬롯의 UI
+    /// </summary>
     ItemSlotUI[] slotUIs;
+
+    /// <summary>
+    /// 아이템 이동 및 나누기를 위한 임시 슬롯
+    /// </summary>
     TempItemSlotUI tempSlotUI;
 
     private void Awake()
@@ -64,25 +76,34 @@ public class InventoryUI : MonoBehaviour
         {
             slotUIs[i].InitializeSlot((uint)i, inven[i]);           // 각 슬롯 초기화
             slotUIs[i].Resize(grid.cellSize.x * 0.75f);             // 슬롯 크기에 맞게 내부 크기 리사이즈
-            slotUIs[i].onDragStart += OnItemDragStart;
-            slotUIs[i].onDragEnd += OnItemDragEnd;
+            slotUIs[i].onDragStart += OnItemDragStart;              // 슬롯에서 드래그가 시작될 때 실행될 함수 연결
+            slotUIs[i].onDragEnd += OnItemDragEnd;                  // 슬롯에서 드래그가 끝날 때 실행될 함수 연결
         }
 
-        tempSlotUI.InitializeSlot(Inventory.TempSlotIndex, inven.TempSlot);
-        tempSlotUI.Close();
+        // 임시 슬롯 초기화 처리
+        tempSlotUI.InitializeSlot(Inventory.TempSlotIndex, inven.TempSlot); // 임시 슬롯 초기화
+        tempSlotUI.Close(); // 기본적으로 닫아 놓기
 
     }
         
+    /// <summary>
+    /// 슬롯에 드래그를 시작했을 때 실행될 함수
+    /// </summary>
+    /// <param name="slotID">드래그가 시작된 슬롯의 ID</param>
     private void OnItemDragStart(uint slotID)
     {
-        inven.MoveItem(slotID, Inventory.TempSlotIndex);
-        tempSlotUI.Open();
+        inven.MoveItem(slotID, Inventory.TempSlotIndex);    // 슬롯에 있는 아이템들을 임시 슬롯으로 모두 옮김
+        tempSlotUI.Open();                                  // 임시 슬롯을 보여주기
     }
 
+    /// <summary>
+    /// 드래그가 슬롯에서 끝났을 때 실행될 함수
+    /// </summary>
+    /// <param name="slotID">드래그가 끝난 슬롯의 ID</param>
     private void OnItemDragEnd(uint slotID)
     {
-        tempSlotUI.Close();
-        inven.MoveItem(Inventory.TempSlotIndex, slotID);
+        tempSlotUI.Close();                                 // 임시 슬롯을 안보이게 만들기
+        inven.MoveItem(Inventory.TempSlotIndex, slotID);    // 임시 슬롯의 아이템들을 슬롯에 모두 옮김
     }
 
 }
