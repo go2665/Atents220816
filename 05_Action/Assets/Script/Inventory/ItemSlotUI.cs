@@ -1,23 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
-public class ItemSlotUI : MonoBehaviour
+public class ItemSlotUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IPointerClickHandler, IPointerUpHandler
 {
+    // 변수 ---------------------------------------------------------------------------------------
     private uint id;    // 몇번째 슬롯인가?
 
     protected ItemSlot itemSlot;    // 이 UI와 연결된 ItemSlot
 
     private Image itemImage;
+    private TextMeshProUGUI itemCountText;
 
+    // 프로퍼티 ------------------------------------------------------------------------------------
 
     public uint ID => id;
     public ItemSlot ItemSlot => itemSlot;
 
+    // 델리게이트 ----------------------------------------------------------------------------------
+    public Action<uint> onDragStart;
+    public Action<uint> onMouseUp;
+
+    // 함수 ---------------------------------------------------------------------------------------
+
     private void Awake()
     {
         itemImage = transform.GetChild(0).GetComponent<Image>();
+        itemCountText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
     /// <summary>
@@ -54,12 +67,43 @@ public class ItemSlotUI : MonoBehaviour
             // 아이템 슬롯이 비었으면
             itemImage.sprite = null;        // 스프라이트 빼고
             itemImage.color = Color.clear;  // 투명화
+            itemCountText.text = null;      // 갯수 비우기
         }
         else
         {
             // 아이템 슬롯에 아이템이 있으면
             itemImage.sprite = itemSlot.ItemData.itemIcon;  // 해당 아이콘 이미지 표시
             itemImage.color = Color.white;                  // 불투명화
+            itemCountText.text = itemSlot.ItemCount.ToString(); // 아이템 갯수 설정
         }
-    }    
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        // OnBeginDrag, OnEndDrag를 실행시키기 위해 추가
+
+        // eventData.position : 마우스 포인터의 스크린좌표값
+        // eventData.delta : 마우스 포인터의 위치 변화량
+        // eventData.button == PointerEventData.InputButton.Left : 마우스 왼쪽 버튼이 눌러져 있다.
+        // eventData.button == PointerEventData.InputButton.Right : 마우스 오른쪽 버튼이 눌러져 있다.
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        Debug.Log($"드래그 시작 : {ID}번 슬롯");
+        onDragStart?.Invoke(ID);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // OnPointerUp를 실행시키기 위해 추가
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        Debug.Log($"마우스 업 : {ID}번 슬롯");
+        onMouseUp?.Invoke(ID);
+    }
+
+    
 }
