@@ -24,6 +24,7 @@ public class ItemSlotUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     // 델리게이트 ----------------------------------------------------------------------------------
     public Action<uint> onDragStart;
     public Action<uint> onDragEnd;
+    public Action<uint> onDragCancel;
 
     // 함수 ---------------------------------------------------------------------------------------
 
@@ -88,17 +89,34 @@ public class ItemSlotUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         // eventData.button == PointerEventData.InputButton.Right : 마우스 오른쪽 버튼이 눌러져 있다.
     }
 
+    /// <summary>
+    /// EventSystems에서 드래그 시작을 감지하면 실행되는 함수
+    /// </summary>
+    /// <param name="eventData">관련 이벤트 정보들</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
         Debug.Log($"드래그 시작 : {ID}번 슬롯");
-        onDragStart?.Invoke(ID);
+        onDragStart?.Invoke(ID);    // 이 슬롯에서 드래그가 시작되었음을 알림
     }
 
+    /// <summary>
+    /// EventSystems에서 드래그 종료가 감지되면 실행되는 함수
+    /// </summary>
+    /// <param name="eventData">관련 이벤트 정보들</param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        GameObject obj = eventData.pointerCurrentRaycast.gameObject;
-        ItemSlotUI endSlot = obj.GetComponent<ItemSlotUI>();
-        Debug.Log($"드래그 종료 : {endSlot.ID}번 슬롯");
-        onDragEnd?.Invoke(endSlot.ID);
+        GameObject obj = eventData.pointerCurrentRaycast.gameObject;    // 현재 마우스 위치에 피킹된 오브젝트가 있는지 확인
+        ItemSlotUI endSlot = obj.GetComponent<ItemSlotUI>();            // 피킹된 오브젝트에서 ItemSlotUI 가져오기
+
+        if (endSlot != null)
+        {
+            Debug.Log($"드래그 종료 : {endSlot.ID}번 슬롯");
+            onDragEnd?.Invoke(endSlot.ID);                              // 피킹된 슬롯에서 드래그가 끝났음을 알림
+        }
+        else
+        {
+            Debug.Log($"드래그 실패 : {ID}번째 슬롯에서 실패");          
+            onDragCancel?.Invoke(ID);                                   // 드래그가 실패했음을 알림
+        }
     }
 }
