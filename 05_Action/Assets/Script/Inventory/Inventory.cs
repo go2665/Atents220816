@@ -21,6 +21,9 @@ public class Inventory
     /// </summary>
     ItemSlot[] slots = null;
 
+    /// <summary>
+    /// 드래그 중인 아이템을 임시 저장하는 슬롯
+    /// </summary>
     ItemSlot tempSlot = null;
 
     /// <summary>
@@ -230,8 +233,8 @@ public class Inventory
         if(IsValidAndNotEmptySlotIndex(from) && IsValidSlotIndex(to))
         {
             // 슬롯 가져오기
-            ItemSlot fromSlot = slots[from];
-            ItemSlot toSlot = slots[to];
+            ItemSlot fromSlot = (from == Inventory.TempSlotIndex) ? TempSlot : slots[from];
+            ItemSlot toSlot = (to == Inventory.TempSlotIndex) ? TempSlot : slots[to];
 
             if (fromSlot.ItemData == toSlot.ItemData)
             {
@@ -298,14 +301,24 @@ public class Inventory
     /// </summary>
     /// <param name="index">확인할 인덱스</param>
     /// <returns>true면 사용가능한 인덱스, false면 사용불가능한 인덱스</returns>
-    private bool IsValidSlotIndex(uint index) => (index < SlotCount);
+    private bool IsValidSlotIndex(uint index) => (index < SlotCount) || (index == TempSlotIndex);
 
     /// <summary>
     /// 파라메터로 받은 인덱스가 적절한 인덱스이면서 비어있지 않은 것을 확인하는 함수
     /// </summary>
     /// <param name="index">확인할 인덱스</param>
     /// <returns>true면 적절한 인덱스이면서 아이템이 들어있는 함수, false면 적절한 인덱스가 아니거나 비어있다.</returns>
-    private bool IsValidAndNotEmptySlotIndex(uint index) => (IsValidSlotIndex(index) && !slots[index].IsEmpty);
+    private bool IsValidAndNotEmptySlotIndex(uint index)
+    {
+        if (IsValidSlotIndex(index))
+        {
+            ItemSlot testSlot = (index == TempSlotIndex) ? TempSlot : slots[index];
+
+            return !testSlot.IsEmpty;
+        }
+
+        return false;
+    }
     
 
     public void PrintInventory()

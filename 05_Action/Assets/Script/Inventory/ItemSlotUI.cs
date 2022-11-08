@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class ItemSlotUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IPointerClickHandler, IPointerUpHandler
+public class ItemSlotUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     // 변수 ---------------------------------------------------------------------------------------
     private uint id;    // 몇번째 슬롯인가?
@@ -23,7 +23,7 @@ public class ItemSlotUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IPoint
 
     // 델리게이트 ----------------------------------------------------------------------------------
     public Action<uint> onDragStart;
-    public Action<uint> onMouseUp;
+    public Action<uint> onDragEnd;
 
     // 함수 ---------------------------------------------------------------------------------------
 
@@ -94,16 +94,11 @@ public class ItemSlotUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IPoint
         onDragStart?.Invoke(ID);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnEndDrag(PointerEventData eventData)
     {
-        // OnPointerUp를 실행시키기 위해 추가
+        GameObject obj = eventData.pointerCurrentRaycast.gameObject;
+        ItemSlotUI endSlot = obj.GetComponent<ItemSlotUI>();
+        Debug.Log($"드래그 종료 : {endSlot.ID}번 슬롯");
+        onDragEnd?.Invoke(endSlot.ID);
     }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        Debug.Log($"마우스 업 : {ID}번 슬롯");
-        onMouseUp?.Invoke(ID);
-    }
-
-    
 }

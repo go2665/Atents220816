@@ -12,11 +12,13 @@ public class InventoryUI : MonoBehaviour
     Inventory inven;
 
     ItemSlotUI[] slotUIs;
+    TempItemSlotUI tempSlotUI;
 
     private void Awake()
     {
         //Transform slotParent = transform.GetChild(0);
         slotUIs = GetComponentsInChildren<ItemSlotUI>();
+        tempSlotUI = GetComponentInChildren<TempItemSlotUI>();
     }
 
     /// <summary>
@@ -63,16 +65,24 @@ public class InventoryUI : MonoBehaviour
             slotUIs[i].InitializeSlot((uint)i, inven[i]);           // 각 슬롯 초기화
             slotUIs[i].Resize(grid.cellSize.x * 0.75f);             // 슬롯 크기에 맞게 내부 크기 리사이즈
             slotUIs[i].onDragStart += OnItemDragStart;
-            slotUIs[i].onMouseUp += OnItemDragEnd;
+            slotUIs[i].onDragEnd += OnItemDragEnd;
         }
+
+        tempSlotUI.InitializeSlot(Inventory.TempSlotIndex, inven.TempSlot);
+        tempSlotUI.Close();
+
+    }
+        
+    private void OnItemDragStart(uint slotID)
+    {
+        inven.MoveItem(slotID, Inventory.TempSlotIndex);
+        tempSlotUI.Open();
     }
 
-    private void OnItemDragStart(uint obj)
+    private void OnItemDragEnd(uint slotID)
     {
-    }
-
-    private void OnItemDragEnd(uint obj)
-    {
+        tempSlotUI.Close();
+        inven.MoveItem(Inventory.TempSlotIndex, slotID);
     }
 
 }
