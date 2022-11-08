@@ -45,6 +45,10 @@ public class ItemSlotUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         this.itemSlot = slot;
         this.itemSlot.onSlotItemChange = Refresh;
 
+        onDragStart = null;
+        onDragEnd = null;
+        onDragCancel = null;
+
         Refresh();
     }
 

@@ -28,8 +28,14 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     {
-        //Transform slotParent = transform.GetChild(0);
-        slotUIs = GetComponentsInChildren<ItemSlotUI>();
+        Transform slotParent = transform.GetChild(0);
+        slotUIs = new ItemSlotUI[slotParent.childCount];
+        for (int i=0;i<slotParent.childCount;i++)
+        {
+            Transform child = slotParent.GetChild(i);
+            slotUIs[i] = child.GetComponent<ItemSlotUI>();
+        }
+
         tempSlotUI = GetComponentInChildren<TempItemSlotUI>();
     }
 
@@ -103,7 +109,10 @@ public class InventoryUI : MonoBehaviour
     /// <param name="slotID">드래그가 끝난 슬롯의 ID</param>
     private void OnItemDragEnd(uint slotID)
     {
-        tempSlotUI.Close();                                 // 임시 슬롯을 안보이게 만들기
         inven.MoveItem(Inventory.TempSlotIndex, slotID);    // 임시 슬롯의 아이템들을 슬롯에 모두 옮김
+        if (tempSlotUI.ItemSlot.IsEmpty)
+        {
+            tempSlotUI.Close();                             // 임시 슬롯을 안보이게 만들기
+        }
     }
 }
