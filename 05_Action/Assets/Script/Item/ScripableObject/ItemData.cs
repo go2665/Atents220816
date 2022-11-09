@@ -11,4 +11,5 @@ public class ItemData : ScriptableObject
     public Sprite itemIcon;             // 아이템이 인벤토리에서 보일 스프라이트
     public uint value;                  // 아이템의 가격
     public uint maxStackCount = 1;      // 인벤토리 한칸에 들어갈 수 있는 최대 누적 갯수
+    public string itemDescription;      // 아이템의 상세 설명
 }

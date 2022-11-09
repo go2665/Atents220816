@@ -18,3 +18,4 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 70e92df91699f664ab5bad7bf4723022, type: 3}
   value: 100
   maxStackCount: 5
+  itemDescription: "\uBCF4\uC11D\uC774\uB2E4. \uC801\uB2F9\uD788 \uD754\uD558\uB2E4."
