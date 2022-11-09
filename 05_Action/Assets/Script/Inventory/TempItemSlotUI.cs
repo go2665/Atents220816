@@ -23,7 +23,7 @@ public class TempItemSlotUI : ItemSlotUI
     {
         onTempSlotOpenClose = null;     // 델리게이트 초기화 추가
 
-        base.InitializeSlot(id, slot);
+        base.InitializeSlot(id, slot);        
     }
 
     private void Update()
