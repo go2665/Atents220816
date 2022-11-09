@@ -9,6 +9,23 @@ using UnityEngine.InputSystem;
 
 public class TempItemSlotUI : ItemSlotUI
 {
+    /// <summary>
+    /// 임시 슬롯이 열리고 닫힘을 알리는 델리게이트. true면 열렸다. false면 닫혔다.
+    /// </summary>
+    public Action<bool> onTempSlotOpenClose;
+
+    /// <summary>
+    /// 슬롯 초기화 함수
+    /// </summary>
+    /// <param name="id">슬롯의 ID. 99999</param>
+    /// <param name="slot">이 UI가 보여줄 임시 ItemSlot</param>
+    public override void InitializeSlot(uint id, ItemSlot slot)
+    {
+        onTempSlotOpenClose = null;     // 델리게이트 초기화 추가
+
+        base.InitializeSlot(id, slot);
+    }
+
     private void Update()
     {
         transform.position = Mouse.current.position.ReadValue();        // 매 프레임마다 마우스 위치로 이동
@@ -22,7 +39,8 @@ public class TempItemSlotUI : ItemSlotUI
         if(!ItemSlot.IsEmpty)               // 아이템이 들어있을 때만 열기
         {
             transform.position = Mouse.current.position.ReadValue();    // 열릴 때 마우스 위치로 이동
-            gameObject.SetActive(true);     // 활성화
+            onTempSlotOpenClose?.Invoke(true);  // 열었다고 알림
+            gameObject.SetActive(true);         // 활성화
         }
     }
 
@@ -31,6 +49,7 @@ public class TempItemSlotUI : ItemSlotUI
     /// </summary>
     public void Close()
     {
-        gameObject.SetActive(false);        // 비활성화
+        onTempSlotOpenClose?.Invoke(false);     // 닫혔다고 알림
+        gameObject.SetActive(false);            // 비활성화
     }
 }
