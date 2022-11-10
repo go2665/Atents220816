@@ -187,7 +187,13 @@
 
 
 11/10
-1. ItemSpliter 수정하기
+1. ItemSpliter에 아이템 이미지 추가
    1.1. ItemSpliter에 ItemImage라는 이름으로 Image 추가
    1.2. ItemSpliter가 열릴 때 해당 아이템의 ItemIcon을 ItemImage에 표시하기
+
+2. itemSplitCount 증감 시키기
+   2.1. IncreaseButton과 DecreaseButton을 누를 때마다 itemSplitCount가 1씩 증감하기
+   2.2. inputField의 값이 변경 될 때마다 itemSplitCount에 inputField가 가지고 있는 값으로 설정하기
+   2.3. CountSlider의 최소값은 1이고 최대값은 ItemSpliter에 표시되는 아이템 갯수 - 1로 설정하기
+   2.4. CountSlider가 변경되면 itemSplitCount에 CountSlider가 가지고 있는 값으로 설정하기
    시간 : 10시 50분까지
