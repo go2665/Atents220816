@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,11 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     DetailInfoUI detail;
 
+    /// <summary>
+    /// 아이템 나누기 UI 창
+    /// </summary>
+    ItemSpliterUI spliter;
+
     private void Awake()
     {
         // 컴포넌트 찾기
@@ -41,6 +47,7 @@ public class InventoryUI : MonoBehaviour
 
         tempSlotUI = GetComponentInChildren<TempItemSlotUI>();
         detail = GetComponentInChildren<DetailInfoUI>();
+        spliter = GetComponentInChildren<ItemSpliterUI>();
     }
 
     /// <summary>
@@ -90,6 +97,7 @@ public class InventoryUI : MonoBehaviour
             slotUIs[i].onDragEnd += OnItemMoveEnd;                  // 슬롯에서 드래그가 끝날 때 실행될 함수 연결
             slotUIs[i].onDragCancel += OnItemMoveCancel;            // 드래그가 실패했을 때 실행될 함수 연결
             slotUIs[i].onClick += OnItemMoveEnd;                    // 클릭을 했을 때 실행될 함수 연결
+            slotUIs[i].onShiftClick += OnItemSplit;                 // 쉬프트 클릭을 했을 때 실행될 함수 연결
             slotUIs[i].onPoinerEnter += OnItemDetailOn;             // 마우스가 들어갔을 때 실행될 함수 연결
             slotUIs[i].onPoinerExit += OnItemDetailOff;             // 마우스가 나갔을 때 실행될 함수 연결
             slotUIs[i].onPoinerMove += OnPointerMove;               // 마우스가 슬롯 안에서 움직일 때 실행될 함수 연결
@@ -119,6 +127,17 @@ public class InventoryUI : MonoBehaviour
     {
         OnItemMoveCancel(slotID);
         detail.Open(inven[slotID].ItemData);
+    }
+
+    /// <summary>
+    /// 슬롯을 쉬프트 클릭했을 때 실행될 함수
+    /// </summary>
+    /// <param name="slotID"></param>
+    private void OnItemSplit(uint slotID)
+    {
+        spliter.Open(slotUIs[slotID]);
+        detail.Close();
+        detail.IsPause = true;
     }
 
     /// <summary>
