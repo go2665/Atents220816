@@ -255,6 +255,21 @@ public class Inventory
         }
     }
 
+    /// <summary>
+    /// 특정 슬롯에 있는 아이템을 임시 슬롯으로 옮기는 함수
+    /// </summary>
+    /// <param name="slotID">아이템을 감소시킬 슬롯</param>
+    /// <param name="count">감소시키는 갯수</param>
+    public void MoveItemToTempSlot(uint slotID, uint count)
+    {
+        if (IsValidAndNotEmptySlotIndex(slotID))    // 적절한 슬롯일때(인덱스가 적절하고 아이템이 들어있다.)
+        {
+            ItemSlot fromSlot = slots[slotID];                  // 슬롯 가져오고
+            fromSlot.DecreaseSlotItem(count);                   // 원래 슬롯에 들어있던 아이템 갯수는 count만큼 감소
+            tempSlot.AssignSlotItem(fromSlot.ItemData, count);  // 임시 슬롯에 원래 슬롯에 들어있던 아이템 종류를 count만큼 설정
+        }
+    }
+
     // 아이템 사용
 
     /// <summary>
