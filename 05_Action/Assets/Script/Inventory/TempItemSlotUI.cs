@@ -52,4 +52,20 @@ public class TempItemSlotUI : ItemSlotUI
         onTempSlotOpenClose?.Invoke(false);     // 닫혔다고 알림
         gameObject.SetActive(false);            // 비활성화
     }
+
+    public void OnDrop(InputAction.CallbackContext _)
+    {
+        if (!ItemSlot.IsEmpty)
+        {
+            Vector2 screenPos = Mouse.current.position.ReadValue();
+            Ray ray = Camera.main.ScreenPointToRay(screenPos);
+            //Debug.Log(ray);
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000.0f, LayerMask.GetMask("Ground")))
+            {
+                ItemFactory.MakeItem((int)ItemSlot.ItemData.id, (int)ItemSlot.ItemCount, hit.point, true);
+                ItemSlot.ClearSlotItem();
+                Close();
+            }
+        }
+    }
 }
