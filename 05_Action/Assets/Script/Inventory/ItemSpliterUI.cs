@@ -179,9 +179,21 @@ public class ItemSpliterUI : MonoBehaviour, IScrollHandler
         }
     }
 
+    /// <summary>
+    /// 마우스 휠이 움직였을 때 실행되는 함수
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnScroll(PointerEventData eventData)
     {
         // eventData.scrollDelta; // 마우스 휠 정보를 가져올 수 있다.
-        Debug.Log(eventData.scrollDelta);
+        
+        if(eventData.scrollDelta.y > 0)
+        {
+            ItemSplitCount++;   // 위쪽으로 휠을 올리면 갯수 증가
+        }
+        else
+        {
+            ItemSplitCount--;   // 아래쪽으로 휠을 내리면 갯수 감소
+        }
     }
 }
