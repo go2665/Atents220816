@@ -14,7 +14,7 @@ public class Test_Inventory : TestBase
 
     private void Start()
     {
-        inven = new Inventory(invenSize);
+        inven = new Inventory(null, invenSize);
         inventoryUI.InitializeInventory(inven);
     }
 

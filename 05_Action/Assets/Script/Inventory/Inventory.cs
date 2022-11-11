@@ -31,6 +31,10 @@ public class Inventory
     /// </summary>
     ItemDataManager dataManager;
 
+    /// <summary>
+    /// 이 인벤토리를 가지고 있는 플레이어
+    /// </summary>
+    Player owner;
 
     // 프로퍼티 ------------------------------------------------------------------------------------
 
@@ -45,19 +49,25 @@ public class Inventory
     /// <returns>index번째에 있는 ItemSlot</returns>
     public ItemSlot this[uint index] => slots[index];
 
-    // 함수들 --------------------------------------------------------------------------------------
+    /// <summary>
+    /// 이 인벤토리를 가지고 있는 플레이어를 확인하는 프로퍼티
+    /// </summary>
+    public Player Owner => owner;
 
-    public Inventory(int size = Default_Inventory_Size)
-    {
+    // 함수들 --------------------------------------------------------------------------------------       
+    public Inventory(Player owner, int size = Default_Inventory_Size)
+    {        
         Debug.Log($"{size}칸짜리 인벤토리 생성");
         slots = new ItemSlot[size];
-        for(int i=0;i<size;i++)
+        for (int i = 0; i < size; i++)
         {
             slots[i] = new ItemSlot((uint)i);
         }
         tempSlot = new ItemSlot(TempSlotIndex);
 
         dataManager = GameManager.Inst.ItemData;
+
+        this.owner = owner;
     }
 
     /// <summary>
@@ -291,7 +301,7 @@ public class Inventory
     }
 
     /// <summary>
-    /// 인벤토리에 파라메터와 같은 종류의 아이템이 있는지 찾아보는 함수
+    /// 인벤토리에 파라메터와 같은 종류의 아이템이 있는지 찾아보는 함수(아이템이 들어갈 공간이 있는지도 확인)
     /// </summary>
     /// <param name="itemData">찾을 아이템</param>
     /// <returns>찾았으면 null이 아닌값(찾는 아이템이 들어있는 슬롯), 찾지 못했으면 null</returns>
@@ -301,7 +311,8 @@ public class Inventory
 
         foreach(var slot in slots)
         {
-            if( slot.ItemData == itemData )
+            // 같은 종류의 아이템이고 빈칸이 있어야 한다.
+            if( slot.ItemData == itemData && slot.ItemCount < slot.ItemData.maxStackCount)
             {
                 findSlot = slot;
                 break;
