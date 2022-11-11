@@ -7,6 +7,11 @@ using UnityEngine.InputSystem;
 
 public class DetailInfoUI : MonoBehaviour
 {
+    /// <summary>
+    /// 알파값이 변경되는 속도
+    /// </summary>
+    public float alphaChangeSpeed = 10.0f;
+    
     // 컴포넌트들
     Image itemIcon;
     TextMeshProUGUI itemName;
@@ -18,6 +23,12 @@ public class DetailInfoUI : MonoBehaviour
     /// 작동 일시 정지 확인용 변수
     /// </summary>
     bool isPause = false;
+
+    /// <summary>
+    /// 목표로 하는 알파값
+    /// </summary>
+    float targetAlpha = 0.0f;
+
 
     // 프로퍼티 ------------------------------------------------------------------------------------
 
@@ -54,6 +65,21 @@ public class DetailInfoUI : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    private void Update()
+    {
+        if(targetAlpha > 0)
+        {
+            // 목표 알파가 0보다 크다 => 켜지고 있는 중이다.
+            canvasGroup.alpha += Time.deltaTime * alphaChangeSpeed;
+        }
+        else
+        {
+            // 목표 알파가 0보다 작거나 같다. => 꺼지고 있는 중이다.
+            canvasGroup.alpha -= Time.deltaTime * alphaChangeSpeed;
+        }
+        canvasGroup.alpha = Mathf.Clamp(canvasGroup.alpha, 0, 1);   // 항상 범위가 0~1이 되도록 설정
+    }
+
     /// <summary>
     /// 상세정보 창 열기
     /// </summary>
@@ -67,7 +93,7 @@ public class DetailInfoUI : MonoBehaviour
             itemValue.text = itemData.value.ToString();
             itemDesc.text = itemData.itemDescription;
 
-            canvasGroup.alpha = 1;  // 알파값을 모두 1로 만들어서 보이게 만들기
+            targetAlpha = 1;  // 알파값을 모두 1로 만들도록 설정
 
             MovePosition(Mouse.current.position.ReadValue());   // 열릴 때 항상 마우스 위치를 기준으로 열기
         }
@@ -78,7 +104,7 @@ public class DetailInfoUI : MonoBehaviour
     /// </summary>
     public void Close()
     {
-        canvasGroup.alpha = 0;  // 알파값을 모두 0으로 만들어서 안보이게 만들기
+        targetAlpha = 0;    // 알파값을 모두 0으로 만들도록 설정
     }
 
     /// <summary>
