@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
-public class ItemSpliterUI : MonoBehaviour
+public class ItemSpliterUI : MonoBehaviour, IScrollHandler
 {
     /// <summary>
     /// 아이템을 분리할 최소 갯수
     /// </summary>
     const int itemCountMin = 1;
-
     /// <summary>
     /// 분리할 갯수
     /// </summary>
@@ -141,5 +142,15 @@ public class ItemSpliterUI : MonoBehaviour
     public void Close()
     {
         this.gameObject.SetActive(false);   // 비활성화해서 안보이게 만들기
+    }
+
+    public void OnMouseClick(InputAction.CallbackContext context)
+    {
+        Vector2 screenPos = Mouse.current.position.ReadValue();
+    }
+
+    public void OnScroll(PointerEventData eventData)
+    {
+        // eventData.scrollDelta; // 마우스 휠 정보를 가져올 수 있다.
     }
 }

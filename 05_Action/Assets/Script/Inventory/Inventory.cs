@@ -335,7 +335,6 @@ public class Inventory
         return false;
     }
     
-
     public void PrintInventory()
     {
         // 출력 예시 : [ 루비(1), 사파이어(1), 에메랄드(2), (빈칸), (빈칸), (빈칸) ]
