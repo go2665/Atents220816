@@ -144,13 +144,44 @@ public class ItemSpliterUI : MonoBehaviour, IScrollHandler
         this.gameObject.SetActive(false);   // 비활성화해서 안보이게 만들기
     }
 
+    /// <summary>
+    /// 특정 스크린좌표가 아이템 분리기 안에 있는지 밖에 있는지 확인하는 함수
+    /// </summary>
+    /// <param name="screenPos">확인할 스크린 좌표</param>
+    /// <returns>true면 스크린좌표가 아이템 분리기 안이다. false면 밖이다.</returns>
+    private bool IsAreaInside(Vector2 screenPos)
+    {
+        RectTransform rectTransform = (RectTransform)transform;
+        float halfWidth = rectTransform.rect.width * 0.5f;
+
+        // 아이템 분리기 영역의 왼쪽 아래(min)와 오른쪽위(max)를 계산하기. 아이템 분리기의 pivot이 아래쪽 가운데에 있어서 이렇게 계산
+        Vector2 min = new Vector2(rectTransform.position.x - halfWidth, rectTransform.position.y);
+        Vector2 max = new Vector2(rectTransform.position.x + halfWidth, rectTransform.position.y + rectTransform.rect.height);
+
+        // 결과는 위치가 min보다는 크고 max보다는 작을 때만 true.
+        return min.x < screenPos.x && screenPos.x < max.x && min.y < screenPos.y && screenPos.y < max.y;
+    }
+
+    /// <summary>
+    /// 마우스가 클릭되었을 때 실행될 함수
+    /// </summary>
+    /// <param name="context"></param>
     public void OnMouseClick(InputAction.CallbackContext context)
     {
-        Vector2 screenPos = Mouse.current.position.ReadValue();
+        // 열려있는 상태일 때만 처리
+        if (gameObject.activeSelf)  
+        {
+            Vector2 screenPos = Mouse.current.position.ReadValue(); // 마우스의 위치(스크린좌표)를 구함
+            if(!IsAreaInside(screenPos))    // 마우스의 위치가 아이템 분리기 안에 있는지 밖에 있는지 확인
+            {
+                Close();                    // 밖에 있으면 아이템 분리기를 닫는다.
+            }
+        }
     }
 
     public void OnScroll(PointerEventData eventData)
     {
         // eventData.scrollDelta; // 마우스 휠 정보를 가져올 수 있다.
+        Debug.Log(eventData.scrollDelta);
     }
 }
