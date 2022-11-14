@@ -40,8 +40,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     protected override void Initialize()
     {
-        itemData = GetComponent<ItemDataManager>();
+        base.Initialize();
 
+        itemData = GetComponent<ItemDataManager>();
         player = FindObjectOfType<Player>();
         inventoryUI = FindObjectOfType<InventoryUI>();
     }
