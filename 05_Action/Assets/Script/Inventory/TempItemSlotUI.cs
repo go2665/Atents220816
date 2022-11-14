@@ -11,6 +11,11 @@ using static UnityEngine.UI.GridLayoutGroup;
 public class TempItemSlotUI : ItemSlotUI
 {
     /// <summary>
+    /// 이 임시슬롯이 포함된 인벤토리
+    /// </summary>
+    private InventoryUI invenUI;
+
+    /// <summary>
     /// 이 임시 슬롯이 포함된 인벤토리를 가지고 있는 플레이어
     /// </summary>
     private Player owner;
@@ -34,7 +39,9 @@ public class TempItemSlotUI : ItemSlotUI
     public override void InitializeSlot(uint id, ItemSlot slot)
     {
         onTempSlotOpenClose = null;     // 델리게이트 초기화 추가
-        owner = GameManager.Inst.InvenUI.Owner;     // owner 설정
+
+        invenUI = GameManager.Inst.InvenUI; // 인벤토리 UI 찾기
+        owner = invenUI.Owner;              // owner 설정
 
         base.InitializeSlot(id, slot);        
     }
@@ -63,11 +70,12 @@ public class TempItemSlotUI : ItemSlotUI
 
     public void OnDrop(InputAction.CallbackContext _)
     {
-        if (!ItemSlot.IsEmpty)
+        //Debug.Log("OnDrop");
+        Vector2 screenPos = Mouse.current.position.ReadValue();         // 스크린 좌표 가져오기
+        if (!invenUI.IsInInventoryArea(screenPos) && !ItemSlot.IsEmpty) // 스크린좌표가 인벤토리 영역 밖이고 임시 슬롯에 아이템이 있을 때
         {
-            Vector2 screenPos = Mouse.current.position.ReadValue();     // 스크린 좌표 가져오기
             Ray ray = Camera.main.ScreenPointToRay(screenPos);          // 스크린 좌표로 레이 생성
-            //Debug.Log(ray);
+            //Debug.Log($"Ray : {ray}");
             if (Physics.Raycast(ray, out RaycastHit hit, 1000.0f, LayerMask.GetMask("Ground"))) // 레이와 땅의 충돌 여부 확인
             {
                 // 레이와 땅이 충돌했으면
