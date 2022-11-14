@@ -159,7 +159,7 @@ public class ItemSlotUI
         else
         {
             // 들고 있던 임시 슬롯의 아이템 배치용도
-            onClick?.Invoke(ID);    
+            onClick?.Invoke(ID);
         }
     }
 

@@ -158,6 +158,22 @@ public class ItemSlot
     }
 
     /// <summary>
+    /// 이 슬롯에 있는 아이템을 사용하는 함수
+    /// </summary>
+    /// <param name="target">아이템의 효과를 받을 대상</param>
+    public void UseSlotItem(GameObject target = null)
+    {
+        IUsable usable = ItemData as IUsable;   // 사용가능한 아이템인지 확인
+        if(usable != null)
+        {
+            if( usable.Use(target) )            // 아이템을 사용하고 성공적으로 사용했는지 확인
+            {
+                DecreaseSlotItem();             // 성공적으로 사용되었으면 아이템 갯수 1개 감소
+            }
+        }
+    }
+
+    /// <summary>
     /// 이 슬롯에서 아이템을 제거하는 함수
     /// </summary>
     public void ClearSlotItem()

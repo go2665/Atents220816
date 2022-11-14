@@ -125,7 +125,7 @@ public class InventoryUI : MonoBehaviour
             slotUIs[i].onDragStart += OnItemMoveStart;              // 슬롯에서 드래그가 시작될 때 실행될 함수 연결
             slotUIs[i].onDragEnd += OnItemMoveEnd;                  // 슬롯에서 드래그가 끝날 때 실행될 함수 연결
             slotUIs[i].onDragCancel += OnItemMoveCancel;            // 드래그가 실패했을 때 실행될 함수 연결
-            slotUIs[i].onClick += OnItemMoveEnd;                    // 클릭을 했을 때 실행될 함수 연결
+            slotUIs[i].onClick += OnClick;                          // 클릭을 했을 때 실행될 함수 연결
             slotUIs[i].onShiftClick += OnItemSplit;                 // 쉬프트 클릭을 했을 때 실행될 함수 연결
             slotUIs[i].onPoinerEnter += OnItemDetailOn;             // 마우스가 들어갔을 때 실행될 함수 연결
             slotUIs[i].onPoinerExit += OnItemDetailOff;             // 마우스가 나갔을 때 실행될 함수 연결
@@ -171,6 +171,25 @@ public class InventoryUI : MonoBehaviour
     {
         OnItemMoveCancel(slotID);
         detail.Open(inven[slotID].ItemData);
+    }
+
+    /// <summary>
+    /// 마우스가 슬롯에서 클릭이 되었을 때 실행될 함수
+    /// </summary>
+    /// <param name="slotID">클릭된 슬롯의 ID</param>
+    private void OnClick(uint slotID)
+    {
+        if( tempSlotUI.ItemSlot.IsEmpty )
+        {
+            // 아이템을 사용할 용도
+            ItemSlot useItemSlot = inven[slotID];
+            useItemSlot.UseSlotItem(Owner.gameObject);
+        }
+        else
+        {
+            // 임시 슬롯의 아이템을 slotID 슬롯에 넣을 용도
+            OnItemMoveEnd(slotID);
+        }
     }
 
     /// <summary>
