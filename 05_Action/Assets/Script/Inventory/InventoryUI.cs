@@ -40,6 +40,12 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     PlayerInputActions inputActions;
 
+    /// <summary>
+    /// 인벤토리에서 인벤토리를 소유한 플레이어를 가져와 확인 시켜주는 프로퍼티
+    /// </summary>
+    public Player Owner => inven.Owner;
+
+
     private void Awake()
     {
         // 컴포넌트 찾기
