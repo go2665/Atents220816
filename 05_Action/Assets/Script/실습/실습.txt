@@ -219,3 +219,16 @@
 2. 아이템을 드랍할 때 플레이어의 위치에서 itemPickupRange보다 먼 곳에 아이템이 드랍되지 않게 만들기
    2.1. TempItemSlotUI의 OnDrop 함수 수정하기
    시간 : 10시 20분까지
+
+3. 마나 포션 만들기
+   3.1. Player에 IHealth와 유사한 IMana 인터페이스 상속받게 만들기
+   3.2. 04_ManaPotion 만들기
+       3.2.1. ManaPotion은 사용 가능한 아이템이다.
+       3.2.2. ManaPotion은 초당 10씩 3초간 회복된다.
+
+4. 플레이어용 MP바 만들기
+   4.1. Player의 HP바와 유사한 MP바 만들기
+   4.2. Player의 HP와 MP랑 연동되어야 한다.
+
+   시간 : 2시 20분까지
+
