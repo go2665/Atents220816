@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class Player : MonoBehaviour, IBattle, IHealth
+public class Player : MonoBehaviour, IBattle, IHealth, IMana
 {
     /// <summary>
     /// 무기에 붙어있는 파티클 시스템 컴포넌트
@@ -35,8 +35,11 @@ public class Player : MonoBehaviour, IBattle, IHealth
     public float defencePower = 3.0f;      // 방어력
     public float maxHP = 100.0f;    // 최대 HP
     float hp = 100.0f;              // 현재 HP
-    bool isAlive = true;            // 살았는지 죽었는지 확인용
 
+    public float maxMP = 100.0f;    // 최대 MP
+    float mp = 100.0f;              // 현재 MP
+
+    bool isAlive = true;            // 살았는지 죽었는지 확인용
 
     Inventory inven;
 
@@ -68,13 +71,32 @@ public class Player : MonoBehaviour, IBattle, IHealth
         }
     }
 
-    // 프로퍼티 ------------------------------------------------------------------------------------
     public float MaxHP => maxHP;
     public bool IsAlive => isAlive;
+    public float MP 
+    {
+        get => mp; 
+        set
+        {
+            if (isAlive && mp != value) // 살아있고 mp가 변경되었을 때만 실행
+            {
+                mp = Mathf.Clamp(value, 0.0f, maxMP);
+
+                onManaChange?.Invoke(mp / maxMP);
+            }
+        }
+    }
+
+    public float MaxMP => maxMP;
+
 
     // 델리게이트 ----------------------------------------------------------------------------------
     public Action<float> onHealthChange { get; set; }
-    public Action onDie { get; set; }
+
+    public Action<float> onManaChange { get; set; }
+
+    public Action onDie { get; set; }    
+
     // --------------------------------------------------------------------------------------------
 
     private void Awake()
@@ -199,6 +221,57 @@ public class Player : MonoBehaviour, IBattle, IHealth
             {
                 Destroy(itemCollider.gameObject);   // 아이템 오브젝트 삭제하기
             }
+        }
+    }
+
+    /// <summary>
+    /// 마나 회복용 함수
+    /// </summary>
+    /// <param name="totalRegen">전체 회복량</param>
+    /// <param name="duration">전체 회복하는데 걸리는 시간</param>
+    public void ManaRegenerate(float totalRegen, float duration)
+    {
+        StartCoroutine(ManaRegeneration(totalRegen, duration));
+        //StartCoroutine(ManaRegeneration_Tick(totalRegen, duration));
+    }
+
+    /// <summary>
+    /// 마나 회복용 코루틴
+    /// </summary>
+    /// <param name="totalRegen">전체 회복량</param>
+    /// <param name="duration">전체 회복하는데 걸리는 시간</param>
+    /// <returns></returns>
+    IEnumerator ManaRegeneration(float totalRegen, float duration)
+    {
+        //float timeStart = Time.realtimeSinceStartup;    // 시작 시간 기록
+        //Debug.Log($"Regen Start");
+        float regenPerSec = totalRegen / duration;      // 초당 회복량 계산
+        float timeElapsed = 0.0f;                       // 진행 시간 기록용
+        while(timeElapsed < duration)                   // 진행시간이 duration을 지날 때까지 반복
+        {
+            timeElapsed += Time.deltaTime;              // 진행시간 누적시키기
+            MP += Time.deltaTime * regenPerSec;         // MP를 1초에 초당 회복량만큼 증가
+            yield return null;                          // 다음 프레임 시작까지 대기
+        }
+        //Debug.Log($"Regen End : ({Time.realtimeSinceStartup - timeStart})");    // 전체 걸린 시간 측정용
+    }
+
+    /// <summary>
+    /// 틱마다 마나가 회복되는 코루틴
+    /// </summary>
+    /// <param name="totalRegen">전체 회복량</param>
+    /// <param name="duration">전체 회복하는데 걸리는 시간</param>
+    /// <returns></returns>
+    IEnumerator ManaRegeneration_Tick(float totalRegen, float duration)
+    {
+        float tick = 1.0f;                                  // 1번 회복하는 시간 간격(1초에 한번씩 회복이 발생한다)
+        int regenCount = Mathf.FloorToInt(duration / tick); // 전체 회복 횟수
+        float regenPerTick = totalRegen / regenCount;       // 한 틱당 회복량
+        for(int i=0;i<regenCount;i++)                       // 전체 반복 횟수만큼 for 진행
+        {
+            MP += regenPerTick;                             // 한 틱당 회복량을 추가
+            //Debug.Log($"Regen : {regenPerTick}");
+            yield return new WaitForSeconds(tick);          // 다음 틱까지 대기
         }
     }
 

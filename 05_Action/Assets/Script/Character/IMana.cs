@@ -15,7 +15,9 @@ public interface IMana
     Action<float> onManaChange { get; set; }
 
     /// <summary>
-    /// Update 함수에서 실행될 함수. 마나를 지속적으로 증가시켜주는 함수
+    /// 마나를 지속적으로 증가시켜주는 함수. 초당 totalRegen/duration 만큼씩 회복
     /// </summary>
-    void ManaRegenerate();
+    /// <param name="totalRegen">전체 회복량</param>
+    /// <param name="duration">지속 시간</param>
+    void ManaRegenerate(float totalRegen, float duration);
 }
