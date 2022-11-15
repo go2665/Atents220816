@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00c2eb24441a0d742aee689f99d0741f, type: 3}
+  m_Name: 05_CopperCoin
+  m_EditorClassIdentifier: 
+  id: 5
+  itemName: "\uAD6C\uB9AC\uB3D9\uC804"
+  modelPrefab: {fileID: 3841066470805140976, guid: f7c8f7548dbc92345b013a0a18d602f8, type: 3}
+  itemIcon: {fileID: 21300000, guid: 4605338a5a51383478a6b8eb3707e90c, type: 3}
+  value: 1
+  maxStackCount: 1
+  itemDescription: "\uAD6C\uB9AC\uB3D9\uC804. 1\uAC1C\uC5D0 1\uC6D0\uC774\uB2E4."

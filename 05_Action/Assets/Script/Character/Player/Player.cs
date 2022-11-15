@@ -234,10 +234,22 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
         {
             Item item = itemCollider.gameObject.GetComponent<Item>();
 
-            if( inven.AddItem(item.data) )  // 추가가 성공하면
+            // 즉시 사용해야 하는 아이템인지 확인
+            IConsumable consumable = item.data as IConsumable;
+            if(consumable != null)
             {
-                Destroy(itemCollider.gameObject);   // 아이템 오브젝트 삭제하기
+                // 즉시 사용되는 아이템
+                consumable.Consume(this.gameObject);    // 즉시 사용
+                Destroy(itemCollider.gameObject);       // 삭제
             }
+            else
+            {
+                // 인벤토리에 들어갈 아이템
+                if (inven.AddItem(item.data))           // 인벤토리에 추가하고, 추가가 성공하면
+                {
+                    Destroy(itemCollider.gameObject);   // 아이템 오브젝트 삭제하기
+                }
+            }            
         }
     }
 
