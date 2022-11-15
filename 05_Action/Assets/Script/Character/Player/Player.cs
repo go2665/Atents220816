@@ -43,7 +43,9 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
 
     Inventory inven;
 
-    public float itemPickupRange = 2.0f; 
+    public float itemPickupRange = 2.0f;
+
+    int money = 0;
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     public float AttackPower => attackPower;
@@ -89,8 +91,23 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
 
     public float MaxMP => maxMP;
 
+    public int Money
+    {
+        get => money;
+        set
+        {
+            if(money != value)
+            {
+                money = value;
+                onMoneyChange?.Invoke(money);
+            }
+        }
+    }
+
 
     // 델리게이트 ----------------------------------------------------------------------------------
+    public Action<int> onMoneyChange;   // 돈이 변경되면 실행될 델리게이트
+
     public Action<float> onHealthChange { get; set; }
 
     public Action<float> onManaChange { get; set; }
