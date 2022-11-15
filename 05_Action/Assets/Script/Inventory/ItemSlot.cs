@@ -163,14 +163,23 @@ public class ItemSlot
     /// <param name="target">아이템의 효과를 받을 대상</param>
     public void UseSlotItem(GameObject target = null)
     {
-        IUsable usable = ItemData as IUsable;   // 사용가능한 아이템인지 확인
-        if(usable != null)
+        IEquipItem equip = ItemData as IEquipItem;
+        if (equip != null)
         {
-            if( usable.Use(target) )            // 아이템을 사용하고 성공적으로 사용했는지 확인
-            {
-                DecreaseSlotItem();             // 성공적으로 사용되었으면 아이템 갯수 1개 감소
-            }
+            // 아이템 장비처리
         }
+        else
+        {
+            // 장비 아이템이 아니다.
+            IUsable usable = ItemData as IUsable;   // 사용가능한 아이템인지 확인
+            if (usable != null)
+            {
+                if (usable.Use(target))            // 아이템을 사용하고 성공적으로 사용했는지 확인
+                {
+                    DecreaseSlotItem();             // 성공적으로 사용되었으면 아이템 갯수 1개 감소
+                }
+            }
+        }        
     }
 
     /// <summary>
