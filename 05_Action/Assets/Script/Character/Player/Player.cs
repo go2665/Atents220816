@@ -47,6 +47,9 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
 
     int money = 0;
 
+    /// <summary>
+    /// 파츠별 아이템 장비 현황을 나타내는 변수
+    /// </summary>
     ItemData_EquipItem[] partsItems;
 
     // 프로퍼티 ------------------------------------------------------------------------------------
@@ -106,6 +109,9 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         }
     }
 
+    /// <summary>
+    /// 아이템 장비 현황을 확인할 수 있는 프로퍼티
+    /// </summary>
     public ItemData_EquipItem[] PartsItems => partsItems;    
 
 
@@ -318,25 +324,39 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         }
     }
 
+    /// <summary>
+    /// 아이템을 장비하는 함수
+    /// </summary>
+    /// <param name="part">아이템 장비할 부위</param>
+    /// <param name="itemData">장비할 아이템</param>
     public void EquipItem(EquipPartType part, ItemData_EquipItem itemData)
     {
-        Transform partTransform = GetPartTransform(part);
-        Instantiate(itemData.equipPrefab, partTransform);
-        partsItems[(int)part] = itemData;
+        Transform partTransform = GetPartTransform(part);   // 아이템이 장착될 부모 트랜드폼 가져오기
+        Instantiate(itemData.equipPrefab, partTransform);   // 아이템을 생성해서 partTransform의 자식으로 붙임
+        partsItems[(int)part] = itemData;                   // 아이템이 장비되었다고 표시
     }
 
+    /// <summary>
+    /// 아이템을 장비해제하는 함수
+    /// </summary>
+    /// <param name="part">아이템을 장비해제할 부위</param>
     public void UnEquipItem(EquipPartType part)
     {
-        Transform partTransform = GetPartTransform(part);
-        while( partTransform.childCount > 0 )
+        Transform partTransform = GetPartTransform(part);   // 아이템이 장착 해제될 부모 트랜드폼 가져오기
+        while ( partTransform.childCount > 0 )
         {
-            Transform child = partTransform.GetChild(0);
+            Transform child = partTransform.GetChild(0);    // 자식들 모두 제거
             child.parent = null;
-            Destroy(child);
+            Destroy(child.gameObject);
         }
-        partsItems[(int)part] = null;
+        partsItems[(int)part] = null;                       // 아이템 장비가 해제되었다고 표시
     }
 
+    /// <summary>
+    /// 아이템이 장비될 트랜스폼을 돌려주는 함수
+    /// </summary>
+    /// <param name="part">확인할 부위</param>
+    /// <returns>확인할 부위에 아이템이 붙을 부모 트랜스폼</returns>
     private Transform GetPartTransform(EquipPartType part)
     {
         Transform result = null;
