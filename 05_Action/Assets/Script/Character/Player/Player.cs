@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class Player : MonoBehaviour, IBattle, IHealth, IMana
+public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
 {
     /// <summary>
     /// 무기에 붙어있는 파티클 시스템 컴포넌트
@@ -46,6 +46,8 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
     public float itemPickupRange = 2.0f;
 
     int money = 0;
+
+    ItemData_EquipItem[] partsItems;
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     public float AttackPower => attackPower;
@@ -104,6 +106,8 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
         }
     }
 
+    public ItemData_EquipItem[] PartsItems => partsItems;    
+
 
     // 델리게이트 ----------------------------------------------------------------------------------
     public Action<int> onMoneyChange;   // 돈이 변경되면 실행될 델리게이트
@@ -112,7 +116,8 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
 
     public Action<float> onManaChange { get; set; }
 
-    public Action onDie { get; set; }    
+    public Action onDie { get; set; }
+
 
     // --------------------------------------------------------------------------------------------
 
@@ -127,6 +132,8 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
         weaponPS = weapon_r.GetComponentInChildren<ParticleSystem>();   // 무기에 붙어있는 파티클 시스템 가져오기
         weaponBlade = weapon_r.GetComponentInChildren<Collider>();      // 무기의 충돌 영역 가져오기                
 
+        partsItems = new ItemData_EquipItem[Enum.GetValues(typeof(EquipPartType)).Length];
+
         inven = new Inventory(this);
     }
 
@@ -137,6 +144,13 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
 
         GameManager.Inst.InvenUI.InitializeInventory(inven);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Handles.DrawWireDisc(transform.position, transform.up, itemPickupRange);
+    }
+#endif
 
     /// <summary>
     /// 무기의 이팩트를 키고 끄는 함수
@@ -304,12 +318,37 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana
         }
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
+    public void EquipItem(EquipPartType part, ItemData_EquipItem itemData)
     {
-        Handles.DrawWireDisc(transform.position, transform.up, itemPickupRange);
+        Transform partTransform = GetPartTransform(part);
+        Instantiate(itemData.equipPrefab, partTransform);
+        partsItems[(int)part] = itemData;
     }
-#endif
 
+    public void UnEquipItem(EquipPartType part)
+    {
+        Transform partTransform = GetPartTransform(part);
+        while( partTransform.childCount > 0 )
+        {
+            Transform child = partTransform.GetChild(0);
+            child.parent = null;
+            Destroy(child);
+        }
+        partsItems[(int)part] = null;
+    }
 
+    private Transform GetPartTransform(EquipPartType part)
+    {
+        Transform result = null;
+        switch (part)
+        {
+            case EquipPartType.Weapon:
+                result = weapon_r;
+                break;
+            case EquipPartType.Shield:
+                result = weapon_l;
+                break;         
+        }
+        return result;
+    }
 }
