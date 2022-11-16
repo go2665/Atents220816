@@ -178,7 +178,7 @@ public class ItemSlot
             if( isEquip )
             {
                 onSlotItemEquip?.Invoke();          // 아이템이 장비되면 델리게이트 실행
-            }
+            }            
         }
         else
         {

@@ -136,11 +136,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
 
         weapon_r = GetComponentInChildren<WeaponPosition>().transform;  // 무기가 붙는 위치를 컴포넌트의 타입으로 찾기
         weapon_l = GetComponentInChildren<ShildPosition>().transform;   // 방패가 붙는 위치를 컴포넌트의 타입으로 찾기
-
-        // 장비교체가 일어나면 새로 설정해야 한다.
-        weaponPS = weapon_r.GetComponentInChildren<ParticleSystem>();   // 무기에 붙어있는 파티클 시스템 가져오기
-        weaponBlade = weapon_r.GetComponentInChildren<Collider>();      // 무기의 충돌 영역 가져오기                
-
+        
         partsItems = new ItemData_EquipItem[Enum.GetValues(typeof(EquipPartType)).Length];
 
         inven = new Inventory(this);
@@ -337,6 +333,12 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         Transform partTransform = GetPartTransform(part);   // 아이템이 장착될 부모 트랜드폼 가져오기
         Instantiate(itemData.equipPrefab, partTransform);   // 아이템을 생성해서 partTransform의 자식으로 붙임
         partsItems[(int)part] = itemData;                   // 아이템이 장비되었다고 표시        
+
+        if (part == EquipPartType.Weapon)
+        {
+            weaponPS = weapon_r.GetComponentInChildren<ParticleSystem>();   // 무기에 붙어있는 파티클 시스템 가져오기
+            weaponBlade = weapon_r.GetComponentInChildren<Collider>();      // 무기의 충돌 영역 가져오기      
+        }
     }
 
     /// <summary>
