@@ -49,8 +49,11 @@ public class ItemData_EquipItem : ItemData, IEquipItem
     /// 아이템을 자연스럽게 장착하고 해제하는 함수
     /// </summary>
     /// <param name="target">장비하고 해제할 대상</param>
-    public virtual void AutoEquipItem(GameObject target)
+    /// <returns>장비를 했으면 true, 해제를 했으면 false</returns>
+    public virtual bool AutoEquipItem(GameObject target)
     {
+        bool result = false;
+
         // 대상이 아이템을 장비할 수 있는지 확인
         IEquipTarget equipTarget = target.GetComponent<IEquipTarget>();
         if (equipTarget != null)
@@ -64,13 +67,17 @@ public class ItemData_EquipItem : ItemData, IEquipItem
                 if (equipItem != this)
                 {
                     EquipItem(target);  // 같은 파츠인데 다른 아이템이 장비 시도되었으면 다른 아이템을 장비
+                    result = true;
                 }
             }
             else
             {
                 // 지금 장비된 아이템이 없다.
                 EquipItem(target);      // 아이템 장비
+                result = true;
             }
         }
+
+        return result;
     }
 }

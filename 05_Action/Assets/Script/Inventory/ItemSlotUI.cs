@@ -58,6 +58,7 @@ public class ItemSlotUI
         this.id = id;
         this.itemSlot = slot;
         this.itemSlot.onSlotItemChange = Refresh;
+        this.itemSlot.onSlotItemEquip = SetEquipMark;
 
         onDragStart = null;
         onDragEnd = null;
@@ -69,6 +70,7 @@ public class ItemSlotUI
         onPoinerMove = null;
 
         Refresh();
+        ClearEquipMark();
     }
 
     /// <summary>
@@ -100,7 +102,6 @@ public class ItemSlotUI
             itemImage.color = Color.white;                  // 불투명화
             itemCountText.text = itemSlot.ItemCount.ToString(); // 아이템 갯수 설정
         }
-        ClearEquipMark();
     }
 
     public void SetEquipMark()

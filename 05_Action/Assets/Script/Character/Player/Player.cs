@@ -125,6 +125,9 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     public Action onDie { get; set; }
 
 
+    public Action<EquipPartType> onEquipItemClear;   // 장비 아이템이 변경되었음을 알리는 델리게이트
+
+
     // --------------------------------------------------------------------------------------------
 
     private void Awake()
@@ -333,7 +336,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     {
         Transform partTransform = GetPartTransform(part);   // 아이템이 장착될 부모 트랜드폼 가져오기
         Instantiate(itemData.equipPrefab, partTransform);   // 아이템을 생성해서 partTransform의 자식으로 붙임
-        partsItems[(int)part] = itemData;                   // 아이템이 장비되었다고 표시
+        partsItems[(int)part] = itemData;                   // 아이템이 장비되었다고 표시        
     }
 
     /// <summary>
@@ -350,6 +353,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
             Destroy(child.gameObject);
         }
         partsItems[(int)part] = null;                       // 아이템 장비가 해제되었다고 표시
+        onEquipItemClear?.Invoke(part);                     // 아이템이 해제된 장비를 알림
     }
 
     /// <summary>

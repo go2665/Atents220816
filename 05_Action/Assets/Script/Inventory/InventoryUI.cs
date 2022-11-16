@@ -144,9 +144,28 @@ public class InventoryUI : MonoBehaviour
         tempSlotUI.onTempSlotOpenClose += OnDetailPause;
         tempSlotUI.Close(); // 기본적으로 닫아 놓기
 
+        // 특정 파트의 아이템이 해제되었을 때 실행될 델리게이트에 함수 연결
+        Owner.onEquipItemClear += OnEquipPartClear;
+
         // 돈이 변경되면 moneyPanel도 갱신되게 변경
         Owner.onMoneyChange += moneyPanel.Refresh;
         moneyPanel.Refresh(Owner.Money);
+    }
+
+    /// <summary>
+    /// 특정한 파트에 장착되는 아이템은 모두 장착해제로 표시
+    /// </summary>
+    /// <param name="part">장착 해제 표시할 파트</param>
+    private void OnEquipPartClear(EquipPartType part)
+    {
+        foreach(var slotUI in slotUIs)      // 모든 슬롯을 돌면서
+        {
+            ItemData_EquipItem equipItem = slotUI.ItemSlot.ItemData as ItemData_EquipItem;
+            if(equipItem != null && equipItem.EquipPart == part)    // 같은 종류의 파츠면
+            {
+                slotUI.ClearEquipMark();    // 장착 해제
+            }
+        }
     }
 
     /// <summary>

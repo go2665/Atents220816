@@ -23,5 +23,6 @@ interface IEquipItem
     /// 아이템을 자연스럽게 장착하고 해제하는 함수
     /// </summary>
     /// <param name="target">장비하고 해제할 대상</param>
-    void AutoEquipItem(GameObject target);
+    /// <returns>true면 아이템 장비, false 이이템 해제</returns>
+    bool AutoEquipItem(GameObject target);
 }
