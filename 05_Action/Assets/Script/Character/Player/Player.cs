@@ -136,7 +136,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
 
         weapon_r = GetComponentInChildren<WeaponPosition>().transform;  // 무기가 붙는 위치를 컴포넌트의 타입으로 찾기
         weapon_l = GetComponentInChildren<ShildPosition>().transform;   // 방패가 붙는 위치를 컴포넌트의 타입으로 찾기
-        
+                
         partsItems = new ItemData_EquipItem[Enum.GetValues(typeof(EquipPartType)).Length];
 
         inven = new Inventory(this);

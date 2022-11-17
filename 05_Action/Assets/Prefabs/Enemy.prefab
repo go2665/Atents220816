@@ -674,9 +674,9 @@ MonoBehaviour:
   maxHP: 100
   dropItems:
   - id: 0
-    dropPercentage: 0.90004444
+    dropPercentage: 0.581756
   - id: 1
-    dropPercentage: 0.09995557
+    dropPercentage: 0.418244
 --- !u!195 &6819093267690730187
 NavMeshAgent:
   m_ObjectHideFlags: 0

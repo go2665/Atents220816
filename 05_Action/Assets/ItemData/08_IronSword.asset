@@ -20,4 +20,5 @@ MonoBehaviour:
   maxStackCount: 1
   itemDescription: "\uC1E0\uB85C \uB9CC\uB4E0 \uD55C\uC190\uAC80\uC774\uB2E4.\\n\uACF5\uACA9\uB825
     : 30"
+  equipPrefab: {fileID: 5610884078883986163, guid: bcb10bfbf78e4344485d656b0f14a2bd, type: 3}
   attackPower: 30
