@@ -15,7 +15,7 @@ public class ItemData_EquipItem : ItemData, IEquipItem
     /// <summary>
     /// 이 아이템이 어떤 부분에 장비 될 것인지를 알려주는 프로퍼티. 상속 받는 곳에서 리턴하는 것을 변경해야만 한다.
     /// </summary>
-    public EquipPartType EquipPart => EquipPartType.Weapon;
+    public virtual EquipPartType EquipPart => EquipPartType.Weapon;
 
     /// <summary>
     /// 아이템 장비하기
