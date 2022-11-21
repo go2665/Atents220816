@@ -89,6 +89,16 @@ public class TempItemSlotUI : ItemSlotUI
                     dropPos = owner.transform.position + dropDir.normalized * owner.itemPickupRange;
                 }
 
+                // 아이템을 땅에 버릴 때 아이템을 장착하고 있으면 해제하고 버리기
+                if (ItemSlot.IsEquipped)
+                {
+                    ItemData_EquipItem equipItem = ItemSlot.ItemData as ItemData_EquipItem;
+                    if (equipItem)
+                    {
+                        equipItem.UnEquipItem(owner.gameObject, ItemSlot);        
+                    }
+                }
+
                 // 아이템 생성
                 ItemFactory.MakeItem((int)ItemSlot.ItemData.id, (int)ItemSlot.ItemCount, dropPos, true);
                 ItemSlot.ClearSlotItem();   // 임시 슬롯 비우고
