@@ -174,7 +174,7 @@ public class ItemSlot
         if (equip != null)
         {
             // 아이템 장비처리
-            bool isEquip = equip.AutoEquipItem(target);            
+            bool isEquip = equip.AutoEquipItem(target, this);
             if( isEquip )
             {
                 onSlotItemEquip?.Invoke();          // 아이템이 장비되면 델리게이트 실행

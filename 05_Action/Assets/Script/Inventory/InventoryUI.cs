@@ -84,6 +84,7 @@ public class InventoryUI : MonoBehaviour
         inputActions.UI.Enable();
         inputActions.UI.Click.performed += spliter.OnMouseClick;
         inputActions.UI.Click.canceled += tempSlotUI.OnDrop;
+        inputActions.UI.InventoryOnOff.performed += InventoryShortCut;
     }
 
     private void OnDisable()
@@ -180,6 +181,22 @@ public class InventoryUI : MonoBehaviour
         canvasGroup.blocksRaycasts = false; // 레이케스트가 작동이 안되게 만들어서 클릭이 안되게 만들기
         canvasGroup.interactable = false;
         canvasGroup.alpha = 0;
+    }
+
+    /// <summary>
+    /// 인벤토리 열고 닫는 단축키용 함수
+    /// </summary>
+    /// <param name="_"></param>
+    private void InventoryShortCut(InputAction.CallbackContext _)
+    {
+        if (canvasGroup.interactable)  // 인벤토리가 열려있는지 닫혀있는지 확인
+        {
+            Close();    // 열려 있으면 닫고
+        }
+        else
+        {
+            Open();     // 닫혀 있으면 연다.
+        }
     }
 
     /// <summary>

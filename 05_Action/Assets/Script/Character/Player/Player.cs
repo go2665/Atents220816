@@ -48,9 +48,9 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     int money = 0;
 
     /// <summary>
-    /// 파츠별 아이템 장비 현황을 나타내는 변수
+    /// 파츠별 아이템 장비 현황을 나타내는 변수(슬롯으로 저장)
     /// </summary>
-    ItemData_EquipItem[] partsItems;
+    ItemSlot[] partsSlots;
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     public float AttackPower => attackPower;
@@ -112,7 +112,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     /// <summary>
     /// 아이템 장비 현황을 확인할 수 있는 프로퍼티
     /// </summary>
-    public ItemData_EquipItem[] PartsItems => partsItems;    
+    public ItemSlot[] PartsSlots => partsSlots;    
 
 
     // 델리게이트 ----------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         weapon_r = GetComponentInChildren<WeaponPosition>().transform;  // 무기가 붙는 위치를 컴포넌트의 타입으로 찾기
         weapon_l = GetComponentInChildren<ShildPosition>().transform;   // 방패가 붙는 위치를 컴포넌트의 타입으로 찾기
                 
-        partsItems = new ItemData_EquipItem[Enum.GetValues(typeof(EquipPartType)).Length];
+        partsSlots = new ItemSlot[Enum.GetValues(typeof(EquipPartType)).Length];
 
         inven = new Inventory(this);
     }
@@ -327,17 +327,22 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     /// 아이템을 장비하는 함수
     /// </summary>
     /// <param name="part">아이템 장비할 부위</param>
-    /// <param name="itemData">장비할 아이템</param>
-    public void EquipItem(EquipPartType part, ItemData_EquipItem itemData)
+    /// <param name="itemSlot">장비할 아이템이 들어있는 슬롯</param>
+    public void EquipItem(EquipPartType part, ItemSlot itemSlot)
     {
         Transform partTransform = GetPartTransform(part);   // 아이템이 장착될 부모 트랜드폼 가져오기
-        Instantiate(itemData.equipPrefab, partTransform);   // 아이템을 생성해서 partTransform의 자식으로 붙임
-        partsItems[(int)part] = itemData;                   // 아이템이 장비되었다고 표시        
 
-        if (part == EquipPartType.Weapon)
+        ItemData_EquipItem equipItem = itemSlot.ItemData as ItemData_EquipItem;
+        if (equipItem != null)  // ItemData_EquipItem일때만 처리
         {
-            weaponPS = weapon_r.GetComponentInChildren<ParticleSystem>();   // 무기에 붙어있는 파티클 시스템 가져오기
-            weaponBlade = weapon_r.GetComponentInChildren<Collider>();      // 무기의 충돌 영역 가져오기      
+            Instantiate(equipItem.equipPrefab, partTransform);  // 아이템을 생성해서 partTransform의 자식으로 붙임
+            partsSlots[(int)part] = itemSlot;                   // 아이템이 장비되었다고 표시        
+
+            if (part == EquipPartType.Weapon)
+            {
+                weaponPS = weapon_r.GetComponentInChildren<ParticleSystem>();   // 무기에 붙어있는 파티클 시스템 가져오기
+                weaponBlade = weapon_r.GetComponentInChildren<Collider>();      // 무기의 충돌 영역 가져오기      
+            }
         }
     }
 
@@ -354,7 +359,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
             child.parent = null;
             Destroy(child.gameObject);
         }
-        partsItems[(int)part] = null;                       // 아이템 장비가 해제되었다고 표시
+        partsSlots[(int)part] = null;                       // 아이템 장비가 해제되었다고 표시
         onEquipItemClear?.Invoke(part);                     // 아이템이 해제된 장비를 알림
     }
 

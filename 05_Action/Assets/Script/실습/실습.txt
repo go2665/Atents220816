@@ -263,4 +263,8 @@
 11/21
 1. 파티클 시스템을 이용해서 이팩트 만들어보기
    1.1. 칼 주변에 이팩트 추가하기
+   힌트
+     1. Shape -> Shape -> Mesh
+     2. Main -> Gravity Modifier
+     3. Velocity over Lifetime -> Radial
    시간 : 10시 30분까지 -> 10시 50분까지
