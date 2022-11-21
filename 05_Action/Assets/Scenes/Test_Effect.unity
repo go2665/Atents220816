@@ -302,7 +302,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -10225,7 +10225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4502165957148481221, guid: 69b9816d290774840b0efb0469e307f7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4502165957148481221, guid: 69b9816d290774840b0efb0469e307f7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10233,7 +10233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4502165957148481221, guid: 69b9816d290774840b0efb0469e307f7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.38
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 4502165957148481221, guid: 69b9816d290774840b0efb0469e307f7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10245,11 +10245,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4502165957148481221, guid: 69b9816d290774840b0efb0469e307f7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4502165957148481221, guid: 69b9816d290774840b0efb0469e307f7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4502165957148481221, guid: 69b9816d290774840b0efb0469e307f7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10448,7 +10448,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
