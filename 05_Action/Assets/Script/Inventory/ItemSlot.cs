@@ -21,6 +21,11 @@ public class ItemSlot
     /// </summary>
     uint itemCount = 0;
 
+    /// <summary>
+    /// 이 슬롯의 아이템을 장비했는지를 표시하는 변수
+    /// </summary>
+    bool isEquipped = false;
+
     // 프로퍼티 ------------------------------------------------------------------------------------
 
     /// <summary>
@@ -56,6 +61,16 @@ public class ItemSlot
         }
     }
 
+    public bool IsEquipped
+    {
+        get => isEquipped;
+        set
+        {
+            isEquipped = value;
+            onSlotItemEquip?.Invoke(isEquipped);
+        }
+    }
+
     // 프로퍼티(읽기전용) --------------------------------------------------------------------------
 
     /// <summary>
@@ -79,7 +94,7 @@ public class ItemSlot
     /// <summary>
     /// 아이템 장비되었을 때 실행되는 델리게이트
     /// </summary>
-    public Action onSlotItemEquip;
+    public Action<bool> onSlotItemEquip;
 
 
     // 함수들 --------------------------------------------------------------------------------------
@@ -94,12 +109,13 @@ public class ItemSlot
     /// </summary>
     /// <param name="data">추가할 아이템</param>
     /// <param name="count">설정된 갯수</param>
-    public void AssignSlotItem(ItemData data, uint count = 1)
+    public void AssignSlotItem(ItemData data, bool isEquip, uint count = 1)
     {
         if (data != null)   
         {
             // data가 null이 아니면 파라메터대로 설정
             ItemCount = count;
+            IsEquipped = isEquip;
             ItemData = data;
             Debug.Log($"인벤토리 {slotIndex}번 슬롯에 \"{ItemData.itemName}\" 아이템 {ItemCount}개 설정");
         }
@@ -174,11 +190,7 @@ public class ItemSlot
         if (equip != null)
         {
             // 아이템 장비처리
-            bool isEquip = equip.AutoEquipItem(target, this);
-            if( isEquip )
-            {
-                onSlotItemEquip?.Invoke();          // 아이템이 장비되면 델리게이트 실행
-            }            
+            equip.AutoEquipItem(target, this);            
         }
         else
         {
@@ -200,6 +212,7 @@ public class ItemSlot
     public void ClearSlotItem()
     {
         ItemData = null;
+        IsEquipped = false;
         ItemCount = 0;
         Debug.Log($"인벤토리 {slotIndex}번 슬롯을 비웁니다.");
     }

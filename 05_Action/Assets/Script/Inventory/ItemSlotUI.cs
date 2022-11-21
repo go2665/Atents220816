@@ -104,14 +104,21 @@ public class ItemSlotUI
         }
     }
 
-    public void SetEquipMark()
+    public void SetEquipMark(bool isEquip)
     {
-        itemEquipText.color = Color.red;
+        if( isEquip )
+        {
+            itemEquipText.color = Color.red;
+        }
+        else
+        {
+            itemEquipText.color = Color.clear;
+        }
     }
 
     public void ClearEquipMark()
     {
-        itemEquipText.color = Color.clear;
+        SetEquipMark(false);
     }
 
     public void OnDrag(PointerEventData eventData)

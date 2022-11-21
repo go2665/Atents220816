@@ -108,7 +108,7 @@ public class Inventory
             if (emptySlot != null)
             {
                 // 비어있는 슬롯을 찾았다.
-                emptySlot.AssignSlotItem(data);
+                emptySlot.AssignSlotItem(data, false);
                 result = true;
             }
             else
@@ -149,7 +149,7 @@ public class Inventory
             if(slot.IsEmpty)                // 해당 슬롯이 비어있는가?
             {
                 // 비어있으면 그냥 아이템을 넣는다.
-                slot.AssignSlotItem(data);
+                slot.AssignSlotItem(data, false);
                 result = true;
             }
             else
@@ -257,9 +257,10 @@ public class Inventory
             {
                 // from과 to가 서로 다른 아이템을 가지고 있으면 서로 스왑처리
                 ItemData tempData = fromSlot.ItemData;
+                bool tempEqip = fromSlot.IsEquipped;
                 uint tempCount = fromSlot.ItemCount;
-                fromSlot.AssignSlotItem(toSlot.ItemData, toSlot.ItemCount);
-                toSlot.AssignSlotItem(tempData, tempCount);
+                fromSlot.AssignSlotItem(toSlot.ItemData, toSlot.IsEquipped, toSlot.ItemCount);
+                toSlot.AssignSlotItem(tempData, tempEqip, tempCount);
                 Debug.Log($"인벤토리의 {from}슬롯과 {to}슬롯의 아이템 교체 성공");
             }
         }
@@ -276,7 +277,7 @@ public class Inventory
         {
             ItemSlot fromSlot = slots[slotID];                  // 슬롯 가져오고
             fromSlot.DecreaseSlotItem(count);                   // 원래 슬롯에 들어있던 아이템 갯수는 count만큼 감소
-            tempSlot.AssignSlotItem(fromSlot.ItemData, count);  // 임시 슬롯에 원래 슬롯에 들어있던 아이템 종류를 count만큼 설정
+            tempSlot.AssignSlotItem(fromSlot.ItemData, fromSlot.IsEquipped, count);  // 임시 슬롯에 원래 슬롯에 들어있던 아이템 종류를 count만큼 설정
         }
     }
 
