@@ -3,38 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test_Light : TestBase
+public class Test_Effect : TestBase
 {
-    public Light targetLight;
+    TrailRenderer trail;
+    LineRenderer line;
 
     private void Start()
     {
-        GameObject obj = GameObject.Find("Directional Light");
-        targetLight = obj.GetComponent<Light>();
+        trail = FindObjectOfType<TrailRenderer>();
+        line = FindObjectOfType<LineRenderer>();
+        line.startColor = Color.green;
     }
 
     protected override void Test1(InputAction.CallbackContext _)
     {
-        targetLight.color = Color.red;
+        trail.time = 0.1f;
     }
 
     protected override void Test2(InputAction.CallbackContext _)
     {
-        targetLight.color = Color.green;
+        trail.time = 3.0f;
     }
 
     protected override void Test3(InputAction.CallbackContext _)
     {
-        targetLight.color = Color.blue;
+        trail.startWidth = 0.0f;
     }
 
     protected override void Test4(InputAction.CallbackContext _)
     {
-        targetLight.intensity = 5.0f;
-    }
-
-    protected override void Test5(InputAction.CallbackContext _)
-    {
-        targetLight.intensity = 1.0f;
+        trail.startWidth = 2.0f;
     }
 }
