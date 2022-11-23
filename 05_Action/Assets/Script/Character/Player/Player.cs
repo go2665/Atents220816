@@ -124,6 +124,11 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     /// </summary>
     public ItemSlot[] PartsSlots => partsSlots;
 
+    /// <summary>
+    /// 락온한 대상의 트랜스폼
+    /// </summary>
+    public Transform LockOnTransform => lockOnEffect.transform.parent;
+
 
     // 델리게이트 ----------------------------------------------------------------------------------
     public Action<int> onMoneyChange;   // 돈이 변경되면 실행될 델리게이트
@@ -150,7 +155,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         partsSlots = new ItemSlot[Enum.GetValues(typeof(EquipPartType)).Length];
 
         lockOnEffect = transform.GetChild(6).gameObject;
-        lockOnEffect.SetActive(false);
+        LockOff();
 
         inven = new Inventory(this);
     }
@@ -398,23 +403,44 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
 
     public void LockOnToggle()
     {
-        if(lockOnEffect.activeSelf)
-        {
-            LockOff();
-        }
-        else
-        {
-            LockOn();
-        }
+        LockOn();
     }
 
     void LockOn()
     {
-        lockOnEffect.SetActive(true);
+        // lockOnRange 거리 안에 있는 Enemy오브젝트 찾기
+        Collider[] enemies = Physics.OverlapSphere(transform.position, lockOnRange, LayerMask.GetMask("AttackTarget"));
+        if(enemies.Length > 0)
+        {
+            // 찾은 적 중 가장 가까이에 있는 적 찾기
+            Transform nearest = null;
+            float nearestDistance = float.MaxValue;
+            foreach(var enemy in enemies)
+            {
+                Vector3 dir = enemy.transform.position - transform.position;
+                float distanceSqr = dir.sqrMagnitude;   // root 연산은 느리기 때문에 sqrMagnitude 사용
+                if (distanceSqr < nearestDistance)
+                {
+                    nearestDistance = distanceSqr;
+                    nearest = enemy.transform;
+                }
+            }
+
+            // 가장 가까이에 있는 적에게 LockOnEffect 붙이기            
+            lockOnEffect.transform.SetParent(nearest);              // LockOnEffect의 부모를 적으로 설정
+            lockOnEffect.transform.localPosition = Vector3.zero;    // LockOnEffect의 위치를 적의 위치로 설정
+
+            lockOnEffect.SetActive(true);
+        }
+        else
+        {
+            LockOff();  // 주변에 적이 없는데 락온을 시도하면 락온 해제
+        }
     }
 
     void LockOff()
     {
+        lockOnEffect.transform.SetParent(null);
         lockOnEffect.SetActive(false);
     }
 

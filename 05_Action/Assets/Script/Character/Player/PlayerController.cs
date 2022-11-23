@@ -123,6 +123,12 @@ public class PlayerController : MonoBehaviour
             // inputDir방향으로 초당 moveSpeed의 속도로 이동.
             cc.Move(currentSpeed * Time.deltaTime * inputDir);
 
+            // 락온한 대상이 있으면 락온한 대상의 위치를 바라보게 만들기
+            if(player.LockOnTransform != null)
+            {
+                targetRotation = Quaternion.LookRotation(player.LockOnTransform.position - player.transform.position);
+            }
+
             // transform.rotation에서 targetRotation으로 초당 1/turnSpeed씩 보간.
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
         }
