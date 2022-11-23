@@ -55,6 +55,9 @@ public class InventoryUI : MonoBehaviour
     /// </summary>
     public Player Owner => inven.Owner;
 
+    public Action onInventoryOpen;
+    public Action onInventoryClose;
+
 
     private void Awake()
     {
@@ -171,6 +174,7 @@ public class InventoryUI : MonoBehaviour
         canvasGroup.alpha = 1;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
+        onInventoryOpen?.Invoke();
     }
 
     /// <summary>
@@ -181,6 +185,7 @@ public class InventoryUI : MonoBehaviour
         canvasGroup.blocksRaycasts = false; // 레이케스트가 작동이 안되게 만들어서 클릭이 안되게 만들기
         canvasGroup.interactable = false;
         canvasGroup.alpha = 0;
+        onInventoryClose?.Invoke();
     }
 
     /// <summary>

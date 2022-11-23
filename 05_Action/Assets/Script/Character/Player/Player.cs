@@ -382,4 +382,22 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         }
         return result;
     }
+
+    /// <summary>
+    /// 테스트용 함수. 아이템 추가하기
+    /// </summary>
+    /// <param name="itemData">추가할 아이템 종류</param>
+    public void Test_AddItem(ItemData itemData)
+    {
+        inven.AddItem(itemData);
+    }
+
+    /// <summary>
+    /// 테스트용 함수. 아이템 사용하기(장비도 가능)
+    /// </summary>
+    /// <param name="index">아이템을 사용할 슬롯</param>
+    public void Test_UseItem(uint index)
+    {
+        inven[index].UseSlotItem(this.gameObject);
+    }
 }

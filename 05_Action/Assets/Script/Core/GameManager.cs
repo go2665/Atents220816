@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     ItemDataManager itemData;
 
+    /// <summary>
+    /// 인벤토리 UI
+    /// </summary>
     InventoryUI inventoryUI;
 
 

@@ -83,6 +83,13 @@ public class PlayerController : MonoBehaviour
         player = GetComponent<Player>();
     }
 
+    private void Start()
+    {
+        InventoryUI invenUI = GameManager.Inst.InvenUI;
+        invenUI.onInventoryOpen += () => inputActions.Player.Disable();
+        invenUI.onInventoryClose += () => inputActions.Player.Enable();
+    }
+
     private void OnEnable()
     {
         // 인풋 액션에서 액션맵 활성화
