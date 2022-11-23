@@ -52,6 +52,16 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     /// </summary>
     ItemSlot[] partsSlots;
 
+    /// <summary>
+    /// 락온 이펙트
+    /// </summary>
+    GameObject lockOnEffect;
+
+    /// <summary>
+    /// 락온 범위
+    /// </summary>
+    float lockOnRange = 5.0f;
+
     // 프로퍼티 ------------------------------------------------------------------------------------
     public float AttackPower => attackPower;
 
@@ -66,23 +76,23 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
             {
                 hp = value;
 
-                if(hp < 0)
+                if (hp < 0)
                 {
                     Die();
                 }
 
                 hp = Mathf.Clamp(hp, 0.0f, maxHP);
 
-                onHealthChange?.Invoke(hp/maxHP);
+                onHealthChange?.Invoke(hp / maxHP);
             }
         }
     }
 
     public float MaxHP => maxHP;
     public bool IsAlive => isAlive;
-    public float MP 
+    public float MP
     {
-        get => mp; 
+        get => mp;
         set
         {
             if (isAlive && mp != value) // 살아있고 mp가 변경되었을 때만 실행
@@ -101,7 +111,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         get => money;
         set
         {
-            if(money != value)
+            if (money != value)
             {
                 money = value;
                 onMoneyChange?.Invoke(money);
@@ -112,7 +122,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     /// <summary>
     /// 아이템 장비 현황을 확인할 수 있는 프로퍼티
     /// </summary>
-    public ItemSlot[] PartsSlots => partsSlots;    
+    public ItemSlot[] PartsSlots => partsSlots;
 
 
     // 델리게이트 ----------------------------------------------------------------------------------
@@ -136,8 +146,11 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
 
         weapon_r = GetComponentInChildren<WeaponPosition>().transform;  // 무기가 붙는 위치를 컴포넌트의 타입으로 찾기
         weapon_l = GetComponentInChildren<ShildPosition>().transform;   // 방패가 붙는 위치를 컴포넌트의 타입으로 찾기
-                
+
         partsSlots = new ItemSlot[Enum.GetValues(typeof(EquipPartType)).Length];
+
+        lockOnEffect = transform.GetChild(6).gameObject;
+        lockOnEffect.SetActive(false);
 
         inven = new Inventory(this);
     }
@@ -163,9 +176,9 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     /// <param name="on">true면 무기 이팩트를 켜고, flase면 무기 이팩트를 끈다.</param>
     public void WeaponEffectSwitch(bool on)
     {
-        if( weaponPS != null )
+        if (weaponPS != null)
         {
-            if(on)
+            if (on)
             {
                 weaponPS.Play();    // 파티클 이팩트 재생 시작
             }
@@ -181,7 +194,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     /// </summary>
     public void WeaponBladeEnable()
     {
-        if(weaponBlade!=null)
+        if (weaponBlade != null)
         {
             weaponBlade.enabled = true;
         }
@@ -249,13 +262,13 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     {
         Collider[] items = Physics.OverlapSphere(transform.position, itemPickupRange, LayerMask.GetMask("Item"));
 
-        foreach(var itemCollider in items)
+        foreach (var itemCollider in items)
         {
             Item item = itemCollider.gameObject.GetComponent<Item>();
 
             // 즉시 사용해야 하는 아이템인지 확인
             IConsumable consumable = item.data as IConsumable;
-            if(consumable != null)
+            if (consumable != null)
             {
                 // 즉시 사용되는 아이템
                 consumable.Consume(this.gameObject);    // 즉시 사용
@@ -268,7 +281,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
                 {
                     Destroy(itemCollider.gameObject);   // 아이템 오브젝트 삭제하기
                 }
-            }            
+            }
         }
     }
 
@@ -295,7 +308,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         //Debug.Log($"Regen Start");
         float regenPerSec = totalRegen / duration;      // 초당 회복량 계산
         float timeElapsed = 0.0f;                       // 진행 시간 기록용
-        while(timeElapsed < duration)                   // 진행시간이 duration을 지날 때까지 반복
+        while (timeElapsed < duration)                   // 진행시간이 duration을 지날 때까지 반복
         {
             timeElapsed += Time.deltaTime;              // 진행시간 누적시키기
             MP += Time.deltaTime * regenPerSec;         // MP를 1초에 초당 회복량만큼 증가
@@ -315,7 +328,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
         float tick = 1.0f;                                  // 1번 회복하는 시간 간격(1초에 한번씩 회복이 발생한다)
         int regenCount = Mathf.FloorToInt(duration / tick); // 전체 회복 횟수
         float regenPerTick = totalRegen / regenCount;       // 한 틱당 회복량
-        for(int i=0;i<regenCount;i++)                       // 전체 반복 횟수만큼 for 진행
+        for (int i = 0; i < regenCount; i++)                       // 전체 반복 횟수만큼 for 진행
         {
             MP += regenPerTick;                             // 한 틱당 회복량을 추가
             //Debug.Log($"Regen : {regenPerTick}");
@@ -353,7 +366,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     public void UnEquipItem(EquipPartType part)
     {
         Transform partTransform = GetPartTransform(part);   // 아이템이 장착 해제될 부모 트랜드폼 가져오기
-        while ( partTransform.childCount > 0 )
+        while (partTransform.childCount > 0)
         {
             Transform child = partTransform.GetChild(0);    // 자식들 모두 제거
             child.parent = null;
@@ -378,9 +391,31 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
                 break;
             case EquipPartType.Shield:
                 result = weapon_l;
-                break;         
+                break;
         }
         return result;
+    }
+
+    public void LockOnToggle()
+    {
+        if(lockOnEffect.activeSelf)
+        {
+            LockOff();
+        }
+        else
+        {
+            LockOn();
+        }
+    }
+
+    void LockOn()
+    {
+        lockOnEffect.SetActive(true);
+    }
+
+    void LockOff()
+    {
+        lockOnEffect.SetActive(false);
     }
 
     /// <summary>

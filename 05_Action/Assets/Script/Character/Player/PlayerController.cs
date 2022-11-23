@@ -100,11 +100,13 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.MoveModeChange.performed += OnMoveModeChange;
         inputActions.Player.Attack.performed += OnAttack;
         inputActions.Player.Pickup.performed += OnPickup;
+        inputActions.Player.LockOn.performed += OnLockOn;
     }
 
     private void OnDisable()
     {
         // 액션과 함수 연결 해제
+        inputActions.Player.LockOn.performed -= OnLockOn;
         inputActions.Player.Pickup.performed -= OnPickup;
         inputActions.Player.Attack.performed -= OnAttack;
         inputActions.Player.MoveModeChange.performed -= OnMoveModeChange;
@@ -221,5 +223,15 @@ public class PlayerController : MonoBehaviour
     private void OnPickup(InputAction.CallbackContext _)
     {
         player.ItemPickup();
+    }
+
+
+    /// <summary>
+    /// 몬스터 락온 버튼을 눌렀을 때 실행
+    /// </summary>
+    /// <param name="context"></param>
+    private void OnLockOn(InputAction.CallbackContext context)
+    {
+        player.LockOnToggle();
     }
 }
