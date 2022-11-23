@@ -55,7 +55,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
     /// <summary>
     /// 락온 이펙트
     /// </summary>
-    GameObject lockOnEffect;
+    LockOnEffect lockOnEffect;
 
     /// <summary>
     /// 락온 범위
@@ -154,7 +154,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
 
         partsSlots = new ItemSlot[Enum.GetValues(typeof(EquipPartType)).Length];
 
-        lockOnEffect = transform.GetChild(6).gameObject;
+        lockOnEffect = GetComponentInChildren<LockOnEffect>();
         LockOff();
 
         inven = new Inventory(this);
@@ -427,10 +427,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
             }
 
             // 가장 가까이에 있는 적에게 LockOnEffect 붙이기            
-            lockOnEffect.transform.SetParent(nearest);              // LockOnEffect의 부모를 적으로 설정
-            lockOnEffect.transform.localPosition = Vector3.zero;    // LockOnEffect의 위치를 적의 위치로 설정
-
-            lockOnEffect.SetActive(true);
+            lockOnEffect.SetLockOnTarget(nearest);      // 부모지정과 위치 변경            
         }
         else
         {
@@ -440,8 +437,7 @@ public class Player : MonoBehaviour, IBattle, IHealth, IMana, IEquipTarget
 
     void LockOff()
     {
-        lockOnEffect.transform.SetParent(null);
-        lockOnEffect.SetActive(false);
+        lockOnEffect.SetLockOnTarget(null);
     }
 
     /// <summary>

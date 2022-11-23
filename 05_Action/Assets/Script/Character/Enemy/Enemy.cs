@@ -417,7 +417,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     public void Die()
     {
         State = EnemyState.Dead;
-        onDie?.Invoke();
+        onDie?.Invoke();        
 
         MakeDropItem();
     }
