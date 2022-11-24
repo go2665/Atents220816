@@ -245,7 +245,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         rigid = GetComponent<Rigidbody>();
         dieEffect = GetComponentInChildren<ParticleSystem>();
 
-        Enemy_AttackArea attackArea = GetComponentInChildren<Enemy_AttackArea>();
+        Enemy_AttackArea attackArea = GetComponentInChildren<Enemy_AttackArea>();        
         attackArea.onPlayerIn += (target) =>
         {
             if( State == EnemyState.Chase )     // 추적 상태이면 
@@ -384,20 +384,29 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
 
             Vector3 playerPos = colliders[0].transform.position;    // 플레이어의 위치
             Vector3 toPlayerDir = playerPos - transform.position;   // 플레이어로 가는 방향
-            
-            // 시야각 안에 플레이어가 있는지 확인
-            if(IsInSightAngle(toPlayerDir))
+
+            if( toPlayerDir.sqrMagnitude < closeSightRange * closeSightRange)  // 근접 시야 범위 안에 있는지 확인
             {
-                // 시야각 안에 player가 있다.
+                // 근접 시야 범위 안에 player가 있다.
 
-                // 시야가 다른 물체로 인해 막혔는지 확인
-                if(!IsSightBlocked(toPlayerDir))
+                chaseTarget = colliders[0].transform;   // 추적할 플레이어 저장
+                result = true;
+            }
+            else
+            {                
+                if (IsInSightAngle(toPlayerDir))    // 시야각 안에 플레이어가 있는지 확인
                 {
-                    // 시야가 다른 몰체로 인해 막히지 않았다.
+                    // 시야각 안에 player가 있다.
 
-                    chaseTarget = colliders[0].transform;   // 추적할 플레이어 저장
-                    result = true;
-                }                
+                    // 시야가 다른 물체로 인해 막혔는지 확인
+                    if (!IsSightBlocked(toPlayerDir))
+                    {
+                        // 시야가 다른 몰체로 인해 막히지 않았다.
+
+                        chaseTarget = colliders[0].transform;   // 추적할 플레이어 저장
+                        result = true;
+                    }
+                }
             }
         }
         //LayerMask.GetMask("Player","Water","UI"); // 리턴 2^6+2^4+2^5 = 64+16+32 = 112
@@ -572,6 +581,10 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         Handles.DrawLine(transform.position, transform.position + q2 * forward);    // 중심선을 시계방향으로 회전시켜서 그리기
 
         Handles.DrawWireArc(transform.position, transform.up, q1 * forward, sightHalfAngle * 2, sightRange, 5.0f);  // 호 그리기
+
+        // 근접 시야 처리
+        Handles.color = Color.yellow;
+        Handles.DrawWireDisc(transform.position, transform.up, closeSightRange);
 #endif
     }
 
