@@ -72,6 +72,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         Wait = 0,   // 대기 상태
         Patrol,     // 순찰 상태
         Chase,      // 추적 상태
+        Attack,     // 공격 상태
         Dead        // 사망 상태
     }
 
@@ -194,6 +195,11 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
                         anim.SetTrigger("Move");    // 이동하는 애니메이션 재생
                         stateUpdate = Update_Chase; // FixedUpdate에서 실행될 델리게이트 변경
                         break;
+                    case EnemyState.Attack:
+                        agent.isStopped = false;
+                        anim.SetTrigger("Stop");
+                        stateUpdate = Update_Attack;
+                        break;
                     case EnemyState.Dead:
                         agent.isStopped = true;     // 길찾기 정지
                         anim.SetTrigger("Die");     // 사망 애니메이션 재생                                                    
@@ -232,6 +238,17 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
         bodyCollider = GetComponent<SphereCollider>();
         rigid = GetComponent<Rigidbody>();
         dieEffect = GetComponentInChildren<ParticleSystem>();
+
+        Enemy_AttackArea attackArea = GetComponentInChildren<Enemy_AttackArea>();
+        attackArea.onPlayerIn += () =>
+        {
+            if( State == EnemyState.Chase )     // 추적 상태이면 
+            {
+                State = EnemyState.Attack;      // 공격 상태로 변경
+            }
+        };
+
+        attackArea.onPlayerOut += () => State = EnemyState.Chase;   // 플레이어가 공격 범위에서 벗어나면 다시 추적 상태로
     }
 
     private void Start()
@@ -260,7 +277,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     private void FixedUpdate()
     {
         // 매번 추적대상을 찾기
-        if(State != EnemyState.Dead && SearchPlayer())
+        if(State != EnemyState.Dead && State != EnemyState.Attack && SearchPlayer())
         {
             State = EnemyState.Chase;   // 추적 대상이 있으면 추적 상태로 변경
         }
@@ -307,7 +324,14 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
             State = EnemyState.Wait;    // 추적 대상이 없으면 잠시 대기
         }
     }
-    
+
+    /// <summary>
+    /// Update 상태일 때 실행될 업데이트 함수
+    /// </summary>
+    private void Update_Attack()
+    {
+    }
+
     /// <summary>
     /// Dead 상태일 때 실행될 업데이트 함수
     /// </summary>
