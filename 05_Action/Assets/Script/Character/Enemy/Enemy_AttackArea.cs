@@ -5,15 +5,16 @@ using UnityEngine;
 
 public class Enemy_AttackArea : MonoBehaviour
 {
-    public Action onPlayerIn;
-    public Action onPlayerOut;
+    public Action<IBattle> onPlayerIn;
+    public Action<IBattle> onPlayerOut;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
             Debug.Log("플레이어가 공격 범위에 들어옴.");
-            onPlayerIn?.Invoke();
+            IBattle battle = other.GetComponent<IBattle>();
+            onPlayerIn?.Invoke(battle);
         }
     }
 
@@ -22,7 +23,8 @@ public class Enemy_AttackArea : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("플레이어가 공격 범위에서 나감.");
-            onPlayerOut?.Invoke();
+            IBattle battle = other.GetComponent<IBattle>();
+            onPlayerOut?.Invoke(battle);
         }
     }
 }
