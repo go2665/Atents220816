@@ -11,20 +11,22 @@ public class Enemy_AttackArea : MonoBehaviour
 {
     public Action<IBattle> onPlayerIn;
     public Action<IBattle> onPlayerOut;
+    public SphereCollider col;
 
-    float attackRange;
 
     private void Awake()
     {
-        SphereCollider col = GetComponent<SphereCollider>();
-        attackRange = col.radius;
+        if(col == null )
+        {
+            col = GetComponent<SphereCollider>();
+        }
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Handles.color = Color.red;
-        Handles.DrawWireDisc(transform.position, transform.up, attackRange, 5);
+        Handles.DrawWireDisc(transform.position, transform.up, col.radius, 5);
     }
 #endif
 

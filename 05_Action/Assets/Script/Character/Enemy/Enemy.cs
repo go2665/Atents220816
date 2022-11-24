@@ -185,6 +185,7 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
                 {
                     case EnemyState.Wait:
                         agent.isStopped = true;
+                        agent.velocity = Vector3.zero;
                         waitTimer = waitTime;       // 타이머 초기화
                         anim.SetTrigger("Stop");    // 가만히 있는 애니메이션 재생
                         stateUpdate = Update_Wait;  // FixedUpdate에서 실행될 델리게이트 변경
@@ -201,13 +202,15 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
                         stateUpdate = Update_Chase; // FixedUpdate에서 실행될 델리게이트 변경
                         break;
                     case EnemyState.Attack:
-                        agent.isStopped = false;        // 이동 정지
+                        agent.isStopped = true;         // 이동 정지
+                        agent.velocity = Vector3.zero;
                         anim.SetTrigger("Stop");        // 애니메이션 변경
                         attackCoolTime = attackSpeed;   // 공격 쿨타임 초기화
                         stateUpdate = Update_Attack;    // FixedUpdate에서 실행될 델리게이트 변경
                         break;
                     case EnemyState.Dead:
                         agent.isStopped = true;     // 길찾기 정지
+                        agent.velocity = Vector3.zero;
                         anim.SetTrigger("Die");     // 사망 애니메이션 재생                                                    
                         StartCoroutine(DeadRepresent());    // 시간이 지나면 서서히 가라앉는 연출 실행
                         stateUpdate = Update_Dead;  // FixedUpdate에서 실행될 델리게이트 변경
@@ -260,7 +263,10 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
             if( attackTarget == target )        // 공격하던 대상이 범위를 벗어나면
             {
                 attackTarget = null;            // 공격 대상을 비우기
-                State = EnemyState.Chase;       // 플레이어가 공격 범위에서 벗어나면 다시 추적 상태로
+                if (State != EnemyState.Dead)
+                {
+                    State = EnemyState.Chase;       // 플레이어가 공격 범위에서 벗어나면 다시 추적 상태로
+                }
             }
         };
     }
