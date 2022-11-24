@@ -287,3 +287,11 @@
 
 5. 코드 확인 및 문제점 찾아보기
    시간 : 1시 45분까지
+
+
+11/24
+1. Enemy.SearchPlayer 함수 수정하기
+   1.1. closeSightRange 범위 안에 있는 플레이어는 무조건 찾는다
+   1.2. OnDrawGizmos를 수정해서 closeSightRange를 주황색(또는 노란색)으로 표시하기
+2. OnDrawGizmos를 수정해서 근접 공격 범위를 빨간색으로 표시하기
+   시간 : 12시 10분까지

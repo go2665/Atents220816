@@ -37,6 +37,8 @@ public class Enemy : MonoBehaviour, IBattle, IHealth
     /// </summary>
     public float sightRange = 10.0f;
 
+    public float closeSightRange = 2.5f;
+
     /// <summary>
     /// 시야각의 절반
     /// </summary>
