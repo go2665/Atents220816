@@ -27,7 +27,7 @@ public class ImageNumber : MonoBehaviour
     public int Number
     {
         get => number;
-        set
+        set 
         {
             if( number != value )                       // 값이 변경되면
             {
