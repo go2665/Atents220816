@@ -1,3 +1,5 @@
+#define TEST_CODE
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,6 +49,7 @@ public class GameManager : Singleton<GameManager>
         TimeCount = (int)timer.ElapsedTime;
     }
 
+#if TEST_CODE
     public void TestTimer_Play()
     {
         timer.Play();
@@ -61,4 +64,15 @@ public class GameManager : Singleton<GameManager>
     {
         timer.TimerReset();
     }
+
+    public void TestFlag_Increase()
+    {
+        FlagCount++;
+    }
+
+    public void TestFlag_Decrease()
+    {
+        FlagCount--;
+    }
+#endif
 }

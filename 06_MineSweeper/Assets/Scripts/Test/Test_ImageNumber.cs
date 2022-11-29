@@ -26,11 +26,13 @@ public class Test_ImageNumber : TestBase
     protected override void Test1(InputAction.CallbackContext _)
     {
         GameManager.Inst.TestTimer_Play();
+        GameManager.Inst.TestFlag_Increase();
     }
 
     protected override void Test2(InputAction.CallbackContext _)
     {
         GameManager.Inst.TestTimer_Stop();
+        GameManager.Inst.TestFlag_Decrease();
     }
 
     protected override void Test3(InputAction.CallbackContext _)
