@@ -86,6 +86,26 @@ public class Cell : MonoBehaviour
 
     // 함수 ---------------------------------------------------------------------------------------
 
+    // 확인해야 할 마우스 이벤트
+    // 1. 셀이 눌려졌다.
+    // 2. 셀이 때졌다.
+    // 3. 마우스가 안으로 들어왔다.
+    // 4. 마우스가 밖으로 나갔다.
+    // 5. 마우스가 눌려져 있는지 때져있는지. - 인풋 시스템 활용하기
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("들어왔음");
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log("나갔음");
+    }
+
+
+
+
     /// <summary>
     /// 셀을 여는 함수
     /// </summary>
@@ -134,5 +154,4 @@ public class Cell : MonoBehaviour
     {
 
     }
-
 }
