@@ -95,12 +95,12 @@ public class Cell : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("들어왔음");
+        //Debug.Log("들어왔음");
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("나갔음");
+        //Debug.Log("나갔음");
     }
 
 
@@ -152,6 +152,6 @@ public class Cell : MonoBehaviour
     /// </summary>
     public void SetMine()
     {
-
+        hasMine = true;
     }
 }
