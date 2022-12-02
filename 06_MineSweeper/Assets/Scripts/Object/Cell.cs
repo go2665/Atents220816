@@ -175,7 +175,11 @@ public class Cell : MonoBehaviour
     /// </summary>
     public void IncreaseAroundMineCount()
     {
-        aroundMineCount++;
+        if (!hasMine)
+        {
+            aroundMineCount++;
+            inside.sprite = Board[(OpenCellType)aroundMineCount];   // 주변 지뢰 숫자에 맞게 이미지 설정
+        }
     }
 
     /// <summary>
@@ -183,7 +187,14 @@ public class Cell : MonoBehaviour
     /// </summary>
     public void SetMine()
     {
-        hasMine = true;
-        inside.sprite = Board[OpenCellType.Mine_NotFound];
+        hasMine = true;     // 지뢰 설치 되었다고 표시
+        inside.sprite = Board[OpenCellType.Mine_NotFound];  // 지뢰로 이미지 변경
+
+        // 이 셀 주변 셀들의 IncreaseAroundMineCount함수 실행(aroundMineCount를 1씩 증가)
+        List<Cell> cellList = Board.GetNeighbors(ID); 
+        foreach( var cell in cellList)
+        {
+            cell.IncreaseAroundMineCount();
+        }
     }
 }

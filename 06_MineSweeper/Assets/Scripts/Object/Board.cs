@@ -103,6 +103,16 @@ public class Board : MonoBehaviour
         }
     }
 
+    public List<Cell> GetNeighbors(int id)
+    {
+        List<Cell> result = new List<Cell>();
+
+        // ID가 id인 셀 주변의 모든 셀을 result에 담기
+        
+
+        return result;
+    }
+
 
     /// <summary>
     /// 보드의 모든 셀을 제거하는 함수.
