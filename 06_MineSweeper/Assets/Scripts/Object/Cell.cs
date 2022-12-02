@@ -46,9 +46,17 @@ public class Cell : MonoBehaviour
     /// </summary>
     int aroundMineCount = 0;
 
+    /// <summary>
+    /// 이 셀이 들어있는 보드
+    /// </summary>
+    Board parentBoard;
+
+    SpriteRenderer cover;
+    SpriteRenderer inside;
+
 
     // 프로퍼티 ------------------------------------------------------------------------------------
-    
+
     /// <summary>
     /// ID 확인 및 설정용 프로퍼티(설정은 한번만 가능)
     /// </summary>
@@ -60,6 +68,21 @@ public class Cell : MonoBehaviour
             if( id == ID_NOT_VALID )    // ID는 처음 한번만 설정 가능
             {
                 id = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 이 셀이 소속되어있는 보드 확인 및 설정용 프로퍼티(설정은 한번만 가능)
+    /// </summary>
+    public Board Board
+    {
+        get => parentBoard;
+        set
+        {
+            if( parentBoard == null )
+            {
+                parentBoard = value;
             }
         }
     }
@@ -92,6 +115,14 @@ public class Cell : MonoBehaviour
     // 3. 마우스가 안으로 들어왔다.
     // 4. 마우스가 밖으로 나갔다.
     // 5. 마우스가 눌려져 있는지 때져있는지. - 인풋 시스템 활용하기
+
+    private void Awake()
+    {
+        Transform child = transform.GetChild(0);
+        cover = child.GetComponent<SpriteRenderer>();
+        child = transform.GetChild(1);
+        inside = child.GetComponent<SpriteRenderer>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -153,5 +184,6 @@ public class Cell : MonoBehaviour
     public void SetMine()
     {
         hasMine = true;
+        inside.sprite = Board[OpenCellType.Mine_NotFound];
     }
 }

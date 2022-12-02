@@ -29,6 +29,17 @@ public class Board : MonoBehaviour
     /// </summary>
     Cell[] cells;
 
+    /// <summary>
+    /// 열린 셀에서 표시될 이미지
+    /// </summary>
+    public Sprite[] openCellImages;
+
+    /// <summary>
+    /// OpenCellType으로 이미지를 받아오는 인덱서
+    /// </summary>
+    /// <param name="type">필요한 이미지의 enum타입</param>
+    /// <returns>enum타입에 맞는 이미지</returns>
+    public Sprite this[OpenCellType type] => openCellImages[(int)type];
 
     /// <summary>
     /// 이 보드가 가질 모든 셀을 생성하고 배치하는 함수
@@ -57,6 +68,7 @@ public class Board : MonoBehaviour
                 GameObject cellObj = Instantiate(cellPrefab, transform);    // 이 보드를 부모로 삼고 생성
                 Cell cell = cellObj.GetComponent<Cell>();                   // 생성한 오브젝트에서 Cell 컴포넌트 찾기
                 cell.ID = y * width + x;                                    // ID 설정(ID를 통해 위치도 확인 가능)
+                cell.Board = this;                                          // 보드 설정
                 cellObj.name = $"Cell_{cell.ID}_({x},{y})";                 // 오브젝트 이름 지정
                 cell.transform.position = basePos + offset + new Vector3(x * Distance, -y * Distance);  // 적절한 위치에 배치
                 cells[cell.ID] = cell;                                      // cells 배열에 저장
@@ -64,6 +76,16 @@ public class Board : MonoBehaviour
         }
 
         // 만들어진 셀에 지뢰를 mineCount만큼 설치하기
+        int[] ids = new int[cells.Length];
+        for(int i=0;i<cells.Length;i++)
+        {
+            ids[i] = i;
+        }
+        Shuffle(ids);
+        for(int i=0;i<mineCount;i++)
+        {
+            cells[ids[i]].SetMine();
+        }
     }
 
     /// <summary>

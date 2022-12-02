@@ -237,8 +237,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 411506224221964697, guid: 3ae350eb594ae514d82df350c230c752, type: 3}
-  width: 8
-  height: 8
+  openCellImages:
+  - {fileID: 996171067, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -1090858278, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: 1260903593, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -110899689, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -657841235, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -1137335001, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -1082773311, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: 1082889864, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: 172028970, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -2012973956, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: 2057585030, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -561946691, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
 --- !u!4 &224722678
 Transform:
   m_ObjectHideFlags: 0
@@ -283,7 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d0cd132731369489f6afe6f6f9e0c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 224722677}
 --- !u!4 &1035658169
 Transform:
   m_ObjectHideFlags: 0
@@ -436,6 +446,10 @@ PrefabInstance:
     - target: {fileID: 3923210239183261998, guid: b60f50e8f9847b94eadaf8f6aaac9ef2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923210239183261999, guid: b60f50e8f9847b94eadaf8f6aaac9ef2, type: 3}
+      propertyPath: mineCount
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b60f50e8f9847b94eadaf8f6aaac9ef2, type: 3}
