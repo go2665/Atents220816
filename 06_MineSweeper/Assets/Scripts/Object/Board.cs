@@ -67,6 +67,22 @@ public class Board : MonoBehaviour
     }
 
     /// <summary>
+    /// 파라메터로 받은 배열 내부의 데이터 순서를 섞는 함수
+    /// </summary>
+    /// <param name="source">내부 데이터를 섞을 배열</param>
+    public void Shuffle(int[] source)
+    {
+        int count = source.Length - 1;
+        for (int i = 0; i < count; i++)
+        {
+            int randomIndex = Random.Range(0, count + 1 - i);
+            int lastIndex = count - i;
+            (source[randomIndex], source[lastIndex]) = (source[lastIndex], source[randomIndex]);    // swap 처리
+        }
+    }
+
+
+    /// <summary>
     /// 보드의 모든 셀을 제거하는 함수.
     /// </summary>
     public void ClearCells()
