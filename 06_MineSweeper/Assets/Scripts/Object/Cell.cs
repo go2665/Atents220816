@@ -19,7 +19,7 @@ public class Cell : MonoBehaviour
     /// <summary>
     /// ID가 잘못되었다고 알려주는 const
     /// </summary>
-    const int ID_NOT_VALID = -1;
+    public const int ID_NOT_VALID = -1;
 
     /// <summary>
     /// 셀의 ID이면서 위치를 표시하는 역할

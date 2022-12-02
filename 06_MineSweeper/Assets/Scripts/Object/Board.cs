@@ -103,14 +103,43 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 파라메터로 받은 ID를 가진 셀 주변의 셀들을 리턴하는 함수
+    /// </summary>
+    /// <param name="id">찾을 중심 셀</param>
+    /// <returns>id주변에 있는 셀들</returns>
     public List<Cell> GetNeighbors(int id)
     {
-        List<Cell> result = new List<Cell>();
-
         // ID가 id인 셀 주변의 모든 셀을 result에 담기
-        
+        List<Cell> result = new List<Cell>(8);
+        Vector2Int grid = IdToGrid(id);
+
+        for(int i=-1;i<2;i++)
+        {
+            for(int j=-1;j<2;j++)
+            {
+                int index = GridToID(j + grid.x, i + grid.y);
+                if( index != Cell.ID_NOT_VALID && !(i == 0 && j == 0) )
+                {
+                    result.Add(cells[index]);
+                }
+            }
+        }        
 
         return result;
+    }
+
+    Vector2Int IdToGrid(int id)
+    {
+        return new Vector2Int(id % width, id / width);
+    }
+
+    int GridToID(int x, int y)
+    {
+        if( x >= 0 && x < width && y >= 0 && y < height)
+            return x + y * width;
+
+        return Cell.ID_NOT_VALID;
     }
 
 
