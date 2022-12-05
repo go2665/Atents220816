@@ -2,9 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using TMPro;
 
 public class Test_Cell : TestBase
 {
+    private void Start()
+    {
+        //Button a;
+        //a.onClick.AddListener(MyTest);
+        //TMP_InputField b;
+        //b.onValueChanged.AddListener(MyTest2);
+
+    }
+    public void MyTest()
+    {
+
+    }
+    public void MyTest2(string str)
+    {
+
+    }
+
     protected override void Test1(InputAction.CallbackContext _)
     {
         Board board = GameManager.Inst.Board;

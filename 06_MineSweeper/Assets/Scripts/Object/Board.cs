@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Board : MonoBehaviour
 {
@@ -40,6 +41,27 @@ public class Board : MonoBehaviour
     /// <param name="type">필요한 이미지의 enum타입</param>
     /// <returns>enum타입에 맞는 이미지</returns>
     public Sprite this[OpenCellType type] => openCellImages[(int)type];
+
+    PlayerInputActions inputActions;
+
+    private void Awake()
+    {
+        inputActions = new PlayerInputActions();
+    }
+
+    private void OnEnable()
+    {
+        inputActions.Player.Enable();
+        inputActions.Player.RightClick.performed += OnRightClick;
+        inputActions.Player.LeftClick.performed += OnLeftClick;
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Player.LeftClick.performed -= OnLeftClick;
+        inputActions.Player.RightClick.performed -= OnRightClick;
+        inputActions.Player.Disable();
+    }    
 
     /// <summary>
     /// 이 보드가 가질 모든 셀을 생성하고 배치하는 함수
@@ -157,5 +179,16 @@ public class Board : MonoBehaviour
             }
             cells = null;   // 안의 내용을 다 제거했다고 표시
         }
+    }
+
+    private void OnLeftClick(InputAction.CallbackContext _)
+    {
+        Debug.Log("왼쪽 클릭");
+    }
+
+    private void OnRightClick(InputAction.CallbackContext _)
+    {
+        Debug.Log("오른쪽 클릭");
+
     }
 }
