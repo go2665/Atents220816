@@ -14,3 +14,11 @@ public enum OpenCellType
     Mine_Mistake    // 지뢰가 아닌데 지뢰라고 표시한 경우
 }
 
+public enum CloseCellType
+{
+    Close = 0,
+    Close_Press,
+    Question,
+    Question_Press,
+    Flag
+}

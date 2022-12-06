@@ -36,11 +36,23 @@ public class Board : MonoBehaviour
     public Sprite[] openCellImages;
 
     /// <summary>
+    /// 안열린 셀에서 표시될 이미지
+    /// </summary>
+    public Sprite[] closeCellImages;
+
+    /// <summary>
     /// OpenCellType으로 이미지를 받아오는 인덱서
     /// </summary>
     /// <param name="type">필요한 이미지의 enum타입</param>
     /// <returns>enum타입에 맞는 이미지</returns>
     public Sprite this[OpenCellType type] => openCellImages[(int)type];
+
+    /// <summary>
+    /// CloseCellType 이미지를 받아오는 인덱서
+    /// </summary>
+    /// <param name="type">필요한 이미지의 enum타입</param>
+    /// <returns>enum타입에 맞는 이미지</returns>
+    public Sprite this[CloseCellType type] => closeCellImages[(int)type];
 
     PlayerInputActions inputActions;
 
@@ -83,6 +95,7 @@ public class Board : MonoBehaviour
         cells = new Cell[width * height];
 
         // 셀들을 하나씩 생성하기 위한 이중 for
+        GameManager gameManager = GameManager.Inst;
         for (int y = 0; y<height; y++)
         {
             for(int x = 0;x<width; x++)
@@ -91,6 +104,8 @@ public class Board : MonoBehaviour
                 Cell cell = cellObj.GetComponent<Cell>();                   // 생성한 오브젝트에서 Cell 컴포넌트 찾기
                 cell.ID = y * width + x;                                    // ID 설정(ID를 통해 위치도 확인 가능)
                 cell.Board = this;                                          // 보드 설정
+                cell.onFlagUse += gameManager.DecreaseFlagCount;
+                cell.onFlagReturn += gameManager.IncreaseFlagCount;
                 cellObj.name = $"Cell_{cell.ID}_({x},{y})";                 // 오브젝트 이름 지정
                 cell.transform.position = basePos + offset + new Vector3(x * Distance, -y * Distance);  // 적절한 위치에 배치
                 cells[cell.ID] = cell;                                      // cells 배열에 저장
@@ -257,6 +272,7 @@ public class Board : MonoBehaviour
         {
             Cell target = cells[GridToID(grid.x, grid.y)];          // 해당 셀 가져오기
             Debug.Log($"{target.gameObject.name}을 우클릭했습니다.");
+            target.CellRightPress();
         }
         else
         {

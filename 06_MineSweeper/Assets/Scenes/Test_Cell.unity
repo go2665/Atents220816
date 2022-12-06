@@ -250,6 +250,12 @@ MonoBehaviour:
   - {fileID: -2012973956, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
   - {fileID: 2057585030, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
   - {fileID: -561946691, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  closeCellImages:
+  - {fileID: -1556243598, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: 996171067, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: 533265186, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -1993122846, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
+  - {fileID: -410727673, guid: 29427a1d2842fc444b97f496f148fc66, type: 3}
 --- !u!4 &224722678
 Transform:
   m_ObjectHideFlags: 0
