@@ -197,4 +197,6 @@ public class Cell : MonoBehaviour
             cell.IncreaseAroundMineCount();
         }
     }
+
+    //public 
 }
