@@ -68,6 +68,11 @@ public class Cell : MonoBehaviour
     /// </summary>
     List<Cell> pressedCells;
 
+    /// <summary>
+    /// 이 셀의 주변 셀들
+    /// </summary>
+    List<Cell> neighbors;
+
 
     // 프로퍼티 ------------------------------------------------------------------------------------
 
@@ -145,19 +150,24 @@ public class Cell : MonoBehaviour
         inside = child.GetComponent<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+        neighbors = Board.GetNeighbors(this.ID);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("들어왔음");
+        Debug.Log("들어왔음");
         if( Mouse.current.leftButton.ReadValue() > 0 )
         {
             Debug.Log($"마우스 왼쪽버튼을 누른체로 들어왔음\n({this.gameObject.name})");
-            PressCover();            
+            CellPress();            
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        //Debug.Log("나갔음");
+        Debug.Log("나갔음");
         if (Mouse.current.leftButton.ReadValue() > 0)
         {
             Debug.Log($"마우스 왼쪽버튼을 누른체로 나갔음\n({this.gameObject.name})");
@@ -177,8 +187,7 @@ public class Cell : MonoBehaviour
 
             if (aroundMineCount == 0)           // 주변 지뢰갯수가 0이면 
             {
-                List<Cell> neighbors = Board.GetNeighbors(this.ID); // 주변 셀들을
-                foreach (var cell in neighbors) 
+                foreach (var cell in neighbors) // 주변 셀들을
                 {
                     cell.Open();                // 모두 연다.(재귀호출)
                 }
@@ -191,17 +200,18 @@ public class Cell : MonoBehaviour
     /// </summary>
     public void CellPress()
     {
+        Debug.Log("CellPress 실행");
         pressedCells.Clear();   // 새롭게 눌려졌으니 기존에 눌려져 있던 셀에 대한 기록은 제거
         if ( IsOpen )
         {
             // 이 셀이 열려져 있으면, 자신 주변의 닫힌 셀을 모두 누른 표시를 한다.
-            List<Cell> neighbors = Board.GetNeighbors(this.ID); // 주변 셀을 모두 가져오고
-            foreach (var cell in neighbors)
+            foreach (var cell in neighbors) // 주변 셀을 모두 순회하기
             {
                 if(!cell.IsOpen)            // 주변 셀 중에 닫혀있는셀만 
                 {
                     pressedCells.Add(cell); // 누르고 있는 셀이라고 표시하고
                     cell.CellPress();       // 누르고 있는 표시 진행
+                    Debug.Log($"{cell.gameObject.name} 눌렀다.");
                 }
             }
         }
@@ -209,6 +219,7 @@ public class Cell : MonoBehaviour
         {
             // 이 셀이 닫힌 셀일 때 자신을 누른 표시를 한다.
             PressCover();
+            Debug.Log($"{this.gameObject.name} 눌렀다.");
         }            
     }
 
@@ -270,6 +281,8 @@ public class Cell : MonoBehaviour
             default:
                 break;
         }
+
+        Debug.Log($"{this.gameObject.name} 복구.");
     }
 
     /// <summary>
@@ -293,7 +306,7 @@ public class Cell : MonoBehaviour
         inside.sprite = Board[OpenCellType.Mine_NotFound];  // 지뢰로 이미지 변경
 
         // 이 셀 주변 셀들의 IncreaseAroundMineCount함수 실행(aroundMineCount를 1씩 증가)
-        List<Cell> cellList = Board.GetNeighbors(ID); 
+        List<Cell> cellList = Board.GetNeighbors(ID);       // 실행 타이밍이 Start보다 빨라 따로 구해줌
         foreach( var cell in cellList)
         {
             cell.IncreaseAroundMineCount();
