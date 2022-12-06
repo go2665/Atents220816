@@ -16,6 +16,7 @@ public class FlagCounter : MonoBehaviour
     {
         GameManager gameManager = GameManager.Inst;
         gameManager.onFlagCountChange += Refresh;
+        Refresh(gameManager.FlagCount);
     }
 
     private void Refresh(int count)
