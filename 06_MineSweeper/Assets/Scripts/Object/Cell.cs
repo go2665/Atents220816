@@ -201,8 +201,11 @@ public class Cell : MonoBehaviour
     /// </summary>
     public void CellRelease()
     {
-        RestoreCovers();    // 눌렀다고 표시한 모든 셀을 복구 시키기
-        Open();             // 자신을 열기
+        foreach (var cell in pressedCells)  // 눌려져 있던 셀들을 전부 순회하면서 열기
+        {
+            cell.Open();
+        }
+        pressedCells.Clear();               // 연 셀들을 눌린 셀 목록에서 제거
     }
 
     /// <summary>
