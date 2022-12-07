@@ -156,6 +156,10 @@ public class Cell : MonoBehaviour
         if (!isOpen && !IsFlaged)               // 닫혀있고 깃발 표시가 안되었을 때만 연다.
         {
             isOpen = true;                      // 열렸다고 표시하고
+            if(hasMine)                         // 지뢰가 있으면
+            {
+                inside.sprite = Board[OpenCellType.Mine_Explosion]; // 터지는 이미지로 변경
+            }
             cover.gameObject.SetActive(false);  // 셀이 열릴 때 커버를 비활성화
 
             if (aroundMineCount == 0 && !hasMine)   // 주변 지뢰갯수가 0이면 
@@ -201,9 +205,31 @@ public class Cell : MonoBehaviour
     /// </summary>
     public void CellRelease()
     {
-        foreach (var cell in pressedCells)  // 눌려져 있던 셀들을 전부 순회하면서 열기
+        if (pressedCells.Count != 1)                // 1개가 아닐 때(2개 이상일 때는 다 처리. 0개일 때는 중복 실행이지만 무시되니까 그냥 처리)
         {
-            cell.Open();
+            int flagCount = 0;
+            foreach(var cell in neighbors)          // 주변에 있는 깃발 갯수 세기
+            {
+                if (cell.IsFlaged)
+                    flagCount++;
+            }
+
+            if (flagCount == aroundMineCount)       // 주변의 깃발 갯수와 주변 지뢰의 갯수가 같을 때만 눌려진 것들 다 열기
+            {
+                foreach (var cell in pressedCells)  // 눌려져 있던 셀들을 전부 순회하면서 열기
+                {
+                    cell.Open();
+                }
+            }
+            else
+            {
+                RestoreCovers();                    // 갯수가 다르면 눌려져있던 셀들 복구
+            }
+        }
+        else
+        {
+            // 1개 일때는 자기 자신만 열고 끝내기
+            pressedCells[0].Open();
         }
         pressedCells.Clear();               // 연 셀들을 눌린 셀 목록에서 제거
     }
