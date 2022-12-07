@@ -26,8 +26,9 @@ public class Test_Cell : TestBase
 
     protected override void Test1(InputAction.CallbackContext _)
     {
-        Board board = GameManager.Inst.Board;
-        board.Initialize(GameManager.Inst.boardWidth, GameManager.Inst.boardHeight, GameManager.Inst.mineCount);
+        //Board board = GameManager.Inst.Board;
+        //board.Initialize(GameManager.Inst.boardWidth, GameManager.Inst.boardHeight, GameManager.Inst.mineCount);
+        GameManager.Inst.GameReset();
     }
 
     protected override void Test2(InputAction.CallbackContext _)

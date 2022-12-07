@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -320,6 +321,18 @@ public class Cell : MonoBehaviour
         {
             cell.IncreaseAroundMineCount();
         }
+    }
+
+    public void ResetCell()
+    {
+        isOpen = false;
+        cover.gameObject.SetActive(true);
+        hasMine = false;
+        markState = CellMarkState.None;
+        aroundMineCount = 0;
+        cover.sprite = Board[CloseCellType.Close];
+        inside.sprite = Board[OpenCellType.Empty];
+        pressedCells.Clear();
     }
 
     /// <summary>

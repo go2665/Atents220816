@@ -28,6 +28,11 @@ public class Board : MonoBehaviour
     private int height = 16;
 
     /// <summary>
+    /// 보드에 설치될 지뢰의 갯수
+    /// </summary>
+    private int mineCount = 10;
+
+    /// <summary>
     /// 셀 한 변의 길이(셀은 정사각형)
     /// </summary>
     const float Distance = 1.0f;    // 1일 때 카메라 크기 9.
@@ -110,13 +115,14 @@ public class Board : MonoBehaviour
     /// <summary>
     /// 이 보드가 가질 모든 셀을 생성하고 배치하는 함수
     /// </summary>
-    public void Initialize(int newWidth, int newHeight, int mineCount)
+    public void Initialize(int newWidth, int newHeight, int newMineCount)
     {
         // 기존에 존재하던 셀 다 지우기
         ClearCells();   
 
         width = newWidth;
         height = newHeight;
+        mineCount = newMineCount;
 
         Vector3 basePos = transform.position;       // 기준 위치 설정(보드의 위치)
 
@@ -144,14 +150,28 @@ public class Board : MonoBehaviour
             }
         }
 
+        ResetBoard();        
+    }
+
+    /// <summary>
+    /// 보드를 초기 상태로 되돌리고 랜덤으로 지뢰설치
+    /// </summary>
+    public void ResetBoard()
+    {
+        // 모든 셀 초기화
+        foreach(var cell in cells)
+        {
+            cell.ResetCell();
+        }
+
         // 만들어진 셀에 지뢰를 mineCount만큼 설치하기
         int[] ids = new int[cells.Length];
-        for(int i=0;i<cells.Length;i++)
+        for (int i = 0; i < cells.Length; i++)
         {
             ids[i] = i;
         }
         Shuffle(ids);
-        for(int i=0;i<mineCount;i++)
+        for (int i = 0; i < mineCount; i++)
         {
             cells[ids[i]].SetMine();
         }
