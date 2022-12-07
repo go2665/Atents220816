@@ -301,6 +301,7 @@ public class Board : MonoBehaviour
         Vector2Int grid = ScreenToGrid(screenPos);                  // 스크린 좌표를 Grid좌표로 변환
         if (IsValidGrid(grid))                                      // 결과 그리드 좌표가 적합한지 확인 => 적합하지 않으면 보드 밖이라는 의미
         {
+            GameManager.Inst.GameStart();                           // 매번 Play 상태로 변경 시도(Ready 상태일 때만 진행됨)
             Cell target = cells[GridToID(grid.x, grid.y)];          // 해당 셀 가져오기
             target.CellPress();
         }
