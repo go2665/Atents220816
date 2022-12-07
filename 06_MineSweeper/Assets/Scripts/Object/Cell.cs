@@ -159,6 +159,7 @@ public class Cell : MonoBehaviour
             if(hasMine)                         // 지뢰가 있으면
             {
                 inside.sprite = Board[OpenCellType.Mine_Explosion]; // 터지는 이미지로 변경
+                GameManager.Inst.GameOver();
             }
             cover.gameObject.SetActive(false);  // 셀이 열릴 때 커버를 비활성화
 
