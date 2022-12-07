@@ -123,7 +123,6 @@ public class GameManager : Singleton<GameManager>
 
     public void GameReset()
     {
-        Board.ResetBoard();
         state = GameState.Ready;
         onGameReset?.Invoke();
         Debug.Log("Ready 상태");

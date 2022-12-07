@@ -212,8 +212,9 @@ public class Cell : MonoBehaviour
     {
         if (GameManager.Inst.IsPlaying)
         {
-            if (pressedCells.Count != 1)                // 1개가 아닐 때(2개 이상일 때는 다 처리. 0개일 때는 중복 실행이지만 무시되니까 그냥 처리)
+            if( IsOpen )    
             {
+                // 열린 셀에서 마우스 버튼을 땠을 때
                 int flagCount = 0;
                 foreach (var cell in neighbors)          // 주변에 있는 깃발 갯수 세기
                 {
@@ -235,9 +236,10 @@ public class Cell : MonoBehaviour
             }
             else
             {
-                // 1개 일때는 자기 자신만 열고 끝내기
-                pressedCells[0].Open();
+                // 닫혀있는 셀에서 마우스 버튼을 땠을 때
+                pressedCells[0].Open();                 // 닫혀있는 자기 자신만 열고 끝
             }
+
             pressedCells.Clear();               // 연 셀들을 눌린 셀 목록에서 제거
         }
     }
@@ -391,5 +393,17 @@ public class Cell : MonoBehaviour
             Debug.Log($"마우스 왼쪽버튼을 누른체로 나갔음\n({this.gameObject.name})");
             RestoreCovers();
         }
+    }
+
+    public void SetFlagIncorrect()
+    {
+        cover.gameObject.SetActive(false);
+        inside.sprite = Board[OpenCellType.Mine_Mistake];
+    }
+
+    public void SetMineNotFound()
+    {
+        cover.gameObject.SetActive(false);
+        //inside.sprite = Board[OpenCellType.Mine_NotFound];
     }
 }

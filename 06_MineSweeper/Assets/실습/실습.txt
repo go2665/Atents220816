@@ -84,3 +84,15 @@ int[,] a = new int[10,5];   // int 5개짜리 배열이 10줄 있다.(5열 10행
     2.1. Ready 상태와 Play 상태에서만 셀이 열린다.
     2.2. Ready 상태에서 셀을 하나 열면 Play 상태로 변경된다.
     시간 : 12시 20분까지
+
+3. 리셋처리
+    3.1. FlagCounter도 자동으로 초기값으로 만들기
+        3.1.1. onGameReset를 활용해서 처리하기
+4. TimeCounter처리
+    4.1. 게임이 시작되면(Ready->Play) TimeCounter의 시간이 증가한다.
+        4.1.1. onGameStart 활용
+    4.2. 게임 오버가 되거나 게임 클리어가 되면 TimeCounter의 시간이 멈춘다.
+        4.2.1. onGameClear와 onGameOver 활용
+    4.3. 리셋이 되면 TimeCounter의 시간도 초기화 된다.
+        4.3.1. onGameReset 활용
+    시간 : 2시 20분까지
