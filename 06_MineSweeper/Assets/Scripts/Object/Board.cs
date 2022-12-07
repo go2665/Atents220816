@@ -67,10 +67,12 @@ public class Board : MonoBehaviour
         inputActions.Player.RightClick.performed += OnRightClick;
         inputActions.Player.LeftClick.performed += OnLeftPress;
         inputActions.Player.LeftClick.canceled += OnLeftRelease;
+        inputActions.Player.MouseMove.performed += OnMouseMove;
     }
 
     private void OnDisable()
     {
+        inputActions.Player.MouseMove.performed -= OnMouseMove;
         inputActions.Player.LeftClick.canceled -= OnLeftRelease;
         inputActions.Player.LeftClick.performed -= OnLeftPress;
         inputActions.Player.RightClick.performed -= OnRightClick;
@@ -298,6 +300,34 @@ public class Board : MonoBehaviour
         else
         {
             Debug.Log("셀 없음");
+        }
+    }
+
+    Cell currentCell = null;
+    Cell CurrentCell
+    {
+        get => currentCell;
+        set
+        {
+            //셀에서 마우스 나가는 처리
+            currentCell?.OnExitCell();
+            currentCell = value;
+            // 셀에 마우스가 들어가는 처리
+            currentCell?.OnEnterCell();
+        }
+    }
+
+    private void OnMouseMove(InputAction.CallbackContext context)
+    {
+        Vector2 screenPos = context.ReadValue<Vector2>();
+        Vector2Int grid = ScreenToGrid(screenPos);                  // 스크린 좌표를 Grid좌표로 변환
+        if (IsValidGrid(grid))                                      // 결과 그리드 좌표가 적합한지 확인 => 적합하지 않으면 보드 밖이라는 의미
+        {
+            CurrentCell = cells[GridToID(grid.x, grid.y)];          // 해당 셀 가져오기            
+        }
+        else
+        {
+            CurrentCell = null;
         }
     }
 }

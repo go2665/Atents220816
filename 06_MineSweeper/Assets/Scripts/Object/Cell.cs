@@ -155,26 +155,6 @@ public class Cell : MonoBehaviour
         neighbors = Board.GetNeighbors(this.ID);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("들어왔음");
-        if( Mouse.current.leftButton.ReadValue() > 0 )
-        {
-            Debug.Log($"마우스 왼쪽버튼을 누른체로 들어왔음\n({this.gameObject.name})");
-            CellPress();            
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        Debug.Log("나갔음");
-        if (Mouse.current.leftButton.ReadValue() > 0)
-        {
-            Debug.Log($"마우스 왼쪽버튼을 누른체로 나갔음\n({this.gameObject.name})");
-            RestoreCovers();
-        }
-    }
-
     /// <summary>
     /// 셀을 여는 함수
     /// </summary>
@@ -185,7 +165,7 @@ public class Cell : MonoBehaviour
             isOpen = true;                      // 열렸다고 표시하고
             cover.gameObject.SetActive(false);  // 셀이 열릴 때 커버를 비활성화
 
-            if (aroundMineCount == 0)           // 주변 지뢰갯수가 0이면 
+            if (aroundMineCount == 0 && !hasMine)   // 주변 지뢰갯수가 0이면 
             {
                 foreach (var cell in neighbors) // 주변 셀들을
                 {
@@ -200,7 +180,7 @@ public class Cell : MonoBehaviour
     /// </summary>
     public void CellPress()
     {
-        Debug.Log("CellPress 실행");
+        Debug.Log($"CellPress 실행 - {this.gameObject.name}");
         pressedCells.Clear();   // 새롭게 눌려졌으니 기존에 눌려져 있던 셀에 대한 기록은 제거
         if ( IsOpen )
         {
@@ -342,6 +322,26 @@ public class Cell : MonoBehaviour
                 default:
                     break;
             }
+        }
+    }
+
+    public void OnEnterCell()
+    {
+        //Debug.Log("들어왔음");
+        if (Mouse.current.leftButton.ReadValue() > 0)
+        {
+            Debug.Log($"마우스 왼쪽버튼을 누른체로 들어왔음\n({this.gameObject.name})");
+            CellPress();
+        }
+    }
+
+    public void OnExitCell()
+    {
+        //Debug.Log("나갔음");
+        if (Mouse.current.leftButton.ReadValue() > 0)
+        {
+            Debug.Log($"마우스 왼쪽버튼을 누른체로 나갔음\n({this.gameObject.name})");
+            RestoreCovers();
         }
     }
 }
