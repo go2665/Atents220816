@@ -5,10 +5,17 @@ using UnityEngine.InputSystem;
 
 public class Board : MonoBehaviour
 {
+    // 변수 ---------------------------------------------------------------------------------------
+
     /// <summary>
     /// 생성할 셀의 프리팹
     /// </summary>
     public GameObject cellPrefab;
+
+    /// <summary>
+    /// 인풋 액션
+    /// </summary>
+    PlayerInputActions inputActions;
 
     /// <summary>
     /// 보드가 가지는 가로 셀의 길이. (가로 줄의 셀 갯수)
@@ -41,6 +48,13 @@ public class Board : MonoBehaviour
     public Sprite[] closeCellImages;
 
     /// <summary>
+    /// 현재 마우스가 올라가 있는 셀
+    /// </summary>
+    Cell currentCell = null;
+    
+    // 프로퍼티 ------------------------------------------------------------------------------------
+
+    /// <summary>
     /// OpenCellType으로 이미지를 받아오는 인덱서
     /// </summary>
     /// <param name="type">필요한 이미지의 enum타입</param>
@@ -54,7 +68,21 @@ public class Board : MonoBehaviour
     /// <returns>enum타입에 맞는 이미지</returns>
     public Sprite this[CloseCellType type] => closeCellImages[(int)type];
 
-    PlayerInputActions inputActions;
+    /// <summary>
+    /// 현재 마우스가 올라가 있는 셀을 확인하는 프로퍼티
+    /// </summary>
+    Cell CurrentCell
+    {
+        get => currentCell;
+        set
+        {            
+            currentCell?.OnExitCell();  // 셀에서 마우스 나가는 처리
+            currentCell = value;            
+            currentCell?.OnEnterCell(); // 셀에 마우스가 들어가는 처리
+        }
+    }
+
+    // 함수 ---------------------------------------------------------------------------------------
 
     private void Awake()
     {
@@ -262,6 +290,10 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 마우스 왼쪽 버튼을 눌렀을 때 실행될 함수
+    /// </summary>
+    /// <param name="_"></param>
     private void OnLeftPress(InputAction.CallbackContext _)
     {
         Debug.Log("왼쪽 눌렀다.");
@@ -274,6 +306,10 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 마우스 왼쪽 버튼을 땠을 때 실행될 함수
+    /// </summary>
+    /// <param name="_"></param>
     private void OnLeftRelease(InputAction.CallbackContext _)
     {
         Debug.Log("왼쪽 땠다.");
@@ -286,6 +322,10 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 마우스 오른쪽 버튼을 클릭했을 때 실행될 함수
+    /// </summary>
+    /// <param name="_"></param>
     private void OnRightClick(InputAction.CallbackContext _)
     {
         Debug.Log("오른쪽 클릭");
@@ -303,31 +343,21 @@ public class Board : MonoBehaviour
         }
     }
 
-    Cell currentCell = null;
-    Cell CurrentCell
-    {
-        get => currentCell;
-        set
-        {
-            //셀에서 마우스 나가는 처리
-            currentCell?.OnExitCell();
-            currentCell = value;
-            // 셀에 마우스가 들어가는 처리
-            currentCell?.OnEnterCell();
-        }
-    }
-
+    /// <summary>
+    /// 마우스가 움직일 때 실행되는 함수
+    /// </summary>
+    /// <param name="context"></param>
     private void OnMouseMove(InputAction.CallbackContext context)
     {
         Vector2 screenPos = context.ReadValue<Vector2>();
         Vector2Int grid = ScreenToGrid(screenPos);                  // 스크린 좌표를 Grid좌표로 변환
         if (IsValidGrid(grid))                                      // 결과 그리드 좌표가 적합한지 확인 => 적합하지 않으면 보드 밖이라는 의미
         {
-            CurrentCell = cells[GridToID(grid.x, grid.y)];          // 해당 셀 가져오기            
+            CurrentCell = cells[GridToID(grid.x, grid.y)];          // 해당 셀을 CurrentCell에 기록
         }
         else
         {
-            CurrentCell = null;
+            CurrentCell = null; // CurrentCell 비우기
         }
     }
 }

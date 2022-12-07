@@ -133,13 +133,6 @@ public class Cell : MonoBehaviour
 
     // 함수 ---------------------------------------------------------------------------------------
 
-    // 확인해야 할 마우스 이벤트
-    // 1. 셀이 눌려졌다.
-    // 2. 셀이 때졌다.
-    // 3. 마우스가 안으로 들어왔다.
-    // 4. 마우스가 밖으로 나갔다.
-    // 5. 마우스가 눌려져 있는지 때져있는지. - 인풋 시스템 활용하기
-
     private void Awake()
     {
         pressedCells = new List<Cell>(8);               // 새로 메모리 할당
@@ -325,20 +318,26 @@ public class Cell : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 셀 위에 마우스가 올라왔을 때 실행되는 함수
+    /// </summary>
     public void OnEnterCell()
     {
         //Debug.Log("들어왔음");
-        if (Mouse.current.leftButton.ReadValue() > 0)
+        if (Mouse.current.leftButton.ReadValue() > 0)   // 마우스 왼쪽 버튼이 눌러져 있으면
         {
             Debug.Log($"마우스 왼쪽버튼을 누른체로 들어왔음\n({this.gameObject.name})");
             CellPress();
         }
     }
 
+    /// <summary>
+    /// 셀 위에 마우스가 있다가 밖으로 나갔을 때 실행되는 함수
+    /// </summary>
     public void OnExitCell()
     {
         //Debug.Log("나갔음");
-        if (Mouse.current.leftButton.ReadValue() > 0)
+        if (Mouse.current.leftButton.ReadValue() > 0)   // 마우스 왼쪽 버튼이 눌러져 있으면
         {
             Debug.Log($"마우스 왼쪽버튼을 누른체로 나갔음\n({this.gameObject.name})");
             RestoreCovers();
