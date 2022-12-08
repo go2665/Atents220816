@@ -116,6 +116,8 @@ public class GameManager : Singleton<GameManager>
         if (state == GameState.Ready)
         {
             state = GameState.Play;
+            //timer.TimerReset();
+            //timer.Play();
             onGameStart?.Invoke();
             Debug.Log("Play 상태");
         }
@@ -124,6 +126,8 @@ public class GameManager : Singleton<GameManager>
     public void GameReset()
     {
         state = GameState.Ready;
+        //timer.TimerReset();
+        FlagCount = mineCount;
         onGameReset?.Invoke();
         Debug.Log("Ready 상태");
     }
@@ -131,6 +135,7 @@ public class GameManager : Singleton<GameManager>
     public void GameClear()
     {
         state = GameState.GameClear;
+        //timer.Stop();
         onGameClear?.Invoke();
         Debug.Log("Clear 상태");
     }
@@ -138,6 +143,7 @@ public class GameManager : Singleton<GameManager>
     public void GameOver()
     {
         state = GameState.GameOver;
+        //timer.Stop();
         onGameOver?.Invoke();
         Debug.Log("GameOver 상태");
     }

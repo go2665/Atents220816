@@ -19,6 +19,16 @@ public class Timer : MonoBehaviour
     /// </summary>
     public float ElapsedTime => elapsedTime;
 
+    private void Start()
+    {
+        GameManager gameManager = GameManager.Inst;
+        gameManager.onGameStart += TimerReset;
+        gameManager.onGameStart += Play;
+        gameManager.onGameClear += Stop;
+        gameManager.onGameOver += Stop;
+        gameManager.onGameReset += TimerReset;
+    }
+
     private void Update()
     {
         if(isPlay)  // 플레이 상태일 때만
