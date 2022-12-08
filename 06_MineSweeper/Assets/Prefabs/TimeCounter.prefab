@@ -73,11 +73,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7519685903394408564, guid: 211e5a2fba50b8f4b8e986ab0f980f11, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 533
       objectReference: {fileID: 0}
     - target: {fileID: 7519685903394408564, guid: 211e5a2fba50b8f4b8e986ab0f980f11, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 355
       objectReference: {fileID: 0}
     - target: {fileID: 7519685903394408564, guid: 211e5a2fba50b8f4b8e986ab0f980f11, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -112,5 +112,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5683209d2c9176349a8c0b4602121d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &854702194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2655885846672421170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec31ecc0ef17adb438367f8dd0e94bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

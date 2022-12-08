@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class TimeCounter : MonoBehaviour
 {
+    Timer timer;
     ImageNumber imageNumber;
 
     private void Awake()
     {
+        timer = GetComponent<Timer>();
         imageNumber = GetComponent<ImageNumber>();
-    }
 
-    private void Start()
-    {
-        GameManager gameManager = GameManager.Inst;
-        gameManager.onTimeCountChange += Refresh;
+        timer.onTimeChange += Refresh;
     }
 
     private void Refresh(int count)
