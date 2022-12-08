@@ -256,7 +256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3923210239183261999, guid: b60f50e8f9847b94eadaf8f6aaac9ef2, type: 3}
       propertyPath: mineCount
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b60f50e8f9847b94eadaf8f6aaac9ef2, type: 3}

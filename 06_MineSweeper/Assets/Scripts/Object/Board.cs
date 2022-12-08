@@ -58,7 +58,14 @@ public class Board : MonoBehaviour
     /// </summary>
     Cell currentCell = null;
 
+    /// <summary>
+    /// 이 보드에서 열려있는 셀의 숫자
+    /// </summary>
     private int openCellCount = 0;
+
+    /// <summary>
+    /// 이 보드에서 찾은 지뢰의 숫자
+    /// </summary>
     private int foundMineCount = 0;
 
     // 델리게이트 ----------------------------------------------------------------------------------
@@ -95,7 +102,14 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 열린 셀의 갯수를 확인만 가능한 프로퍼티
+    /// </summary>
     public int OpenCellCount => openCellCount;
+
+    /// <summary>
+    /// 찾은 지뢰의 갯수를 확인만 가능한 프로퍼티
+    /// </summary>
     public int FoundMineCount => foundMineCount;
 
     // 함수 ---------------------------------------------------------------------------------------
@@ -196,7 +210,7 @@ public class Board : MonoBehaviour
         }
 
         openCellCount = 0;  // 모든 셀이 다 닫혀있음.
-        foundMineCount = 0; // 찾은 지뢰 갯수 초기하
+        foundMineCount = 0; // 찾은 지뢰 갯수 초기화
     }
 
     /// <summary>

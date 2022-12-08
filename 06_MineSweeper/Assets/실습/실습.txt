@@ -107,3 +107,6 @@ int[,] a = new int[10,5];   // int 5개짜리 배열이 10줄 있다.(5열 10행
    1.5. 스프라이트 변경은 상태 변경으로 처리한다.
    1.6. RestButton.Start만 수정해서 처리하기.
    시간 : 10시 50분까지
+
+2. GameManager.FinishPlayerAction 함수 완성하기
+   시간 : 1시 20분까지
