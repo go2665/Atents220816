@@ -121,6 +121,23 @@ public class GameManager : Singleton<GameManager>
         Debug.Log("GameOver 상태");
     }
 
+    public void FinishPlayerAction()
+    {
+        /// 클리어 조건
+        /// -깃발을 지뢰 위치에 다 설치하고 나머지 셀을 모두 연다.
+
+        /// 해야할 일
+        /// 클리어 조건이 만족되었으면 GameClear() 실행
+
+        //FlagCount;
+        //Debug.Log($"OpenCellCount : {Board.OpenCellCount}");
+        //Debug.Log($"FoundMineCount : {Board.FoundMineCount}");
+
+        //if ()
+        //{
+        //    GameClear();
+        //}
+    }
 
 #if TEST_CODE
     public void TestFlag_Increase()
