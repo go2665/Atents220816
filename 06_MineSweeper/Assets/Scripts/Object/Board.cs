@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +57,11 @@ public class Board : MonoBehaviour
     /// 현재 마우스가 올라가 있는 셀
     /// </summary>
     Cell currentCell = null;
-    
+
+    // 델리게이트 ----------------------------------------------------------------------------------
+    public Action onBoardPress;
+    public Action onBoardRelease;
+
     // 프로퍼티 ------------------------------------------------------------------------------------
 
     /// <summary>
@@ -188,7 +193,7 @@ public class Board : MonoBehaviour
         int count = source.Length - 1;
         for (int i = 0; i < count; i++)
         {
-            int randomIndex = Random.Range(0, count + 1 - i);
+            int randomIndex = UnityEngine.Random.Range(0, count + 1 - i);
             int lastIndex = count - i;
             (source[randomIndex], source[lastIndex]) = (source[lastIndex], source[randomIndex]);    // swap 처리
         }
@@ -326,6 +331,8 @@ public class Board : MonoBehaviour
             GameManager.Inst.GameStart();                           // 매번 Play 상태로 변경 시도(Ready 상태일 때만 진행됨)
             Cell target = cells[GridToID(grid.x, grid.y)];          // 해당 셀 가져오기
             target.CellPress();
+
+            onBoardPress?.Invoke();
         }
     }
 
@@ -342,6 +349,8 @@ public class Board : MonoBehaviour
         {
             Cell target = cells[GridToID(grid.x, grid.y)];          // 해당 셀 가져오기
             target.CellRelease();
+
+            onBoardRelease?.Invoke();
         }
     }
 
