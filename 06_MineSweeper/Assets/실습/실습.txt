@@ -117,3 +117,13 @@ int[,] a = new int[10,5];   // int 5개짜리 배열이 10줄 있다.(5열 10행
     1.1. GameManager.actionCount가 변경될 때 Canvas->InfoPanel->Infos->ActionCount가 변경된 값을 출력하게 만들기
     1.2. 출력 양식은 다음과 같이 한다. "{GameManager.actionCount} 회"
     시간 : 10시 10분까지
+
+2. RankPanel 완성하기(RankPanel만 수정할 것)
+    2.1. ToggleButton 연결하기
+        2.1.1. RankPanel이 열리면 ToggleButton은 항상 켜져 있어야 한다.(ToggleButton이 켜지며 해야할 일도 진행되어야 한다.)
+        2.1.2. ToggleButton이 켜지면 현재 선택된 탭의 ChildPanel은 보여져야 한다.
+        2.1.3. ToggleButton이 꺼지면 모든 탭의 ChildPanel은 보여지지 않아야 한다.
+    2.2. Tab 관리하기
+        2.2.1. RankPanel의 자식 탭은 한번에 하나의 탭만 선택될 수 있다.
+        2.2.2. ToggleButton이 꺼져있을 때 탭 버튼을 누르면 ToggleButton이 켜진다.
+    시간 : 1시 55분까지
