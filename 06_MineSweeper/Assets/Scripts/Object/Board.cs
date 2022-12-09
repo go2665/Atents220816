@@ -112,6 +112,11 @@ public class Board : MonoBehaviour
     /// </summary>
     public int FoundMineCount => foundMineCount;
 
+    /// <summary>
+    /// 못찾은 지뢰의 갯수를 확인하는 프로퍼티
+    /// </summary>
+    public int NotFoundMineCount => mineCount - foundMineCount;
+
     // 함수 ---------------------------------------------------------------------------------------
 
     private void Awake()

@@ -229,13 +229,14 @@ public class Cell : MonoBehaviour
                         flagCount++;
                 }
 
-                if (flagCount == aroundMineCount)       // 주변의 깃발 갯수와 주변 지뢰의 갯수가 같을 때만 눌려진 것들 다 열기
+                // 주변의 깃발 갯수가 0이 아니고 주변의 깃발 갯수와 주변 지뢰의 갯수가 같을 때만 눌려진 것들 다 열기
+                if (aroundMineCount != 0 && flagCount == aroundMineCount)       
                 {
                     foreach (var cell in pressedCells)  // 눌려져 있던 셀들을 전부 순회하면서 열기
                     {
                         cell.Open();
                     }
-                    onAction?.Invoke();                     // 행동했다고 신호 보내기
+                    onAction?.Invoke();                 // 행동했다고 신호 보내기
                 }
                 else
                 {
