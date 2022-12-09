@@ -110,3 +110,10 @@ int[,] a = new int[10,5];   // int 5개짜리 배열이 10줄 있다.(5열 10행
 
 2. GameManager.FinishPlayerAction 함수 완성하기
    시간 : 1시 20분까지
+
+
+12/9
+1. InfoUI 클래스 완성하기
+    1.1. GameManager.actionCount가 변경될 때 Canvas->InfoPanel->Infos->ActionCount가 변경된 값을 출력하게 만들기
+    1.2. 출력 양식은 다음과 같이 한다. "{GameManager.actionCount} 회"
+    시간 : 10시 10분까지

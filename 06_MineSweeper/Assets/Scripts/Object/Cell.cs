@@ -133,7 +133,9 @@ public class Cell : MonoBehaviour
     public Action onMineFound;      // 지뢰를 찾았을 때 실행될 델리게이트
     public Action onMineFoundCancel;// 찾은 지뢰를 취소했을 때 실행될 델리게이트
 
-    public Action onOpen;           // 셀이 열렸을 때 실행될 델리게이트
+    public Action onOpen;           // 셀이 열렸을 때 실행될 델리게이트(연쇄적으로 열릴때도 실행됨)
+
+    public Action onAction;         // 플레이어가 행동을 했을 때(셀을 연다, 깃발을 설치한다, 깃발 설치를 해제한다.) 실행될 델리게이트
 
     // 함수 ---------------------------------------------------------------------------------------
 
@@ -160,9 +162,9 @@ public class Cell : MonoBehaviour
         if (!isOpen && !IsFlaged)               // 닫혀있고 깃발 표시가 안되었을 때만 연다.
         {
             isOpen = true;                      // 열렸다고 표시하고
-            onOpen?.Invoke();                   // 열렸다고 신호 보내기
+            onOpen?.Invoke();                   // 열렸다고 신호 보내기            
 
-            if(hasMine)                         // 지뢰가 있으면
+            if (hasMine)                         // 지뢰가 있으면
             {
                 inside.sprite = Board[OpenCellType.Mine_Explosion]; // 터지는 이미지로 변경
                 GameManager.Inst.GameOver();
@@ -233,6 +235,7 @@ public class Cell : MonoBehaviour
                     {
                         cell.Open();
                     }
+                    onAction?.Invoke();                     // 행동했다고 신호 보내기
                 }
                 else
                 {
@@ -243,6 +246,7 @@ public class Cell : MonoBehaviour
             {
                 // 닫혀있는 셀에서 마우스 버튼을 땠을 때
                 pressedCells[0].Open();                 // 닫혀있는 자기 자신만 열고 끝
+                onAction?.Invoke();                     // 행동했다고 신호 보내기
             }
 
             pressedCells.Clear();               // 연 셀들을 눌린 셀 목록에서 제거
@@ -359,7 +363,8 @@ public class Cell : MonoBehaviour
                     {
                         onMineFound?.Invoke();
                     }
-                    onFlagUse?.Invoke();
+                    onFlagUse?.Invoke();                    // 깃발 설치했다고 알림
+                    onAction?.Invoke();                     // 행동했다고 신호 보내기
                     break;
                 case CellMarkState.Flag:
                     // markState가 flag이면 question이 된다.  -> 깃발 갯수가 늘어난다. 셀 이미지 변경된다.
@@ -369,7 +374,8 @@ public class Cell : MonoBehaviour
                     {
                         onMineFoundCancel.Invoke();
                     }
-                    onFlagReturn?.Invoke();
+                    onFlagReturn?.Invoke();                 // 깃발 설치 취소했다고 알림
+                    onAction?.Invoke();                     // 행동했다고 신호 보내기
                     break;
                 case CellMarkState.Question:
                     // markState가 question이면 none이 된다.  -> 셀 이미지 변경된다.

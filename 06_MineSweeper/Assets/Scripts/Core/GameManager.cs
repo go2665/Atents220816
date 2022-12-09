@@ -66,6 +66,36 @@ public class GameManager : Singleton<GameManager>
 
     public Board Board => board;
 
+    // UI 관련 ------------------------------------------------------------------------------------
+    
+    /// <summary>
+    /// 주의) 반드시 프로퍼티로만 사용할 것. 
+    /// 플레이어가 이번 판에서 했던 행동 횟수. 
+    /// </summary>
+    private int actionCount = 0;
+
+    /// <summary>
+    /// 플레이어가 이번 판에서 했던 행동 횟수용 프로퍼티.
+    /// </summary>
+    private int ActionCount
+    {
+        get => actionCount;
+        set
+        {
+            if(actionCount != value)
+            {
+                actionCount = value;
+                onActionCountChange?.Invoke(actionCount);
+                //Debug.Log($"Action Count : {actionCount}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 행동 횟수가 변경될 때 실행될 델리게이트
+    /// </summary>
+    public Action<int> onActionCountChange;
+
 
 
     // 함수 ---------------------------------------------------------------------------------------
@@ -126,6 +156,8 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void FinishPlayerAction()
     {
+        ActionCount++;
+
         // 클리어 조건을 만족시키는지 확인
         // Board.FoundMineCount == (boardWidth * boardHeight - Board.OpenCellCount)
         if (flagCount == 0 && ((Board.OpenCellCount + Board.FoundMineCount) == boardWidth * boardHeight))
