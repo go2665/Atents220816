@@ -38,6 +38,12 @@ public class ToggleButton : MonoBehaviour
         toggle.onClick.AddListener(ToggleClick);    // 버튼이 클릭되면 실행될 함수 등록
     }
 
+    private void Start()
+    {
+        isOn = true;
+        SetToggleState(isOn);
+    }
+
     /// <summary>
     /// 현재 상태와는 다른 상태로 변경하는 함수
     /// </summary>
