@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SortTest
+public class SortTest : IComparable
 {
     public int a;
     public float b;
@@ -14,6 +15,23 @@ public class SortTest
         b = _b;
     }
 
+    public int CompareTo(object obj)
+    {
+        SortTest sort = obj as SortTest;
+        if(a < sort.a)
+        {
+            return -1;
+        }
+        else if( a > sort.a )
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     public void Print()
     {
         Debug.Log($"a : {a}, b : {b}");
@@ -22,6 +40,23 @@ public class SortTest
 
 public class Test_Rank : TestBase
 {
+    protected override void Test4(InputAction.CallbackContext _)
+    {
+        List<SortTest> list = new List<SortTest>();
+        list.Add(new SortTest(10, 30.5f));
+        list.Add(new SortTest(40, 20.5f));
+        list.Add(new SortTest(30, 40.5f));
+        list.Add(new SortTest(50, 10.5f));
+        list.Add(new SortTest(20, 40.5f));
+
+        list.Sort();
+
+        foreach (var num in list)
+        {
+            num.Print();
+        }
+    }
+
     protected override void Test1(InputAction.CallbackContext _)
     {
         List<int> list = new List<int>();
@@ -75,7 +110,7 @@ public class Test_Rank : TestBase
         List<SortTest> list = new List<SortTest>();
         list.Add(new SortTest(10, 30.5f));
         list.Add(new SortTest(40, 20.5f));
-        list.Add(new SortTest(30, 50.5f));
+        list.Add(new SortTest(30, 40.5f));
         list.Add(new SortTest(50, 10.5f));
         list.Add(new SortTest(20, 40.5f));
 
@@ -95,7 +130,18 @@ public class Test_Rank : TestBase
     /// <returns></returns>
     int SortB(SortTest target1, SortTest target2)
     {
-        return 0;
+        if (target1.b > target2.b)
+        {
+            return 1;
+        }
+        else if (target1.b < target2.b)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     /// <summary>
@@ -106,7 +152,18 @@ public class Test_Rank : TestBase
     /// <returns></returns>
     int SortA_Desc(SortTest target1, SortTest target2)
     {
-        return 0;
+        if (target1.a < target2.a)
+        {
+            return 1;
+        }
+        else if (target1.a > target2.a)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     /// <summary>
@@ -117,6 +174,17 @@ public class Test_Rank : TestBase
     /// <returns></returns>
     int SortB_Desc(SortTest target1, SortTest target2)
     {
-        return 0;
+        if (target1.b > target2.b)
+        {
+            return -1;
+        }
+        else if (target1.b < target2.b)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 }
