@@ -87,7 +87,35 @@ public class Test_Rank : TestBase
         }
     }
 
+    /// <summary>
+    /// b 기준으로 오름차순
+    /// </summary>
+    /// <param name="target1"></param>
+    /// <param name="target2"></param>
+    /// <returns></returns>
     int SortB(SortTest target1, SortTest target2)
+    {
+        return 0;
+    }
+
+    /// <summary>
+    /// a 기준으로 내림차순
+    /// </summary>
+    /// <param name="target1"></param>
+    /// <param name="target2"></param>
+    /// <returns></returns>
+    int SortA_Desc(SortTest target1, SortTest target2)
+    {
+        return 0;
+    }
+
+    /// <summary>
+    /// b 기준으로 내림차순
+    /// </summary>
+    /// <param name="target1"></param>
+    /// <param name="target2"></param>
+    /// <returns></returns>
+    int SortB_Desc(SortTest target1, SortTest target2)
     {
         return 0;
     }

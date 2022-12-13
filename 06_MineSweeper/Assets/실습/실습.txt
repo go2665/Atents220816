@@ -134,3 +134,9 @@ int[,] a = new int[10,5];   // int 5개짜리 배열이 10줄 있다.(5열 10행
    1.1. RankPanel관련 코드 확인
    1.2. 04_OneButton의 Save/Load관련 코드 확인
    시간 : 12시 20분까지
+
+2. 정렬 함수 만들기
+    2.1. SortB
+    2.2. SortA_Desc
+    2.3. SortB_Desc
+    시간 : 1시 15분까지
