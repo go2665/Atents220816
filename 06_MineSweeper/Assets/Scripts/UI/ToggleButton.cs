@@ -40,8 +40,8 @@ public class ToggleButton : MonoBehaviour
 
     private void Start()
     {
-        isOn = true;
-        SetToggleState(isOn);
+        isOn = true;            // 토글을 켠 상태로 시작
+        SetToggleState(isOn);   // 상태 변경
     }
 
     /// <summary>
