@@ -89,6 +89,6 @@ public class Test_Rank : TestBase
 
     int SortB(SortTest target1, SortTest target2)
     {
-
+        return 0;
     }
 }
