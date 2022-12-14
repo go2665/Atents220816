@@ -21,7 +21,7 @@ public class Tab : MonoBehaviour
     /// </summary>
     Button tabButton;       // 탭에 달린 버튼
     Image tabImage;         // 탭 버튼의 이미지
-    Transform childPanel;   // 탭의 자식 패널
+    TabSubPanel subPanel;   // 탭의 자식 패널
 
     /// <summary>
     /// 이 탭이 선택되었을 때 실행될 델리게이트
@@ -62,7 +62,7 @@ public class Tab : MonoBehaviour
         });
         tabImage = GetComponent<Image>();
 
-        childPanel = transform.GetChild(1);
+        subPanel = GetComponentInChildren<TabSubPanel>();
         IsSelected = false;         // 기본적으로는 선택 되어있지 않은 것으로 처리
     }
 
@@ -71,8 +71,11 @@ public class Tab : MonoBehaviour
     /// </summary>
     public void ChildPanelOpen()
     {
-        if( IsSelected )
-            childPanel.gameObject.SetActive(true);  // 선택되었을 때만 열기
+        if (IsSelected)
+        {
+            subPanel.Refresh();
+            subPanel.gameObject.SetActive(true);  // 선택되었을 때만 열기
+        }
     }
 
     /// <summary>
@@ -80,6 +83,6 @@ public class Tab : MonoBehaviour
     /// </summary>
     public void ChildPanelClose()
     {
-        childPanel.gameObject.SetActive(false);     // 자식 패널 닫기
+        subPanel.gameObject.SetActive(false);     // 자식 패널 닫기
     }
 }

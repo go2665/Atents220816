@@ -66,8 +66,12 @@ public class GameManager : Singleton<GameManager>
 
     public Board Board => board;
 
+    // 랭킹 관련 -----------------------------------------------------------------------------------
+    RankData rankData;
+    public RankData RankData => rankData;
+
     // UI 관련 ------------------------------------------------------------------------------------
-    
+
     /// <summary>
     /// 주의) 반드시 프로퍼티로만 사용할 것. 
     /// 플레이어가 이번 판에서 했던 행동 횟수. 
@@ -112,6 +116,8 @@ public class GameManager : Singleton<GameManager>
         board.Initialize(boardWidth, boardHeight, mineCount);
 
         timer = FindObjectOfType<Timer>();
+
+        rankData = GetComponent<RankData>();
     }
 
     public void IncreaseFlagCount()
