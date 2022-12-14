@@ -63,7 +63,7 @@ public class Tab : MonoBehaviour
         tabImage = GetComponent<Image>();
 
         subPanel = GetComponentInChildren<TabSubPanel>();
-        IsSelected = false;         // 기본적으로는 선택 되어있지 않은 것으로 처리
+        IsSelected = false;         // 기본적으로는 선택 되어있지 않은 것으로 처리        
     }
 
     /// <summary>
@@ -73,7 +73,6 @@ public class Tab : MonoBehaviour
     {
         if (IsSelected)
         {
-            subPanel.Refresh();
             subPanel.gameObject.SetActive(true);  // 선택되었을 때만 열기
         }
     }

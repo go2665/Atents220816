@@ -3082,6 +3082,10 @@ PrefabInstance:
       propertyPath: rankType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7330490397038945946, guid: d1b0c5ebe44e5064d9cc9dd7c33432ea, type: 3}
+      propertyPath: m_Color.a
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 7330490397082135844, guid: d1b0c5ebe44e5064d9cc9dd7c33432ea, type: 3}
       propertyPath: m_Name
       value: TimeRankTab
@@ -3770,6 +3774,10 @@ PrefabInstance:
     - target: {fileID: 7371813200589525062, guid: 06733934844ec9c4f9333f049cee3770, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7371813200824023264, guid: 06733934844ec9c4f9333f049cee3770, type: 3}
+      propertyPath: m_Color.a
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 9113098304988083088, guid: 06733934844ec9c4f9333f049cee3770, type: 3}
       propertyPath: m_AnchorMax.y
