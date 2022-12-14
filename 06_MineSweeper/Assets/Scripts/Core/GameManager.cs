@@ -53,7 +53,7 @@ public class GameManager : Singleton<GameManager>
         {
             flagCount = value;
             onFlagCountChange?.Invoke(flagCount);
-            Debug.Log($"현재 깃발 갯수 : {flagCount}");
+            //Debug.Log($"현재 깃발 갯수 : {flagCount}");
         }
     }
     public Action<int> onFlagCountChange;
@@ -130,7 +130,7 @@ public class GameManager : Singleton<GameManager>
         {
             state = GameState.Play;
             onGameStart?.Invoke();
-            Debug.Log("Play 상태");
+            //Debug.Log("Play 상태");
         }
     }
 
@@ -140,21 +140,21 @@ public class GameManager : Singleton<GameManager>
         FlagCount = mineCount;
         ActionCount = 0;
         onGameReset?.Invoke();
-        Debug.Log("Ready 상태");
+        //Debug.Log("Ready 상태");
     }
 
     public void GameClear()
     {
         state = GameState.GameClear;
         onGameClear?.Invoke();
-        Debug.Log("Clear 상태");
+        //Debug.Log("Clear 상태");
     }
 
     public void GameOver()
     {
         state = GameState.GameOver;
         onGameOver?.Invoke();
-        Debug.Log("GameOver 상태");
+        //Debug.Log("GameOver 상태");
     }
 
     /// <summary>

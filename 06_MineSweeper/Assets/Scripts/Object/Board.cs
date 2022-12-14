@@ -355,7 +355,7 @@ public class Board : MonoBehaviour
     /// <param name="_"></param>
     private void OnLeftPress(InputAction.CallbackContext _)
     {
-        Debug.Log("왼쪽 눌렀다.");
+        //Debug.Log("왼쪽 눌렀다.");
         Vector2 screenPos = Mouse.current.position.ReadValue();     // 마우스 커서의 스크린 좌표를 읽기
         Vector2Int grid = ScreenToGrid(screenPos);                  // 스크린 좌표를 Grid좌표로 변환
         if (IsValidGrid(grid))                                      // 결과 그리드 좌표가 적합한지 확인 => 적합하지 않으면 보드 밖이라는 의미
@@ -374,7 +374,7 @@ public class Board : MonoBehaviour
     /// <param name="_"></param>
     private void OnLeftRelease(InputAction.CallbackContext _)
     {
-        Debug.Log("왼쪽 땠다.");
+        //Debug.Log("왼쪽 땠다.");
         Vector2 screenPos = Mouse.current.position.ReadValue();     // 마우스 커서의 스크린 좌표를 읽기
         Vector2Int grid = ScreenToGrid(screenPos);                  // 스크린 좌표를 Grid좌표로 변환
         if (IsValidGrid(grid))                                      // 결과 그리드 좌표가 적합한지 확인 => 적합하지 않으면 보드 밖이라는 의미
@@ -391,18 +391,18 @@ public class Board : MonoBehaviour
     /// <param name="_"></param>
     private void OnRightClick(InputAction.CallbackContext _)
     {
-        Debug.Log("오른쪽 클릭");
+        //Debug.Log("오른쪽 클릭");
         Vector2 screenPos = Mouse.current.position.ReadValue();     // 마우스 커서의 스크린 좌표를 읽기
         Vector2Int grid = ScreenToGrid(screenPos);                  // 스크린 좌표를 Grid좌표로 변환
         if( IsValidGrid(grid) )                                     // 결과 그리드 좌표가 적합한지 확인 => 적합하지 않으면 보드 밖이라는 의미
         {
             Cell target = cells[GridToID(grid.x, grid.y)];          // 해당 셀 가져오기
-            Debug.Log($"{target.gameObject.name}을 우클릭했습니다.");
+            //Debug.Log($"{target.gameObject.name}을 우클릭했습니다.");
             target.CellRightPress();
         }
         else
         {
-            Debug.Log("셀 없음");
+            //Debug.Log("셀 없음");
         }
     }
 

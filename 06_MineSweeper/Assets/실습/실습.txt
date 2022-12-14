@@ -142,5 +142,8 @@ int[,] a = new int[10,5];   // int 5개짜리 배열이 10줄 있다.(5열 10행
     시간 : 1시 15분까지
 
 12/14
-1. UpdateRank 함수 완성하기
+1. RankData.UpdateRank 함수 완성하기
    시간 : 9시 30분까지
+
+2. RankData.LoadData 함수 완성하기
+    시간 : 10시 35분까지

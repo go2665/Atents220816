@@ -188,7 +188,7 @@ public class Cell : MonoBehaviour
     {
         if (GameManager.Inst.IsPlaying)
         {
-            Debug.Log($"CellPress 실행 - {this.gameObject.name}");
+            //Debug.Log($"CellPress 실행 - {this.gameObject.name}");
             pressedCells.Clear();   // 새롭게 눌려졌으니 기존에 눌려져 있던 셀에 대한 기록은 제거
             if (IsOpen)
             {
@@ -199,7 +199,7 @@ public class Cell : MonoBehaviour
                     {
                         pressedCells.Add(cell); // 누르고 있는 셀이라고 표시하고
                         cell.CellPress();       // 누르고 있는 표시 진행
-                        Debug.Log($"{cell.gameObject.name} 눌렀다.");
+                        //Debug.Log($"{cell.gameObject.name} 눌렀다.");
                     }
                 }
             }
@@ -207,7 +207,7 @@ public class Cell : MonoBehaviour
             {
                 // 이 셀이 닫힌 셀일 때 자신을 누른 표시를 한다.
                 PressCover();
-                Debug.Log($"{this.gameObject.name} 눌렀다.");
+                //Debug.Log($"{this.gameObject.name} 눌렀다.");
             }
         }
     }
@@ -304,7 +304,7 @@ public class Cell : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"{this.gameObject.name} 복구.");
+        //Debug.Log($"{this.gameObject.name} 복구.");
     }
 
     /// <summary>
@@ -397,7 +397,7 @@ public class Cell : MonoBehaviour
         //Debug.Log("들어왔음");
         if (Mouse.current.leftButton.ReadValue() > 0)   // 마우스 왼쪽 버튼이 눌러져 있으면
         {
-            Debug.Log($"마우스 왼쪽버튼을 누른체로 들어왔음\n({this.gameObject.name})");
+            //Debug.Log($"마우스 왼쪽버튼을 누른체로 들어왔음\n({this.gameObject.name})");
             CellPress();
         }
     }
@@ -410,7 +410,7 @@ public class Cell : MonoBehaviour
         //Debug.Log("나갔음");
         if (Mouse.current.leftButton.ReadValue() > 0)   // 마우스 왼쪽 버튼이 눌러져 있으면
         {
-            Debug.Log($"마우스 왼쪽버튼을 누른체로 나갔음\n({this.gameObject.name})");
+            //Debug.Log($"마우스 왼쪽버튼을 누른체로 나갔음\n({this.gameObject.name})");
             RestoreCovers();
         }
     }
