@@ -25,36 +25,27 @@ public class RankData : MonoBehaviour
         GameManager gameManager = GameManager.Inst;
         gameManager.onGameClear += () =>
         {
-            UpdateActionRank(gameManager.ActionCount);
-            UpdateTimeRank(gameManager.PlayTime);
+            UpdateRank(gameManager.ActionCount, gameManager.PlayTime);
         };
     }
 
     /// <summary>
-    /// ActionRank 갱신 시도. 새로운 데이터(행동횟수)를 랭크에 추가할지 판단 후 정리
+    /// ActionRank와 TimeRank 갱신 시도. 새로운 데이터를 랭크에 추가할지 판단 후 정리
     /// </summary>
-    /// <param name="data">새로 추가 시도하는 행동 횟수</param>
-    void UpdateActionRank(int data)
+    /// <param name="actionCount">새로 추가 시도하는 행동 횟수</param>
+    /// <param name="playTime">새로 추가 시도하는 플레이 타임</param>
+    void UpdateRank(int actionCount, float playTime)
     {
-        // actionRank에 data를 추가하고 소팅한 다음에 마지막 노드를 제거
-        Debug.Log($"UpdateActionRank : {data}");
+        Debug.Log($"UpdateRank : {actionCount}, {playTime}");
+        // actionRank에 actionCount를 추가하고
+        // timeRank에 playTime를 추가하고
+        // 각각 소팅하고
+        // 각각 마지막 노드를 제거
 
-        // 랭킹에 변화가 있으면 
+        
         SaveData();
     }
 
-    /// <summary>
-    /// TimeRank 갱신 시도. 새로운 데이터(클리어 시간)을 랭크에 추가할지 판단 후 정리
-    /// </summary>
-    /// <param name="data">새로 추가 시도하는 클리어 시간</param>
-    void UpdateTimeRank(float data)
-    {
-        // timeRank에 data를 추가하고 소팅한 다음에 마지막 노드를 제거
-        Debug.Log($"UpdateTimeRank : {data}");
-
-        // 랭킹에 변화가 있으면 
-        SaveData();
-    }
 
     /// <summary>
     /// 랭킹 정보를 파일로 저장
