@@ -9,3 +9,12 @@
 12/16
 1. RoadTile.GetTileData에서 mask 값 계산하기
    시간 : 10시 35분까지
+
+2. 코드 확인
+   시간 : 1시 20분까지
+
+3. RoadTileEditor 완성하기
+   3.1. RoadTile용 커스텀 에디터용 클래스
+   3.2. OnInspectorGUI를 override해서 RoadTile.sprites에 있는 스프라이트들의 프리뷰 추가하기
+   3.3. 모든 프리뷰는 가로로 이어져야 한다.(GUILayout.BeginHorizontal, GUILayout.EndHorizontal 활용)
+   시간 : 2시까지
