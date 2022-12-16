@@ -5,3 +5,7 @@
 	2.1. Fire_0 ~ Fire_4를 이용해서 만들기
 	2.2. Smoke_0 ~ Smoke_4를 이용해서 만들기
 	시간 : 2시까지
+
+12/16
+1. RoadTile.GetTileData에서 mask 값 계산하기
+   시간 : 10시 35분까지
