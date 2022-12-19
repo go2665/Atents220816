@@ -18,3 +18,9 @@
    3.2. OnInspectorGUI를 override해서 RoadTile.sprites에 있는 스프라이트들의 프리뷰 추가하기
    3.3. 모든 프리뷰는 가로로 이어져야 한다.(GUILayout.BeginHorizontal, GUILayout.EndHorizontal 활용)
    시간 : 2시까지
+
+
+12/19
+1. Move Blend Tree만들고 적용하기
+   1.1. MoveDown, MoveUp, MoveLeft, MoveRight가 적절히 재생되도록 코드와 애니메이터 수정하기
+   시간 : 12시까지
