@@ -36,6 +36,11 @@ public class Player : MonoBehaviour
     /// </summary>
     Vector2 oldInputDir;
 
+    /// <summary>
+    /// 현재 이동 중인지 표시하는 변수
+    /// </summary>
+    bool isMove = false;
+
     private void Awake()
     {
         // 컴포넌트 찾고 
@@ -80,12 +85,15 @@ public class Player : MonoBehaviour
         inputDir = context.ReadValue<Vector2>();    // 입력 이동 방향 저장하고
         anim.SetFloat("InputX", inputDir.x);        // 애니메이터 파라메터 변경
         anim.SetFloat("InputY", inputDir.y);
-        anim.SetBool("IsMove", true);
+
+        isMove = true;                              // 이동한다고 표시하고 
+        anim.SetBool("IsMove", isMove);             // 이동 애니메이션 재생
     }
 
     private void OnStop(InputAction.CallbackContext context)
     {
-        anim.SetBool("IsMove", false);  // 이동 끝 표시
+        isMove = false;                 // 이동 정지로 표시하고
+        anim.SetBool("IsMove", isMove); // Idle 애니메이션 재생
         inputDir = Vector2.zero;        // 입력 이동 방향 제거
     }
 
@@ -101,6 +109,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void RestoreInputDir()
     {
-        inputDir = oldInputDir;         // 입력 이동 방향 복원
+        if( isMove == true )            // 이동 중일 때만 
+            inputDir = oldInputDir;     // 입력 이동 방향 복원
     }
 }

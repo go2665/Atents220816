@@ -24,3 +24,6 @@
 1. Move Blend Tree만들고 적용하기
    1.1. MoveDown, MoveUp, MoveLeft, MoveRight가 적절히 재생되도록 코드와 애니메이터 수정하기
    시간 : 12시까지
+
+2. 코드 확인 
+	시간 : 1시 10분까지
