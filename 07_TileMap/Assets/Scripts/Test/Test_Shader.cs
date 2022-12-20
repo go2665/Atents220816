@@ -6,16 +6,22 @@ using UnityEngine.InputSystem;
 public class Test_Shader : TestBase
 {
     public GameObject phaseSlime;
+    public GameObject phaseReverseSlime;
     public float phaseDuration = 2.0f;
 
     protected override void Test1(InputAction.CallbackContext _)
     {
-        StartCoroutine(StartPhase());
+        StartCoroutine(StartPhase(phaseSlime));
     }
 
-    IEnumerator StartPhase()
+    protected override void Test2(InputAction.CallbackContext _)
     {
-        Renderer renderer = phaseSlime.GetComponent<SpriteRenderer>();
+        StartCoroutine(StartPhase(phaseReverseSlime));
+    }
+
+    IEnumerator StartPhase(GameObject target)
+    {
+        Renderer renderer = target.GetComponent<SpriteRenderer>();
         Material material = renderer.material;
         material.SetFloat("_Thickness", 0.1f);
         material.SetFloat("_Split", 0.0f);
