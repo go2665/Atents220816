@@ -12,8 +12,9 @@ public class Slime : MonoBehaviour
         
     Material mainMaterial;
 
-    Action onPhaseEnd;
-    Action onDie;
+    public Action onPhaseEnd;
+    public Action onDie;
+    public Action onDisable;
 
     private void Awake()
     {
@@ -24,6 +25,11 @@ public class Slime : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(StartPhase());
+    }
+
+    private void OnDisable()
+    {
+        onDisable?.Invoke();
     }
 
     private void Start()
@@ -75,7 +81,7 @@ public class Slime : MonoBehaviour
             yield return null;
         }
 
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 
     public void ShowOutline(bool isShow)
