@@ -39,8 +39,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _Dissolve_Fade: 1
+    - _Outline_Thickness: 0.005
     - _Outline_Tickness: 0.005
     - _Phase_Split: 1
+    - _Phase_Thickness: 0.1
     - _Phase_Tickness: 0.1
     m_Colors:
     - _Dissolve_Color: {r: 2, g: 0.4559683, b: 0, a: 0}
