@@ -12,6 +12,11 @@ public class Player : MonoBehaviour
     public float speed = 3.0f;
 
     /// <summary>
+    /// 플레이어의 공격 쿨타임
+    /// </summary>
+    public float attackCoolTime = 1.0f;
+
+    /// <summary>
     /// 애니메이터 컴포넌트
     /// </summary>
     Animator anim;
