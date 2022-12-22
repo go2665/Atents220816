@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
     {
         // 이동 입력이 들어왔을 때
         inputDir = context.ReadValue<Vector2>();    // 입력 이동 방향 저장하고
+        oldInputDir = inputDir;                     // 이후 복원을 위해 입력 이동 방향 저장
         anim.SetFloat("InputX", inputDir.x);        // 애니메이터 파라메터 변경
         anim.SetFloat("InputY", inputDir.y);
 
