@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,11 @@ public class Player : MonoBehaviour
     /// 플레이어의 공격 쿨타임
     /// </summary>
     public float attackCoolTime = 1.0f;
+
+    /// <summary>
+    /// 플레이어의 현재 남아있는 쿨타임
+    /// </summary>
+    float currentAttackCoolTime = 0.0f;
 
     /// <summary>
     /// 애니메이터 컴포넌트
@@ -55,6 +61,11 @@ public class Player : MonoBehaviour
     /// 플레이어가 공격하면 죽을 슬라임들
     /// </summary>
     List<Slime> attackTarget;
+
+    /// <summary>
+    /// 공격유효기간 표시. true면 슬라임을 죽일 수 있다. false면 못 죽이는 상황
+    /// </summary>
+    bool isAttackValid = false;
 
     private void Awake()
     {
@@ -101,9 +112,19 @@ public class Player : MonoBehaviour
         inputActions.Player.Disable();
     }
 
-    //private void Update()
-    //{
-    //}
+    private void Update()
+    {
+        // 아무 조건 없이 계속 쿨타임 감소
+        currentAttackCoolTime -= Time.deltaTime;    
+
+        if(isAttackValid && attackTarget.Count > 0)
+        {
+            foreach (var target in attackTarget)
+            {
+                target.Die();
+            }
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -159,9 +180,14 @@ public class Player : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext _)
     {
-        oldInputDir = inputDir;         // 이후 복원을 위해 입력 이동 방향 저장
-        inputDir = Vector2.zero;        // 입력 이동 방향 초기화
-        anim.SetTrigger("Attack");      // 공격 애니메이션 실행
+        if (currentAttackCoolTime < 0)
+        {
+            oldInputDir = inputDir;         // 이후 복원을 위해 입력 이동 방향 저장
+            inputDir = Vector2.zero;        // 입력 이동 방향 초기화
+            anim.SetTrigger("Attack");      // 공격 애니메이션 실행
+
+            currentAttackCoolTime = attackCoolTime; // 쿨타임 리셋
+        }
     }
 
     /// <summary>
@@ -171,5 +197,21 @@ public class Player : MonoBehaviour
     {
         if( isMove == true )            // 이동 중일 때만 
             inputDir = oldInputDir;     // 입력 이동 방향 복원
+    }
+
+    /// <summary>
+    /// 공격이 효과적으로 보일 때 실행되는 함수
+    /// </summary>
+    public void AttackValid()
+    {
+        isAttackValid = true;
+    }
+
+    /// <summary>
+    /// 공격이 효과적으로 보이는 기간이 끝날 때 실행될 함수
+    /// </summary>
+    public void AttackNotValid()
+    {
+        isAttackValid = false;
     }
 }

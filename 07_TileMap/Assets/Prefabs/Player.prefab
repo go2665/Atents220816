@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6097360622708791488}
   - component: {fileID: 900225213}
+  - component: {fileID: 1827275120}
   m_Layer: 0
   m_Name: AttackArea
   m_TagString: Untagged
@@ -48,6 +49,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.7, y: 1}
   m_Direction: 0
+--- !u!114 &1827275120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2646013479626785908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1adabee232251434d9508627cd49d04f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4472773385689633331
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +73,7 @@ GameObject:
   m_Layer: 0
   m_Name: Center
   m_TagString: Untagged
-  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -202,6 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  attackCoolTime: 1
 --- !u!61 &7176025567080620849
 BoxCollider2D:
   m_ObjectHideFlags: 0
