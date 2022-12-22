@@ -41,6 +41,13 @@ public class Player : MonoBehaviour
     /// </summary>
     bool isMove = false;
 
+    /// <summary>
+    /// 공격 영역의 중심(축)
+    /// </summary>
+    Transform attackAreaCenter;
+
+    List<Slime> attackTarget;
+
     private void Awake()
     {
         // 컴포넌트 찾고 
@@ -49,6 +56,20 @@ public class Player : MonoBehaviour
 
         // 객체 생성
         inputActions = new PlayerInputActions();
+
+        attackTarget = new List<Slime>(2);
+        attackAreaCenter = transform.GetChild(0);
+        AttackArea attackArea = attackAreaCenter.GetComponentInChildren<AttackArea>();
+        attackArea.onTarget += (slime) =>
+        {
+            attackTarget.Add(slime);
+            slime.ShowOutline(true);
+        };
+        attackArea.onUnTarget += (slime) =>
+        {
+            attackTarget.Remove(slime);
+            slime.ShowOutline(false);
+        };
     }
 
     private void OnEnable()
@@ -69,9 +90,9 @@ public class Player : MonoBehaviour
         inputActions.Player.Disable();
     }
 
-    private void Update()
-    {
-    }
+    //private void Update()
+    //{
+    //}
 
     private void FixedUpdate()
     {
@@ -89,6 +110,32 @@ public class Player : MonoBehaviour
 
         isMove = true;                              // 이동한다고 표시하고 
         anim.SetBool("IsMove", isMove);             // 이동 애니메이션 재생
+
+        if(inputDir.y > 0)
+        {
+            // 위로 갈 때
+            attackAreaCenter.rotation = Quaternion.Euler(0, 0, 180);
+        }
+        else if(inputDir.y < 0)
+        {
+            // 아래로 갈 때
+            attackAreaCenter.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        else if (inputDir.x > 0)
+        {
+            // 오른쪽으로 갈 때
+            attackAreaCenter.rotation = Quaternion.Euler(0, 0, 90);
+        }
+        else if (inputDir.x < 0)
+        {
+            // 왼쪽으로 갈 때
+            attackAreaCenter.rotation = Quaternion.Euler(0, 0, 270);
+        }
+        else
+        {
+            // 있을 수 없음.
+            attackAreaCenter.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     private void OnStop(InputAction.CallbackContext context)
