@@ -61,3 +61,14 @@
 1. Node 클래스의 CompareTo 함수 구현하기
 	1.1. Node 클래스는 F값을 기준으로 정렬되어야 한다.
 	시간 : 1시 5분까지
+
+
+12/27
+1. GridMap.GetNode 함수와 GridMap.ClearAStarData 함수 완성하기
+	시간 : 9시 50분까지
+
+2. AStar.GetHeuristic 함수 완성하기(31번 라인만 수정)
+	시간 : 10시 40분까지
+
+3. AStar.PathFind 함수에서 경로 완성하는 코드 작성하기(94번 라인부터)
+   시간 : 12시 50분까지 -> 1시 5분

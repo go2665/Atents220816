@@ -52,6 +52,10 @@ public class GridMap
     /// <returns>찾은 노드(없으면 null)</returns>
     public Node GetNode(int x, int y)
     {
+        if(IsValidPosion(x, y))
+        {
+            return nodes[GridToIndex(x, y)];
+        }
         return null;
     }
 
@@ -70,7 +74,10 @@ public class GridMap
     /// </summary>
     public void ClearAStarData()
     {
-
+        foreach(var node in nodes)
+        {
+            node.ClearAStarData();
+        }
     }
 
     /// <summary>
@@ -79,13 +86,29 @@ public class GridMap
     /// <param name="x">확인할 위치의 x</param>
     /// <param name="y">확인할 위치의 y</param>
     /// <returns>맵안이면 true. 아니면 false</returns>
-    private bool IsValidPosion(int x, int y)
+    public bool IsValidPosion(int x, int y)
     {
         return x >= 0 && y >= 0 && x < width && y < height;
     }
 
+    /// <summary>
+    /// 입력 받은 좌표가 맵 내부인지 확인하는 함수
+    /// </summary>
+    /// <param name="pos">확인할 위치의 좌표</param>    
+    /// <returns>맵안이면 true. 아니면 false</returns>
+    public bool IsValidPosition(Vector2Int pos)
+    {
+        return IsValidPosion(pos.x, pos.y);
+    }
+
+    /// <summary>
+    /// Grid좌표를 index로 변경하기 위한 함수. (GetNode에서 사용하기 위한 함수.)
+    /// </summary>
+    /// <param name="x">그리드 좌표 X</param>
+    /// <param name="y">그리드 좌표 Y</param>
+    /// <returns>그리드 좌표가 변경된 인덱스 값(nodes의 특정 노드를 얻기 위한 인덱스)</returns>
     private int GridToIndex(int x, int y)
     {
-        return x + ((height - 1) - y) * width;
+        return x + ((height - 1) - y) * width;  // 왼쪽 아래가 (0,0)이고 x+는 오른쪽, y+는 위쪽이기 때문에 이렇게 변환
     }
 }
