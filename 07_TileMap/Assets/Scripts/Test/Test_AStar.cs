@@ -34,4 +34,10 @@ public class Test_AStar : TestBase
 
         int i = 0;
     }
+
+    protected override void Test2(InputAction.CallbackContext _)
+    {
+        GridMap gridMap = new GridMap(7, 7);
+        int i = 0;
+    }
 }

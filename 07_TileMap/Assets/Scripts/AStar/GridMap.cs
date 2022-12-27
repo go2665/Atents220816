@@ -38,8 +38,54 @@ public class GridMap
         {
             for(int x = 0; x < width ; x++)
             {
-                nodes[x + y * width] = new Node(x, y);  // 노드 전부 생성해서 배열에 넣기
+                int index = GridToIndex(x, y);
+                nodes[index] = new Node(x, y);  // 노드 전부 생성해서 배열에 넣기
             }
         }
+    }
+
+    /// <summary>
+    /// 그리드 맵에서 특정 그리드 좌표에 존재하는 노드 찾는 함수
+    /// </summary>
+    /// <param name="x">타일맵 기준 x 좌표</param>
+    /// <param name="y">타일맵 기준 y 좌표</param>
+    /// <returns>찾은 노드(없으면 null)</returns>
+    public Node GetNode(int x, int y)
+    {
+        return null;
+    }
+
+    /// <summary>
+    /// 그리드 맵에서 특정 그리드 좌표에 존재하는 노드 찾는 함수
+    /// </summary>
+    /// <param name="pos">타일맵 기준으로 한 좌표</param>
+    /// <returns>찾은 노드(없으면 null)</returns>
+    public Node GetNode(Vector2Int pos)
+    {
+        return GetNode(pos.x, pos.y);
+    }
+
+    /// <summary>
+    /// 맵이 가지는 모든 노드들의 A* 데이터 초기화
+    /// </summary>
+    public void ClearAStarData()
+    {
+
+    }
+
+    /// <summary>
+    /// 입력 받은 좌표가 맵 내부인지 확인하는 함수
+    /// </summary>
+    /// <param name="x">확인할 위치의 x</param>
+    /// <param name="y">확인할 위치의 y</param>
+    /// <returns>맵안이면 true. 아니면 false</returns>
+    private bool IsValidPosion(int x, int y)
+    {
+        return x >= 0 && y >= 0 && x < width && y < height;
+    }
+
+    private int GridToIndex(int x, int y)
+    {
+        return x + ((height - 1) - y) * width;
     }
 }
