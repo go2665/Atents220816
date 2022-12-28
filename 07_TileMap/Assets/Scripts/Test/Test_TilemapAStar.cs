@@ -41,7 +41,7 @@ public class Test_TilemapAStar : TestBase
 
     protected override void Test1(InputAction.CallbackContext _)
     {
-        path = AStar.PathFind(map, WorldToGrid(start.position), WorldToGrid(goal.position));
+        path = AStar.PathFind(map, map.WorldToGrid(start.position), map.WorldToGrid(goal.position));
         string pathStr = "Path : ";
         foreach (var node in path)
         {
@@ -54,21 +54,11 @@ public class Test_TilemapAStar : TestBase
         int index = 0;
         foreach(var node in path)
         {
-            Vector2 worldPos = GridToWorld(node);
+            Vector2 worldPos = map.GridToWorld(node);
             lineRenderer.SetPosition(index, new(worldPos.x - lineRenderer.transform.position.x,
                 worldPos.y - lineRenderer.transform.position.y, 1));
             index++;
         }
-    }
-
-    Vector2Int WorldToGrid(Vector3 pos)
-    {
-        return (Vector2Int)background.WorldToCell(pos);
-    }
-
-    Vector2 GridToWorld(Vector2Int gridPos)
-    {
-        return background.CellToWorld((Vector3Int)gridPos) + new Vector3(0.5f, 0.5f);
     }
 
     private void Test_LeftClick(InputAction.CallbackContext _)
@@ -76,10 +66,12 @@ public class Test_TilemapAStar : TestBase
         // 시작지점 옮기기
         Vector2 screenPos = Mouse.current.position.ReadValue();
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
-        Vector2Int gridPos = WorldToGrid(worldPos);
-        Vector2 finalPos = GridToWorld(gridPos);
-
-        start.position = finalPos;
+        Vector2Int gridPos = map.WorldToGrid(worldPos);
+        if (!map.IsWall(gridPos))
+        {
+            Vector2 finalPos = map.GridToWorld(gridPos);
+            start.position = finalPos;
+        }
     }
 
 
@@ -88,10 +80,12 @@ public class Test_TilemapAStar : TestBase
         // 도착지점 옮기기
         Vector2 screenPos = Mouse.current.position.ReadValue();
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
-        Vector2Int gridPos = WorldToGrid(worldPos);
-        Vector2 finalPos = GridToWorld(gridPos);
-
-        goal.position = finalPos;
+        Vector2Int gridPos = map.WorldToGrid(worldPos);
+        if (!map.IsWall(gridPos))
+        {
+            Vector2 finalPos = map.GridToWorld(gridPos);
+            goal.position = finalPos;
+        }
     }
 
 }
