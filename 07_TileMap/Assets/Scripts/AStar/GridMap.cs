@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GridMap
 {
@@ -42,6 +43,14 @@ public class GridMap
                 nodes[index] = new Node(x, y);  // 노드 전부 생성해서 배열에 넣기
             }
         }
+    }
+
+    public GridMap(Tilemap background, Tilemap obstacle)
+    {
+        // background의 크기를 기반으로 nodes 생성하기
+        // 새로 생성하는 Node의 x,y좌표는 타일맵에서의 좌표와 같아야 한다.
+        // 갈 수 없는 지역 표시(obstacle에 타일이 있는 부분은 Wall로 표시)
+
     }
 
     /// <summary>
