@@ -7,9 +7,11 @@ public class Test_TilemapAStar : TestBase
 {
     public Tilemap background;
     public Tilemap obstacle;
+    public Tilemap test;
 
     void Start()
     {
+        GridMap map = new GridMap(background, obstacle);
         int i=0;
 
         //background.size.x;  // 타일맵의 가로 크기
