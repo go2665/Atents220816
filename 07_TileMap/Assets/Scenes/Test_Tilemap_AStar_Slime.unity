@@ -2209,6 +2209,10 @@ PrefabInstance:
       propertyPath: isShowPath
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1085629049, guid: 7083ad18539619140b0d0fb0d0207926, type: 3}
+      propertyPath: phaseDuration
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4537514718539173108, guid: 7083ad18539619140b0d0fb0d0207926, type: 3}
       propertyPath: m_Radius
       value: 0.48

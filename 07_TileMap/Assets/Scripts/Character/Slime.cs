@@ -7,6 +7,7 @@ public class Slime : MonoBehaviour
 {
     // 일반 변수들 ---------------------------------------------------------------------------------
 
+    bool isActivate = false;
 
     /// <summary>
     /// 이 슬라임의 그리드 좌표를 확인하기 위한 프로퍼티
@@ -93,6 +94,9 @@ public class Slime : MonoBehaviour
         pathLine = GetComponentInChildren<PathLineDraw>();
 
         path = new List<Vector2Int>();
+
+        onDie += () => isActivate = false;              // 죽으면 비활성화
+        onPhaseEnd += () => isActivate = true;          // 페이즈가 끝나면 활성화
     }
 
     private void OnEnable()
@@ -127,20 +131,23 @@ public class Slime : MonoBehaviour
 
     private void Update()
     {
-        if(path.Count > 0)                              // path에 위치가 기록되어있으면 진행
+        if (isActivate)     // 활성화 상태일 때만 움직이기
         {
-            Vector3 dest = map.GridToWorld(path[0]);    // path의 첫번째 위치로 항상 이동            
-            Vector3 dir = dest - transform.position;    // 방향 계산
-            transform.Translate(Time.deltaTime * moveSpeed * dir.normalized);   // 계산한 방향으로 1초에 moveSpeed만큼 이동
-
-            if (dir.sqrMagnitude < 0.001f)              // 목적지(path의 첫번째 위치)에 도착했는지 확인
+            if (path.Count > 0)                              // path에 위치가 기록되어있으면 진행
             {
-                path.RemoveAt(0);                       // 목적지에 도착했으면 그 노드를 제거
+                Vector3 dest = map.GridToWorld(path[0]);    // path의 첫번째 위치로 항상 이동            
+                Vector3 dir = dest - transform.position;    // 방향 계산
+                transform.Translate(Time.deltaTime * moveSpeed * dir.normalized);   // 계산한 방향으로 1초에 moveSpeed만큼 이동
+
+                if (dir.sqrMagnitude < 0.001f)              // 목적지(path의 첫번째 위치)에 도착했는지 확인
+                {
+                    path.RemoveAt(0);                       // 목적지에 도착했으면 그 노드를 제거
+                }
             }
-        }
-        else
-        {
-            onGoalArrive?.Invoke();
+            else
+            {
+                onGoalArrive?.Invoke();
+            }
         }
     }
 
