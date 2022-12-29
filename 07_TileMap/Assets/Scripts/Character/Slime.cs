@@ -107,6 +107,11 @@ public class Slime : MonoBehaviour
     private void Start()
     {
         map = test.Map;                             // 맵 받아오기(수정되어야 할 코드)
+        onGoalArrive += () =>
+        {
+            Vector2Int pos = map.GetRandomMovablePosition();
+            SetDestination(pos);
+        };
         pathLine.transform.SetParent(pathLine.transform.parent.parent);    // 부모를 슬라임의 부모로 설정
         pathLine.gameObject.SetActive(isShowPath);  // isShowPath에 따라 경로 활성화/비활성화 설정
     }
@@ -123,6 +128,10 @@ public class Slime : MonoBehaviour
             {
                 path.RemoveAt(0);                       // 목적지에 도착했으면 그 노드를 제거
             }
+        }
+        else
+        {
+            onGoalArrive?.Invoke();
         }
     }
 

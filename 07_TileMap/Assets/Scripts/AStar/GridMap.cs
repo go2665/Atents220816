@@ -226,4 +226,13 @@ public class GridMap
         // (x,y) = x + (높이-1)-y) * 너비     // 원점이 왼쪽아래에 있을 때
         return (x - origin.x) + ((height - 1) - y + origin.y) * width;  // 왼쪽 아래가 (0,0)이고 x+는 오른쪽, y+는 위쪽이기 때문에 이렇게 변환        
     }
+
+    /// <summary>
+    /// 맵에서 이동 가능한 랜덤한 지점을 하나 골라 리턴하는 함수
+    /// </summary>
+    /// <returns>이동 가능한 랜덤한 위치</returns>
+    public Vector2Int GetRandomMovablePosition()
+    {
+        return Vector2Int.zero;
+    }
 }
