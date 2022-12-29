@@ -116,12 +116,17 @@ public class Slime : MonoBehaviour
     {
         map = test.Map;                             // 맵 받아오기(수정되어야 할 코드)
         onGoalArrive += () =>
-        {            
-            Vector2Int pos = Position;              // 현재 내 위치를 기록
-            while( pos == Position )                // pos가 내 위치이면 계속 반복 => 내 위치와 다른 위치가 나올 때까지 반복
+        {
+            //Vector2Int pos = Position;              // 현재 내 위치를 기록
+            //while( pos == Position )                // pos가 내 위치이면 계속 반복 => 내 위치와 다른 위치가 나올 때까지 반복
+            //{
+            //    pos = map.GetRandomMovablePosition();   // 맵에서 이동 가능한 위치를 랜덤으로 가져오기
+            //}
+            Vector2Int pos;
+            do
             {
-                pos = map.GetRandomMovablePosition();   // 맵에서 이동 가능한 위치를 랜덤으로 가져오기
-            }
+                pos = map.GetRandomMovablePosition();
+            } while (pos == Position);
 
             SetDestination(pos);                    // 랜덤으로 가져온 위치로 이동하기
         };
