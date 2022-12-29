@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class Slime : MonoBehaviour
 {
+    // 일반 변수들 ---------------------------------------------------------------------------------
+
+
+    /// <summary>
+    /// 이 슬라임의 그리드 좌표를 확인하기 위한 프로퍼티
+    /// </summary>
+    Vector2Int Position => map.WorldToGrid(transform.position);
+
     // 길찾기 관련 변수들 --------------------------------------------------------------------------
     public Test_TilemapAStarSlime test; // 이 후에 반드시 삭제할 코드.
 
@@ -32,11 +40,7 @@ public class Slime : MonoBehaviour
     /// 이 슬라임의 경로를 그리기 위한 변수
     /// </summary>
     PathLineDraw pathLine;
-
-    /// <summary>
-    /// 이 슬라임의 그리드 좌표를 확인하기 위한 프로퍼티
-    /// </summary>
-    Vector2Int Position => map.WorldToGrid(transform.position);
+    
 
     // 쉐이더 관련 변수들 --------------------------------------------------------------------------
     /// <summary>
@@ -108,9 +112,14 @@ public class Slime : MonoBehaviour
     {
         map = test.Map;                             // 맵 받아오기(수정되어야 할 코드)
         onGoalArrive += () =>
-        {
-            Vector2Int pos = map.GetRandomMovablePosition();
-            SetDestination(pos);
+        {            
+            Vector2Int pos = Position;              // 현재 내 위치를 기록
+            while( pos == Position )                // pos가 내 위치이면 계속 반복 => 내 위치와 다른 위치가 나올 때까지 반복
+            {
+                pos = map.GetRandomMovablePosition();   // 맵에서 이동 가능한 위치를 랜덤으로 가져오기
+            }
+
+            SetDestination(pos);                    // 랜덤으로 가져온 위치로 이동하기
         };
         pathLine.transform.SetParent(pathLine.transform.parent.parent);    // 부모를 슬라임의 부모로 설정
         pathLine.gameObject.SetActive(isShowPath);  // isShowPath에 따라 경로 활성화/비활성화 설정

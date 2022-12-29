@@ -27,7 +27,15 @@ public class GridMap
     /// </summary>
     Vector2Int origin;
 
+    /// <summary>
+    /// 배경용 타일맵
+    /// </summary>
     Tilemap background;
+
+    /// <summary>
+    /// 이 맵에서 이동 가능한 지점의 배열(이동 가능한 모든 위치)
+    /// </summary>
+    Vector2Int[] movablePositions;
 
     /// <summary>
     /// 그리드맵을 만들기 위한 생성자
@@ -48,14 +56,17 @@ public class GridMap
 
         nodes = new Node[width * height];   // 노드 배열 생성
 
-        for(int y = 0; y<height ; y++)
+        List<Vector2Int> movable = new List<Vector2Int>(width * height);
+        for (int y = 0; y<height ; y++)
         {
             for(int x = 0; x < width ; x++)
             {
                 int index = GridToIndex(x, y);
                 nodes[index] = new Node(x, y);  // 노드 전부 생성해서 배열에 넣기
+                movable.Add(new Vector2Int(x, y));
             }
         }
+        movablePositions = movable.ToArray();   // 이동 가능한 위치 기록
     }
 
     /// <summary>
@@ -83,6 +94,7 @@ public class GridMap
         }
 
         // 갈 수 없는 지역 표시(obstacle에 타일이 있는 부분은 Wall로 표시)
+        List<Vector2Int> movable = new List<Vector2Int>(width * height);
         for (int y = background.cellBounds.yMin; y < background.cellBounds.yMax; y++)       
         {
             for (int x = background.cellBounds.xMin; x < background.cellBounds.xMax; x++)
@@ -94,8 +106,13 @@ public class GridMap
                     Node node = GetNode(x, y);
                     node.gridType = Node.GridType.Wall; // 벽으로 표시
                 }
+                else
+                {
+                    movable.Add(new Vector2Int(x, y));  // 이동 가능한 위치 기록
+                }
             }
         }
+        movablePositions = movable.ToArray();           // 이동 가능한 위치 기록을 배열로 변경         
 
         // 배경만 기록
         this.background = background;
@@ -233,6 +250,7 @@ public class GridMap
     /// <returns>이동 가능한 랜덤한 위치</returns>
     public Vector2Int GetRandomMovablePosition()
     {
-        return Vector2Int.zero;
+        int index = Random.Range(0, movablePositions.Length);   // 미리 계산해 놓은 movablePositions 중에서 하나 고르기
+        return movablePositions[index];
     }
 }
