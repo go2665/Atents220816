@@ -12,10 +12,10 @@ public class Test_TilemapAStar : TestBase
     public Tilemap obstacle;
     public Tilemap test;
 
-    public LineRenderer lineRenderer;
     public Transform start;
     public Transform goal;
-    
+    public PathLineDraw pathLine;
+
     GridMap map;
     List<Vector2Int> path;
 
@@ -50,15 +50,7 @@ public class Test_TilemapAStar : TestBase
         pathStr += " 끝";
         Debug.Log(pathStr);
 
-        lineRenderer.positionCount = path.Count;
-        int index = 0;
-        foreach(var node in path)
-        {
-            Vector2 worldPos = map.GridToWorld(node);
-            lineRenderer.SetPosition(index, new(worldPos.x - lineRenderer.transform.position.x,
-                worldPos.y - lineRenderer.transform.position.y, 1));
-            index++;
-        }
+        pathLine.DrawPath(map, path);
     }
 
     private void Test_LeftClick(InputAction.CallbackContext _)
