@@ -184,7 +184,7 @@ public class GridMap
     public bool IsWall(int x, int y)
     {
         Node node = GetNode(x, y);
-        return node.gridType == Node.GridType.Wall;
+        return node != null && node.gridType == Node.GridType.Wall;
     }
 
     /// <summary>
@@ -195,6 +195,28 @@ public class GridMap
     public bool IsWall(Vector2Int pos)
     {
         return IsWall(pos.x, pos.y);
+    }
+
+    /// <summary>
+    /// 해당 위치가 스폰 가능한 지역인지 확인하는 함수
+    /// </summary>
+    /// <param name="x">확인할 x좌표</param>
+    /// <param name="y">확인할 y좌표</param>
+    /// <returns>true면 스폰 가능. false면 불가능</returns>
+    public bool IsSpawnable(int x, int y)
+    {
+        Node node = GetNode(x, y);
+        return node != null && node.gridType == Node.GridType.Plain;
+    }
+
+    /// <summary>
+    /// 해당 위치가 스폰 가능한 지역인지 확인하는 함수
+    /// </summary>
+    /// <param name="pos">확인할 그리드 좌표</param>
+    /// <returns>true면 스폰 가능. false면 불가능</returns>
+    public bool IsSpawnable(Vector2Int pos)
+    {
+        return IsSpawnable(pos.x, pos.y);
     }
 
     /// <summary>

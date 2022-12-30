@@ -15,7 +15,6 @@ public class Slime : MonoBehaviour
     Vector2Int Position => map.WorldToGrid(transform.position);
 
     // 길찾기 관련 변수들 --------------------------------------------------------------------------
-    public Test_TilemapAStarSlime test; // 이 후에 반드시 삭제할 코드.
 
     /// <summary>
     /// 슬라임의 이동 속도
@@ -114,7 +113,6 @@ public class Slime : MonoBehaviour
 
     private void Start()
     {
-        map = test.Map;                             // 맵 받아오기(수정되어야 할 코드)
         onGoalArrive += () =>
         {
             //Vector2Int pos = Position;              // 현재 내 위치를 기록
@@ -154,6 +152,17 @@ public class Slime : MonoBehaviour
                 onGoalArrive?.Invoke();
             }
         }
+    }
+
+    /// <summary>
+    /// 슬라임 초기화용 함수. 슬라임이 맵에 나타날 때 실행되어야 함.
+    /// </summary>
+    /// <param name="gridMap">슬라임이 존재하는 맵</param>
+    /// <param name="pos">슬라임의 나타날 위치</param>
+    public void Initialize(GridMap gridMap, Vector3 pos)
+    {
+        map = gridMap;
+        transform.position = pos;
     }
 
     /// <summary>
