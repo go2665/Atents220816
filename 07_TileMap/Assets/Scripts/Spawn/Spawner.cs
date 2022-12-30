@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Spawner : MonoBehaviour
 {
     /// <summary>
@@ -60,7 +64,18 @@ public class Spawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Vector3 pos = new Vector3( Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.y));
 
+        Vector3 p0 = pos;
+        Vector3 p1 = pos + new Vector3(size.x, 0);
+        Vector3 p2 = pos + new Vector3(size.x, size.y);
+        Vector3 p3 = pos + new Vector3(0, size.y);
+
+        Handles.color = Color.yellow;
+        Handles.DrawLine(p0, p1, 5);
+        Handles.DrawLine(p1, p2, 5);
+        Handles.DrawLine(p2, p3, 5);
+        Handles.DrawLine(p3, p0, 5);
     }
 
     public Slime Spawn()
