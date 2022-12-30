@@ -27,27 +27,26 @@ public class SceneMonsterManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 랜덤하게 스폰할 위치를 구하는 함수
+    /// 스포너의 스폰 영역 중에서 벽이 아닌 노드들만 찾아서 돌려주는 함수
     /// </summary>
-    /// <param name="pos">스포너의 위치</param>
-    /// <param name="size">스포너의 스폰 영역 크기</param>
-    /// <returns>몬스터가 스폰될 위치</returns>
-    public Vector3 GetRandomSpawnPosition(Vector3 pos, Vector2 size)
+    /// <param name="spawner">계산할 스포너</param>
+    /// <returns>스포너의 스폰 영역에 있는 벽이 아닌 노드들</returns>
+    public List<Node> CalcSpawnArea(Spawner spawner)
     {
-        List<Vector2Int> result = new List<Vector2Int>();
-        Vector2Int min = gridMap.WorldToGrid(pos);                  // 그리드 좌표의 최소 값 계산
-        Vector2Int max = gridMap.WorldToGrid(pos + (Vector3)size);  // 그리드 좌표의 최대 값 계산
-        for (int y= min.y; y<max.y;y++)
+        List<Node> nodes = new List<Node>();
+
+        Vector2Int min = gridMap.WorldToGrid(spawner.transform.position);                           // 그리드 좌표의 최소 값 계산
+        Vector2Int max = gridMap.WorldToGrid(spawner.transform.position + (Vector3)spawner.size);   // 그리드 좌표의 최대 값 계산
+        for (int y = min.y; y < max.y; y++)
         {
-            for(int x = min.x; x<max.x;x++)
+            for (int x = min.x; x < max.x; x++)
             {
-                if (gridMap.IsSpawnable(x, y))                      // 스폰 가능한 위치면
+                if (gridMap.IsSpawnable(x, y))          // 스폰 가능한 위치면
                 {
-                    result.Add(new(x, y));                          // 기록해 놓기
+                    nodes.Add(gridMap.GetNode(x,y));    // 기록해 놓기
                 }
             }
         }
-        // 기록한 위치중에서 하나를 랜덤으로 골라 월드 좌표로 변경해서 리턴
-        return gridMap.GridToWorld(result[Random.Range(0, result.Count)]);  
+        return nodes;
     }
 }

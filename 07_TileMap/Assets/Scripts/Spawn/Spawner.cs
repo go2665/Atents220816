@@ -28,23 +28,21 @@ public class Spawner : MonoBehaviour
     /// 현재 생성된 몬스터의 수
     /// </summary>
     int count = 0;
-
+        
     /// <summary>
-    /// 스포너가 배치되어 있는 맵
+    /// 스포너가 있는 씬의 몬스터 매니저
     /// </summary>
-    //GridMap gridMap;
-
-    /// <summary>
-    /// 스포너가 배치되어 있는 맵을 확인하기 위한 프로퍼티
-    /// </summary>
-    //public GridMap GridMap => gridMap;
-
     SceneMonsterManager manager;
+
+    /// <summary>
+    /// 스폰 영역 중에서 벽이 아닌 지역
+    /// </summary>
+    List<Node> spawnAreaList;
 
     private void Start()
     {
         manager = GetComponentInParent<SceneMonsterManager>();
-        //gridMap = manager.GridMap;
+        spawnAreaList = manager.CalcSpawnArea(this);    // 스폰 영역 중에서 벽이 아닌 위치들의 모음 가져오기
     }
 
     private void Update()
@@ -77,9 +75,7 @@ public class Spawner : MonoBehaviour
                 slime.onDie -= DecressCount;    // DecressCount가 누적되지 않게하기 위한 조치
                 slime.onDie += DecressCount;
 
-                Vector3 spawnPos = manager.GetRandomSpawnPosition(transform.position, size);
-                //Debug.Log($"SpawnPos : ({spawnPos.x}, {spawnPos.y})");
-                slime.Initialize(manager.GridMap, spawnPos);
+                slime.Initialize(manager.GridMap, GetSpawnPosition());  // 그리드맵 전달 + 스폰될 위치 전달
             }
         }
         return slime;
@@ -88,6 +84,27 @@ public class Spawner : MonoBehaviour
     void DecressCount()
     {
         count--;
+    }
+
+    /// <summary>
+    /// spawnAreaList에서 현재 몬스터가 없는 위치를 랜덤으로 찾는 함수
+    /// </summary>
+    /// <returns>몬스터가 없는 노드의 월드 좌표</returns>
+    Vector3 GetSpawnPosition()
+    {
+        List<Node> spawns = new List<Node>();
+        foreach(var node in spawnAreaList)              // 미리 찾아 놓은 spawnAreaList 뒤지기
+        {
+            if( node.gridType == Node.GridType.Plain )  // 평지일 경우 
+            {
+                spawns.Add(node);                       // spawns에 저장
+            }
+        }
+
+        int index = Random.Range(0, spawns.Count);
+        Node target = spawns[index];                    // spawns 중에서 랜덤으로 하나 선택
+        Vector2Int gridPos = new Vector2Int(target.x, target.y);    
+        return manager.GridMap.GridToWorld(gridPos);    // 선택한 그리드 좌표를 월드좌표로 변경해서 리턴
     }
 
     
