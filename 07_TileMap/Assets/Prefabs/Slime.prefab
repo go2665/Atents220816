@@ -121,7 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72bcdcd4e0616fd4688838a5b0b3f502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 0}
   moveSpeed: 2
   isShowPath: 1
   phaseDuration: 0.5
@@ -217,6 +216,14 @@ PrefabInstance:
     - target: {fileID: 35632249104040952, guid: f13554409ae48b84993a0a1f9299a653, type: 3}
       propertyPath: m_Name
       value: PathLine
+      objectReference: {fileID: 0}
+    - target: {fileID: 35632249104040953, guid: f13554409ae48b84993a0a1f9299a653, type: 3}
+      propertyPath: m_Positions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 35632249104040953, guid: f13554409ae48b84993a0a1f9299a653, type: 3}
+      propertyPath: m_Positions.Array.data[1].x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f13554409ae48b84993a0a1f9299a653, type: 3}

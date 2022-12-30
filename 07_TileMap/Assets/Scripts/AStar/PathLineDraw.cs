@@ -34,4 +34,13 @@ public class PathLineDraw : MonoBehaviour
             index++;    // 라인 랜더러의 Position의 index 변경
         }
     }
+
+    /// <summary>
+    /// 경로를 제거하는 함수
+    /// </summary>
+    public void ClearPath()
+    {
+        lineRenderer.positionCount = 0;     // 라인랜더러가 가진 위치 제거
+        this.gameObject.SetActive(false);   // 비활성화 시키기
+    }
 }

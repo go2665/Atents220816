@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -43,6 +44,11 @@ public class Spawner : MonoBehaviour
     /// </summary>
     List<Node> spawnAreaList;
 
+    /// <summary>
+    /// 슬라임이 스폰되면 실행되는 델리게이트
+    /// </summary>
+    public Action<Slime> onSpawned;
+
     private void Start()
     {
         manager = GetComponentInParent<SceneMonsterManager>();
@@ -64,7 +70,7 @@ public class Spawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Vector3 pos = new Vector3( Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.y));
+        Vector3 pos = new Vector3(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.y));
 
         Vector3 p0 = pos;
         Vector3 p1 = pos + new Vector3(size.x, 0);
@@ -91,6 +97,8 @@ public class Spawner : MonoBehaviour
                 slime.onDie += DecressCount;
 
                 slime.Initialize(manager.GridMap, GetSpawnPosition());  // 그리드맵 전달 + 스폰될 위치 전달
+
+                onSpawned?.Invoke(slime);       // 생성 완료되면 델리게이트 실행
             }
         }
         return slime;
@@ -116,7 +124,7 @@ public class Spawner : MonoBehaviour
             }
         }
 
-        int index = Random.Range(0, spawns.Count);
+        int index = UnityEngine.Random.Range(0, spawns.Count);
         Node target = spawns[index];                    // spawns 중에서 랜덤으로 하나 선택
         Vector2Int gridPos = new Vector2Int(target.x, target.y);    
         return manager.GridMap.GridToWorld(gridPos);    // 선택한 그리드 좌표를 월드좌표로 변경해서 리턴
