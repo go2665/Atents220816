@@ -93,9 +93,8 @@ public class Spawner : MonoBehaviour
             if (slime != null)
             {
                 count++;
-                slime.onDie -= DecressCount;    // DecressCount가 누적되지 않게하기 위한 조치
-                slime.onDie += DecressCount;
-
+                slime.onDie += DecressCount;    // 죽을 때 스폰 갯수 감소
+                slime.transform.SetParent(this.transform);              // 스폰되면 스포너의 자식으로 만들기
                 slime.Initialize(manager.GridMap, GetSpawnPosition());  // 그리드맵 전달 + 스폰될 위치 전달
 
                 onSpawned?.Invoke(slime);       // 생성 완료되면 델리게이트 실행

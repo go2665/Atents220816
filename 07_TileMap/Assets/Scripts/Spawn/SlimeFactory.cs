@@ -43,8 +43,8 @@ public class SlimeFactory : Singleton<SlimeFactory>
             obj.name = $"Slime_{i}";                                    // 이름 재설정
             Slime slime = obj.GetComponent<Slime>();                    // Slime 컴포넌트 찾아서
             slime.onDisable += () =>
-            {
-                readyQueue.Enqueue(slime);          // 슬라임 게임 오브젝트가 disable 될 때 레디큐로 되돌리기
+            {                
+                readyQueue.Enqueue(slime);                  // 슬라임 게임 오브젝트가 disable 될 때 레디큐로 되돌리기
             };
             pool[i] = slime;                        // 풀에 슬라임 저장해 놓기
             obj.SetActive(false);                   // 슬라임 게임 오브젝트 비활성화

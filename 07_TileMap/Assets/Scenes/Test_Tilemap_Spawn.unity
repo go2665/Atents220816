@@ -236,7 +236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 905249879825630919, guid: f5c840f3a0a868c4686400fc4d29df28, type: 3}
       propertyPath: capacity
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5c840f3a0a868c4686400fc4d29df28, type: 3}
@@ -2359,6 +2359,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6943829591859337156, guid: 2b59adb149ac7e94ab4b88eb7b0b6d0a, type: 3}
+      propertyPath: poolSize
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6943829591859337157, guid: 2b59adb149ac7e94ab4b88eb7b0b6d0a, type: 3}
       propertyPath: m_Name
       value: SlimeFactory
