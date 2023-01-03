@@ -89,15 +89,19 @@ public class Spawner : MonoBehaviour
         Slime slime = null;
         if (count < capacity)
         {
-            slime = SlimeFactory.Inst.GetSlime();
-            if (slime != null)
+            Vector3 spawnPos;
+            if (GetSpawnPosition(out spawnPos))     // 스폰될 위치가 있을 때만 스폰하기
             {
-                count++;
-                slime.onDie += DecressCount;    // 죽을 때 스폰 갯수 감소
-                slime.transform.SetParent(this.transform);              // 스폰되면 스포너의 자식으로 만들기
-                slime.Initialize(manager.GridMap, GetSpawnPosition());  // 그리드맵 전달 + 스폰될 위치 전달
+                slime = SlimeFactory.Inst.GetSlime();
+                if (slime != null)
+                {
+                    count++;
+                    slime.onDie += DecressCount;    // 죽을 때 스폰 갯수 감소
+                    slime.transform.SetParent(this.transform);              // 스폰되면 스포너의 자식으로 만들기
+                    slime.Initialize(manager.GridMap, spawnPos);            // 그리드맵 전달 + 스폰될 위치 전달
 
-                onSpawned?.Invoke(slime);       // 생성 완료되면 델리게이트 실행
+                    onSpawned?.Invoke(slime);       // 생성 완료되면 델리게이트 실행
+                }
             }
         }
         return slime;
@@ -111,9 +115,11 @@ public class Spawner : MonoBehaviour
     /// <summary>
     /// spawnAreaList에서 현재 몬스터가 없는 위치를 랜덤으로 찾는 함수
     /// </summary>
-    /// <returns>몬스터가 없는 노드의 월드 좌표</returns>
-    Vector3 GetSpawnPosition()
+    /// <param name="spawnPos">몬스터가 스폰될 위치</param>
+    /// <returns>스폰할 수 있는 위치가 있으면 true, 없으면 false</returns>
+    bool GetSpawnPosition(out Vector3 spawnPos)
     {
+        bool result = false;
         List<Node> spawns = new List<Node>();
         foreach(var node in spawnAreaList)              // 미리 찾아 놓은 spawnAreaList 뒤지기
         {
@@ -123,10 +129,20 @@ public class Spawner : MonoBehaviour
             }
         }
 
-        int index = UnityEngine.Random.Range(0, spawns.Count);
-        Node target = spawns[index];                    // spawns 중에서 랜덤으로 하나 선택
-        Vector2Int gridPos = new Vector2Int(target.x, target.y);    
-        return manager.GridMap.GridToWorld(gridPos);    // 선택한 그리드 좌표를 월드좌표로 변경해서 리턴
+        if (spawns.Count > 0)
+        {
+            int index = UnityEngine.Random.Range(0, spawns.Count);
+            Node target = spawns[index];                            // spawns 중에서 랜덤으로 하나 선택
+            Vector2Int gridPos = new Vector2Int(target.x, target.y);
+            spawnPos = manager.GridMap.GridToWorld(gridPos);        // 선택한 그리드 좌표를 월드좌표로 변경해서 리턴
+            result = true;
+        }
+        else
+        {
+            spawnPos = Vector3.zero;
+        }
+
+        return result;
     }
 
     
