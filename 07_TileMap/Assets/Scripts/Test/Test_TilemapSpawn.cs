@@ -6,12 +6,12 @@ using UnityEngine.InputSystem;
 
 public class Test_TilemapSpawn : TestBase
 {
-    SceneMonsterManager manager;
+    SpawnerManager manager;
 
     protected override void Awake()
     {
         base.Awake();
-        manager = FindObjectOfType<SceneMonsterManager>();
+        manager = FindObjectOfType<SpawnerManager>();
     }
 
     protected override void Test1(InputAction.CallbackContext _)

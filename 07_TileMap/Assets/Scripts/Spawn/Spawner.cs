@@ -37,7 +37,7 @@ public class Spawner : MonoBehaviour
     /// <summary>
     /// 스포너가 있는 씬의 몬스터 매니저
     /// </summary>
-    SceneMonsterManager manager;
+    SpawnerManager manager;
 
     /// <summary>
     /// 스폰 영역 중에서 벽이 아닌 지역
@@ -51,7 +51,7 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        manager = GetComponentInParent<SceneMonsterManager>();
+        manager = GetComponentInParent<SpawnerManager>();
         spawnAreaList = manager.CalcSpawnArea(this);    // 스폰 영역 중에서 벽이 아닌 위치들의 모음 가져오기
     }
 
