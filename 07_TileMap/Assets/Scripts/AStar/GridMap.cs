@@ -136,11 +136,21 @@ public class GridMap
     /// <summary>
     /// 그리드 맵에서 특정 그리드 좌표에 존재하는 노드 찾는 함수
     /// </summary>
-    /// <param name="pos">타일맵 기준으로 한 좌표</param>
+    /// <param name="gridPos">타일맵 기준으로 한 좌표</param>
     /// <returns>찾은 노드(없으면 null)</returns>
-    public Node GetNode(Vector2Int pos)
+    public Node GetNode(Vector2Int gridPos)
     {
-        return GetNode(pos.x, pos.y);
+        return GetNode(gridPos.x, gridPos.y);
+    }
+
+    /// <summary>
+    /// 월드 좌표를 기준으로 노드를 찾는 함수
+    /// </summary>
+    /// <param name="worldPos">찾을 노드가 있을 월드 좌표</param>
+    /// <returns>찾은 노드(없으면 null)</returns>
+    public Node GetNode(Vector3 worldPos)
+    {
+        return GetNode(WorldToGrid(worldPos));
     }
 
     /// <summary>

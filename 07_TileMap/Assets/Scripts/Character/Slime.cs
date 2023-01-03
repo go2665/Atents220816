@@ -32,6 +32,28 @@ public class Slime : MonoBehaviour
     GridMap map;
 
     /// <summary>
+    /// 이 슬라임이 현재 위치하고 있는 노드
+    /// </summary>
+    Node currentNode;
+
+    Node CurrentNode
+    {
+        get => currentNode;
+        set
+        {
+            if( value != currentNode )      // 노드 위치가 바뀔 때
+            {
+                if (currentNode != null)    // 이전에 위치하던 노드가 있으면
+                {
+                    currentNode.gridType = Node.GridType.Plain; // 노드 타입을 Monster->Plain으로 변경
+                }
+                currentNode = value;                            // 새로 노드 설정
+                currentNode.gridType = Node.GridType.Monster;   // 노드 타입을 Monster로 변경
+            }
+        }
+    }
+
+    /// <summary>
     /// 슬라임이 이동해야 할 경로
     /// </summary>
     List<Vector2Int> path;
@@ -40,7 +62,17 @@ public class Slime : MonoBehaviour
     /// 이 슬라임의 경로를 그리기 위한 변수
     /// </summary>
     PathLineDraw pathLine;
-    
+
+    /// <summary>
+    /// 다른 슬라임에 의해 경로가 막혀서 기다린 시간
+    /// </summary>
+    float pathWaitTime = 0.0f;
+
+    /// <summary>
+    /// 경로가 막혔을 때 최대로 기다리는 시간
+    /// </summary>
+    const float MaxWaitTime = 1.0f;
+
 
     // 쉐이더 관련 변수들 --------------------------------------------------------------------------
     /// <summary>
@@ -116,7 +148,7 @@ public class Slime : MonoBehaviour
     private void Start()
     {
         onGoalArrive += () =>
-        {
+        {            
             //Vector2Int pos = Position;              // 현재 내 위치를 기록
             //while( pos == Position )                // pos가 내 위치이면 계속 반복 => 내 위치와 다른 위치가 나올 때까지 반복
             //{
@@ -135,24 +167,7 @@ public class Slime : MonoBehaviour
 
     private void Update()
     {
-        if (isActivate)     // 활성화 상태일 때만 움직이기
-        {
-            if (path.Count > 0)                              // path에 위치가 기록되어있으면 진행
-            {
-                Vector3 dest = map.GridToWorld(path[0]);    // path의 첫번째 위치로 항상 이동            
-                Vector3 dir = dest - transform.position;    // 방향 계산
-                transform.Translate(Time.deltaTime * moveSpeed * dir.normalized);   // 계산한 방향으로 1초에 moveSpeed만큼 이동
-
-                if (dir.sqrMagnitude < 0.001f)              // 목적지(path의 첫번째 위치)에 도착했는지 확인
-                {
-                    path.RemoveAt(0);                       // 목적지에 도착했으면 그 노드를 제거
-                }
-            }
-            else
-            {
-                onGoalArrive?.Invoke();
-            }
-        }
+        MoveUpdate();
     }
 
     /// <summary>
@@ -164,6 +179,40 @@ public class Slime : MonoBehaviour
     {
         map = gridMap;
         transform.position = pos;
+        CurrentNode = map.GetNode(pos);     // 이 슬라임이 위치한 노드 가지고 있기
+    }
+
+    /// <summary>
+    /// 슬라임 이동처리하는 함수(매 업데이트마다 실행)
+    /// </summary>
+    private void MoveUpdate()
+    {
+        if (isActivate)     // 활성화 상태일 때만 움직이기
+        {
+            if (path.Count > 0 && pathWaitTime < MaxWaitTime)   // path에 위치가 기록되어있으면 진행
+            {                
+                // 새롭게 이동하는 지역에 몬스터가 없으면 기존 코드대로 작동
+                // 몬스터가 있으면 대기한다. 
+
+                Vector3 dest = map.GridToWorld(path[0]);        // path의 첫번째 위치로 항상 이동            
+                Vector3 dir = dest - transform.position;        // 방향 계산
+                transform.Translate(Time.deltaTime * moveSpeed * dir.normalized);   // 계산한 방향으로 1초에 moveSpeed만큼 이동
+
+                CurrentNode = map.GetNode(transform.position);  // 현재 노드 변경
+
+                if (dir.sqrMagnitude < 0.001f)                  // 목적지(path의 첫번째 위치)에 도착했는지 확인
+                {
+                    transform.position = dest;                  // 목적지의 정확한 위치에 설정
+                    path.RemoveAt(0);                           // 목적지에 도착했으면 그 노드를 제거
+                }
+
+                
+            }
+            else
+            {
+                onGoalArrive?.Invoke();
+            }
+        }
     }
 
     /// <summary>
