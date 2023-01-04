@@ -115,3 +115,10 @@
 
 2. 코드 확인
 	시간 : 2시까지
+
+
+1/4
+1. Test_LoadingScene.LoadingTextProgress()를 완성하기
+	1.1. 로딩 중에는 loadingText에 표시되는 글자가 0.2초 마다 아래 내용으로 반복적으로 변경된다.
+		"Loading", "Loading .", "Loading . .", "Loading . . .", "Loading . . . .", "Loading . . . . ."
+	시간 : 10시 50분까지
