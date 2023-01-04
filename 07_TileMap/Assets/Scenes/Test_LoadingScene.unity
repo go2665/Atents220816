@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: Test_Seemless_00
-  loadingBarSpeed: 1
+  loadingBarSpeed: 0.5
 --- !u!1 &1144970668
 GameObject:
   m_ObjectHideFlags: 0
