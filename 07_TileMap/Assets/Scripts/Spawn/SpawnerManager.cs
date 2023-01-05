@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static System.Net.WebRequestMethods;
 
 public class SpawnerManager : MonoBehaviour
 {
@@ -39,6 +40,18 @@ public class SpawnerManager : MonoBehaviour
         }
 
         spawnedList = new List<Slime>();
+
+        StartCoroutine(GetSpawnerData());
+    }   
+
+    IEnumerator GetSpawnerData()
+    {
+        string url = "http://go26652.dothome.co.kr/HTTP_Data/SpawnerData.txt";
+        //{"delay":1.5,"capacity":10}
+
+
+
+        yield return null;
     }
 
     /// <summary>
