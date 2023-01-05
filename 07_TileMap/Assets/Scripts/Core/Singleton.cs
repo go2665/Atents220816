@@ -17,6 +17,12 @@ using UnityEngine.SceneManagement;
 // where 이하에 있는 조건을 만족시켜야 한다.(T는 컴포넌트를 상속받은 타입이어야 한다.)
 public class Singleton<T> : MonoBehaviour where T : Component   
 {
+    /// <summary>
+    /// 초기화를 한번만 진행하기 위한 플래그
+    /// </summary>
+    private bool initialized = false;
+
+
     private static bool isShutDown = false;
     private static T _instance = null;
     public static T Inst
@@ -101,12 +107,20 @@ public class Singleton<T> : MonoBehaviour where T : Component
         isShutDown = true;
     }
 
+    /// <summary>
+    /// 씬이 로드되면 호출이 되는 함수(자신이 아니어도 호출됨)
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <param name="mode"></param>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 #if PRINT_DEBUG_INFO
         Debug.Log($"Singleton({this.gameObject.name}) : SceneLoaded");
 #endif
-        Initialize();   // 씬이 로드 되면 초기화 함수 따로 실행
+        if (!initialized)   // 이전에 초기화 된 적이 있으면 다시 초기화하지는 않는다.
+        {
+            Initialize();   // 씬이 로드 되면 초기화 함수 따로 실행
+        }
     }
 
     /// <summary>
@@ -117,6 +131,8 @@ public class Singleton<T> : MonoBehaviour where T : Component
 #if PRINT_DEBUG_INFO
         Debug.Log($"Singleton({this.gameObject.name}) : Initialize");
 #endif
+        
+        initialized = true; // 초기화 되었다고 표시
     }
 }
 
