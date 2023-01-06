@@ -27,6 +27,9 @@ public class SlimeFactory : Singleton<SlimeFactory>
     /// </summary>
     Queue<Slime> readyQueue;
 
+    /// <summary>
+    /// 모든 슬라임의 pahtLine의 부모가 될 게임 오브젝트의 트랜스폼
+    /// </summary>
     Transform linesParent;
 
     /// <summary>
@@ -36,29 +39,13 @@ public class SlimeFactory : Singleton<SlimeFactory>
     {
         base.Initialize();  // 디버그 출력용(없어도 상관 없음)
 
-        linesParent = transform.GetChild(0);
+        linesParent = transform.GetChild(0);        // 처음에는 자식이 1개만 있기 때문에 그대로 가져옴
 
         pool = new Slime[poolSize];                 // 풀 배열 생성(poolSize만큼)
         readyQueue = new Queue<Slime>(poolSize);    // 레디큐 생성(poolSize만큼 capaticy 확보)
-
-        for (int i = 0; i < poolSize; i++)          // poolSize만큼 반복
-        {
-            GameObject obj = Instantiate(slimePrefab, this.transform);  // 슬라임 생성하고 팩토리의 자식으로 설정
-            obj.name = $"Slime_{i}";                                    // 이름 재설정
-            Slime slime = obj.GetComponent<Slime>();                    // Slime 컴포넌트 찾아서
-            slime.onDisable += () =>
-            {                
-                readyQueue.Enqueue(slime);                  // 슬라임 게임 오브젝트가 disable 될 때 레디큐로 되돌리기
-            };
-            PathLineDraw pathLine = obj.GetComponentInChildren<PathLineDraw>();
-            pathLine.gameObject.name = $"PathLine_{i}";
-            pathLine.transform.SetParent(linesParent);
-            pathLine.gameObject.SetActive(false);
-
-            pool[i] = slime;                        // 풀에 슬라임 저장해 놓기
-            obj.SetActive(false);                   // 슬라임 게임 오브젝트 비활성화
-        }        
-    }
+        
+        GenerateSlimes(0, poolSize, pool);          // 풀에 슬라임 채워 넣기
+    }    
 
     /// <summary>
     /// 풀에서 슬라임 하나를 꺼내서 주는 함수
@@ -82,28 +69,41 @@ public class SlimeFactory : Singleton<SlimeFactory>
             for(int i=0;i<poolSize;i++)
             {
                 newPool[i] = pool[i];               // 새풀에 기존 풀에 있는 슬라임들 전부 복사
-            }            
-            for (int i=poolSize; i<newSize;i++)     // 새풀의 빈곳에 새 슬라임 만들어서 추가(Initialize와 거의 동일)
-            {
-                GameObject obj = Instantiate(slimePrefab, this.transform);
-                obj.name = $"Slime_{i}";
-                Slime slime = obj.GetComponent<Slime>();
-                slime.onDisable += () =>
-                {
-                    readyQueue.Enqueue(slime);
-                };
-                PathLineDraw pathLine = obj.GetComponentInChildren<PathLineDraw>();
-                pathLine.gameObject.name = $"PathLine_{i}";
-                pathLine.transform.SetParent(linesParent);
-                pathLine.gameObject.SetActive(false);
-
-                newPool[i] = slime;                 // 새 풀의 뒤쪽에 추가한 다는 것만 다름
-                obj.SetActive(false);
             }
+
+            GenerateSlimes(poolSize, newSize, newPool); // 풀의 확장된 부분에 슬라임 채워 넣기
+
             pool = newPool;                         // 새풀을 풀로 설정
             poolSize = newSize;                     // 새크기로 풀크기로 설정
 
             return GetSlime();                      // 새 것 하나 꺼내서 리턴하기
+        }
+    }
+
+    /// <summary>
+    /// 슬라임을 Instantiate하고 기본적으로 필요한 처리들 수행하는 함수
+    /// </summary>
+    /// <param name="start">생성한 슬라임이 들어가기 시작할 풀의 인덱스</param>
+    /// <param name="end">생성한 슬라임이 마지막으로 들어가는 풀의 인덱스 한 칸 앞</param>
+    /// <param name="array">생성한 슬라임이 들어갈 풀</param>
+    void GenerateSlimes(int start, int end, Slime[] array)
+    {
+        for (int i = start; i < end; i++)                               // end - start만큼 반복
+        {
+            GameObject obj = Instantiate(slimePrefab, this.transform);  // 슬라임 생성하고 팩토리의 자식으로 설정
+            obj.name = $"Slime_{i}";                                    // 이름 재설정
+            Slime slime = obj.GetComponent<Slime>();                    // Slime 컴포넌트 찾아서
+            slime.onDisable += () =>
+            {
+                readyQueue.Enqueue(slime);                              // 슬라임 게임 오브젝트가 disable 될 때 레디큐로 되돌리기
+            };
+            PathLineDraw pathLine = obj.GetComponentInChildren<PathLineDraw>(); // 슬라임의 자식인 PathLineDraw 찾기
+            pathLine.gameObject.name = $"PathLine_{i}";                 // 이름 재설정
+            pathLine.transform.SetParent(linesParent);                  // 부모를 linesParent로 변경
+            pathLine.gameObject.SetActive(false);                       // pathLine 비활성화
+
+            array[i] = slime;                                           // 풀에 슬라임 저장해 놓기
+            obj.SetActive(false);                                       // 슬라임 게임 오브젝트 비활성화
         }
     }
 }

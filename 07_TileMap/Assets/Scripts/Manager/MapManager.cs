@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -119,15 +118,16 @@ public class MapManager : MonoBehaviour
         int index = GetIndex(x, y);                         // 인덱스 계산
         if (sceneLoadState[index] == SceneLoadState.Loaded) // 해당 맵이 Load 상태일 때만 로딩해제 시도
         {
-            Scene scene = SceneManager.GetSceneByName(sceneNames[index]);
-            GameObject[] sceneObjs = scene.GetRootGameObjects();
+            // 맵 언로드 전에 맵에 있는 슬라임들 처리
+            Scene scene = SceneManager.GetSceneByName(sceneNames[index]);       // 언로드할 씬 가져오기
+            GameObject[] sceneObjs = scene.GetRootGameObjects();                // 씬에 있는 오브젝트들 가져오기
             if(sceneObjs.Length > 0)
             {
-                Slime[] slimes = sceneObjs[0].GetComponentsInChildren<Slime>();
+                Slime[] slimes = sceneObjs[0].GetComponentsInChildren<Slime>(); // 씬 구조를 알고 있기 때문에 첫번째 오브젝트에서 모든 슬라임 가져오기
                 foreach(var slime in slimes)
                 {
-                    slime.ClearData();
-                    slime.gameObject.SetActive(false);
+                    slime.ClearData();                  // 데이터 정리
+                    slime.gameObject.SetActive(false);  // 슬라임 비활성화 시키기
                 }
             }
 

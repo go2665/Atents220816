@@ -153,11 +153,6 @@ public class Slime : MonoBehaviour
         onDisable?.Invoke();            // 비활성화 되었다고 알림(레디 큐에 다시 돌려주라는 신호를 보내는 것이 주 용도)
     }
 
-    private void OnDestroy()
-    {
-        //Debug.Log($"Slime destroy - {gameObject.name}");
-    }
-
     private void Start()
     {
         onGoalArrive += () =>
@@ -174,8 +169,7 @@ public class Slime : MonoBehaviour
             } while (pos == Position);
 
             SetDestination(pos);                    // 랜덤으로 가져온 위치로 이동하기
-        };
-        
+        };        
     }
 
     private void Update()
@@ -249,7 +243,8 @@ public class Slime : MonoBehaviour
     {
         if (isActivate)
         {
-            ClearData();
+            // 슬라임을 제거하기 위한 처리들 수행
+            ClearData();          
 
             // 디졸브 실행
             StartCoroutine(StartDissolve());
@@ -259,6 +254,9 @@ public class Slime : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 슬라임이 없어져야 하는 상황일 때 해야하는 처리를 수행하는 함수
+    /// </summary>
     public void ClearData()
     {
         transform.SetParent(SlimeFactory.Inst.gameObject.transform);  // 슬라임을 다시 팩토리의 자식으로
