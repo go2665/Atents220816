@@ -312,6 +312,8 @@ public class Slime : MonoBehaviour
             yield return null;                      // 다음 프레임까지 대기
         }
 
+        CurrentNode.gridType = Node.GridType.Plain; // 슬라임이 죽었으니 다시 지나갈 수 있게 만들기
+
         this.gameObject.SetActive(false);           // 게임 오브젝트 비활성화(오브젝트 풀로 되돌리기)
     }
 
