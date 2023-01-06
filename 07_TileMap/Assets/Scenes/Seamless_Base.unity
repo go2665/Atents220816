@@ -195,10 +195,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6943829591859337156, guid: 2b59adb149ac7e94ab4b88eb7b0b6d0a, type: 3}
-      propertyPath: poolSize
-      value: 128
-      objectReference: {fileID: 0}
     - target: {fileID: 6943829591859337157, guid: 2b59adb149ac7e94ab4b88eb7b0b6d0a, type: 3}
       propertyPath: m_Name
       value: SlimeFactory

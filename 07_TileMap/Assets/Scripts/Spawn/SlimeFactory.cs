@@ -27,12 +27,16 @@ public class SlimeFactory : Singleton<SlimeFactory>
     /// </summary>
     Queue<Slime> readyQueue;
 
+    Transform linesParent;
+
     /// <summary>
     /// 씬 로드 이후에 호출 되는 함수
     /// </summary>
     protected override void Initialize()
     {
         base.Initialize();  // 디버그 출력용(없어도 상관 없음)
+
+        linesParent = transform.GetChild(0);
 
         pool = new Slime[poolSize];                 // 풀 배열 생성(poolSize만큼)
         readyQueue = new Queue<Slime>(poolSize);    // 레디큐 생성(poolSize만큼 capaticy 확보)
@@ -46,6 +50,11 @@ public class SlimeFactory : Singleton<SlimeFactory>
             {                
                 readyQueue.Enqueue(slime);                  // 슬라임 게임 오브젝트가 disable 될 때 레디큐로 되돌리기
             };
+            PathLineDraw pathLine = obj.GetComponentInChildren<PathLineDraw>();
+            pathLine.gameObject.name = $"PathLine_{i}";
+            pathLine.transform.SetParent(linesParent);
+            pathLine.gameObject.SetActive(false);
+
             pool[i] = slime;                        // 풀에 슬라임 저장해 놓기
             obj.SetActive(false);                   // 슬라임 게임 오브젝트 비활성화
         }        
@@ -83,6 +92,11 @@ public class SlimeFactory : Singleton<SlimeFactory>
                 {
                     readyQueue.Enqueue(slime);
                 };
+                PathLineDraw pathLine = obj.GetComponentInChildren<PathLineDraw>();
+                pathLine.gameObject.name = $"PathLine_{i}";
+                pathLine.transform.SetParent(linesParent);
+                pathLine.gameObject.SetActive(false);
+
                 newPool[i] = slime;                 // 새 풀의 뒤쪽에 추가한 다는 것만 다름
                 obj.SetActive(false);
             }
