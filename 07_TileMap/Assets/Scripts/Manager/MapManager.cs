@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -118,6 +119,18 @@ public class MapManager : MonoBehaviour
         int index = GetIndex(x, y);                         // 인덱스 계산
         if (sceneLoadState[index] == SceneLoadState.Loaded) // 해당 맵이 Load 상태일 때만 로딩해제 시도
         {
+            Scene scene = SceneManager.GetSceneByName(sceneNames[index]);
+            GameObject[] sceneObjs = scene.GetRootGameObjects();
+            if(sceneObjs.Length > 0)
+            {
+                Slime[] slimes = sceneObjs[0].GetComponentsInChildren<Slime>();
+                foreach(var slime in slimes)
+                {
+                    slime.ClearData();
+                    slime.gameObject.SetActive(false);
+                }
+            }
+
             AsyncOperation async = SceneManager.UnloadSceneAsync(sceneNames[index]);    // 비동기 로딩해제 시작
             async.completed += (_) => sceneLoadState[index] = SceneLoadState.Unload;    // 로딩이 완료되면 Unload로 상태 변경
             sceneLoadState[index] = SceneLoadState.PendingUnload;                       // 로딩해제 시작 표시
