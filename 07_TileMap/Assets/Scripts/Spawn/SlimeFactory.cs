@@ -97,7 +97,7 @@ public class SlimeFactory : Singleton<SlimeFactory>
             {
                 readyQueue.Enqueue(slime);                              // 슬라임 게임 오브젝트가 disable 될 때 레디큐로 되돌리기
             };
-            PathLineDraw pathLine = obj.GetComponentInChildren<PathLineDraw>(); // 슬라임의 자식인 PathLineDraw 찾기
+            PathLineDraw pathLine = slime.PathLine;                     // 슬라임의 자식인 PathLineDraw 가져오기
             pathLine.gameObject.name = $"PathLine_{i}";                 // 이름 재설정
             pathLine.transform.SetParent(linesParent);                  // 부모를 linesParent로 변경
             pathLine.gameObject.SetActive(false);                       // pathLine 비활성화

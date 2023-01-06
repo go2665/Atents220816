@@ -156,7 +156,7 @@ public class Player : MonoBehaviour
         {
             foreach (var target in attackTarget)
             {
-                target.Die();
+                 target.Die();
             }
         }
     }

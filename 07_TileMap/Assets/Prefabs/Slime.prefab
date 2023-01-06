@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  isShowPath: 1
+  isShowPath: 0
   phaseDuration: 0.5
   dissolveDuration: 1
 --- !u!58 &4537514718539173108

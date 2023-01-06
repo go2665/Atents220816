@@ -22,9 +22,9 @@ public class PathLineDraw : MonoBehaviour
     /// <param name="path">대상 맵에서 움직일 경로</param>
     public void DrawPath(GridMap map, List<Vector2Int> path)
     {
-        if (path != null)
+        if (path != null && this.gameObject.activeSelf)     // 경로가 있고 활성화 된 상태에서만 처리
         {
-            lineRenderer.positionCount = path.Count;    // 경로 길이에 맞춰 라인 랜더러를 구성하는 점의 숫자 설정
+            lineRenderer.positionCount = path.Count;        // 경로 길이에 맞춰 라인 랜더러를 구성하는 점의 숫자 설정
             int index = 0;
             foreach (var node in path)                      // 경로를 하나하나 따라가며
             {
