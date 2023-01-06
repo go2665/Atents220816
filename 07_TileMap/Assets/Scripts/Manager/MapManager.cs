@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -133,9 +134,41 @@ public class MapManager : MonoBehaviour
         return new Vector2Int((int)(offset.x / mapWidthLength), (int)(offset.y / mapHeightLength)); // 몇번째 맵에 해당하는지 확인
     }
 
+    /// <summary>
+    /// 지정된 목적지 주변은 로딩 요청하고 그외는 전부 로딩해제 요청하는 함수
+    /// </summary>
+    /// <param name="x">지정된 grid X좌표</param>
+    /// <param name="y">지정된 grid Y좌표</param>
     void RefreshScenes(int x, int y)
     {
+        int startX = Mathf.Max(0, x - 1);           // 범위를 벗어나는 것을 방지하기 위해 미리 계산
+        int endX = Mathf.Min(WidthCount, x + 2);
+        int startY = Mathf.Max(0, y - 1);
+        int endY = Mathf.Min(HeightCount, y + 2);
 
+        List<Vector2Int> openList = new List<Vector2Int>(WidthCount* HeightCount);  // 로딩 된 지역 기록
+        for (int _y = startY; _y < endY; _y++)
+        {
+            for (int _x = startX; _x < endX; _x++)
+            {
+                RequestAsyncSceneLoad(_x, _y);      // 로딩할 곳들 로딩 요청
+                openList.Add(new(_x, _y));          // 로딩한 지역 기록
+            }
+        }
+
+        Vector2Int target = new Vector2Int();       // 리스트에 찾는 값이 있는지 확인하기 위해 만든 임시 변수
+        for(int _y = 0; _y<HeightCount; _y++)       // 모든 맵을 전부 처리
+        {
+            for(int _x = 0; _x<WidthCount;_x++)
+            {
+                target.x = _x;
+                target.y = _y;
+                if(!openList.Exists((iter) => iter == target))  // openList에 없는 위치만
+                {
+                    RequestAsyncSceneUnload(_x, _y);            // 로딩 해제 요청
+                }
+            }
+        }
     }
 
     // 테스트용 -----------------------------------------------------------------------------------
