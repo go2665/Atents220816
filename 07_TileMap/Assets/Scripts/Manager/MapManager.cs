@@ -65,8 +65,9 @@ public class MapManager : MonoBehaviour
         }
 
         Player player = GameManager.Inst.Player;
+        player.onMapMoved += (pos) => RefreshScenes(pos.x, pos.y);  // 플레이어가 맵을 이동하면 RefreshScenes 실행해서 플레이어 주변맵만 로딩하고 유지하게 하기
         Vector2Int grid = WorldToGrid(player.transform.position);
-        RequestAsyncSceneLoad(grid.x, grid.y);
+        RequestAsyncSceneLoad(grid.x, grid.y);                      // 플레이어가 존재하는 맵이 최우선적으로 처리하기 위해 실행
         RefreshScenes(grid.x, grid.y);
     }
 

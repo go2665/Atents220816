@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -67,6 +66,37 @@ public class Player : MonoBehaviour
     /// </summary>
     bool isAttackValid = false;
 
+    /// <summary>
+    /// 맵 매니저
+    /// </summary>
+    MapManager mapManager;
+
+    /// <summary>
+    /// 현재 위치하고 있는 맵(의 그리드 좌표)
+    /// </summary>
+    Vector2Int currentMap;
+
+    /// <summary>
+    /// 현재 위치하고 있는 맵을 확인하고 변경할 수 있는 프로퍼티
+    /// </summary>
+    Vector2Int CurrentMap
+    {
+        get => currentMap;
+        set
+        {
+            if( currentMap != value)            // 맵이 변경이 될 때만
+            {
+                currentMap = value;             // 실제로 변경
+                onMapMoved?.Invoke(currentMap); // 델리게이트로 변경되었음을 알림
+            }
+        }
+    }
+
+    /// <summary>
+    /// 맵 변경시 실행될 델리게이트(파라메터는 변경된 맵의 그리드 좌표)
+    /// </summary>
+    public Action<Vector2Int> onMapMoved;
+
     private void Awake()
     {
         // 컴포넌트 찾고 
@@ -112,6 +142,11 @@ public class Player : MonoBehaviour
         inputActions.Player.Disable();
     }
 
+    private void Start()
+    {
+        mapManager = GameManager.Inst.MapManager;   // 맵매니저 가져오기
+    }
+
     private void Update()
     {
         // 아무 조건 없이 계속 쿨타임 감소
@@ -130,6 +165,9 @@ public class Player : MonoBehaviour
     {
         // 이동 처리
         rigid.MovePosition(rigid.position + Time.deltaTime * speed * inputDir);
+
+        // 이동 후에 어떤맵에 있는지 표시
+        CurrentMap = mapManager.WorldToGrid(transform.position); 
     }
 
     private void OnMove(InputAction.CallbackContext context)
