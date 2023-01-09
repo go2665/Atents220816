@@ -156,3 +156,8 @@
 1. 플레이어의 수명과 LifeTimeText에서 표시되는 글자를 일치시키기
 	1.1. LifeTimeText는 무조건 소수점 2자리까지 표현해야 한다.
 	시간 : 10시 40분까지 -> 10시 50분까지
+
+2. GameOverPanel 완성하기
+	2.1. GameOverPanel은 플레이어가 죽기 전까지는 완전히 투명하다가 플레이어가 죽고나면 불투명해지기 시작해서 최종적으로 완전히 불투명해진다.
+	2.2. TotalPlayTimeText는 플레이어가 죽었을 때 까지 누적된 총 플레이 시간을 초단위로 출력해야 한다.(totalPlayTime)
+	2.3. Restart 버튼을 누르면 Seamless_Base를 로딩한다.
