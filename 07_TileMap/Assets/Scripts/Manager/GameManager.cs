@@ -19,7 +19,10 @@ public class GameManager : Singleton<GameManager>
         player = FindObjectOfType<Player>();
 
         mapManager = GetComponent<MapManager>();    // 맵 매니저 찾아서
-        mapManager.Initialize();                    // 초기화 하기
+        if (mapManager != null)
+        {
+            mapManager.Initialize();                // 초기화 하기
+        }
 
         base.Initialize();
     }

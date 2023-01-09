@@ -210,6 +210,8 @@ public class Player : MonoBehaviour
     private void Start()
     {
         mapManager = GameManager.Inst.MapManager;   // 맵매니저 가져오기
+        
+        lifeTime = maxLifeTime;
     }
 
     private void Update()
@@ -235,7 +237,8 @@ public class Player : MonoBehaviour
         rigid.MovePosition(rigid.position + Time.deltaTime * speed * inputDir);
 
         // 이동 후에 어떤맵에 있는지 표시
-        CurrentMap = mapManager.WorldToGrid(transform.position); 
+        if(mapManager != null)
+            CurrentMap = mapManager.WorldToGrid(transform.position); 
     }
 
     private void OnMove(InputAction.CallbackContext context)
