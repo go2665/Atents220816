@@ -152,11 +152,11 @@ public class Player : MonoBehaviour
         // 아무 조건 없이 계속 쿨타임 감소
         currentAttackCoolTime -= Time.deltaTime;    
 
-        if(isAttackValid && attackTarget.Count > 0)
+        if(isAttackValid)
         {
-            foreach (var target in attackTarget)
+            while(attackTarget.Count > 0)   // 공격 대상이 있으면 다 없어질 때까지 처리
             {
-                 target.Die();
+                attackTarget[0].Die();      // Die가 실행되면 컬라이더가 비활성화 되면서 attackTarget에서 자동으로 제거됨
             }
         }
     }

@@ -9,7 +9,7 @@ public class Slime : MonoBehaviour
 
     bool isActivate = false;
 
-    //Collider2D bodyCollider;
+    Collider2D bodyCollider;
 
     /// <summary>
     /// 이 슬라임의 그리드 좌표를 확인하기 위한 프로퍼티
@@ -132,7 +132,8 @@ public class Slime : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         mainMaterial = spriteRenderer.material;             // 머티리얼 미리 찾아 놓기
 
-        //bodyCollider = GetComponent<Collider2D>();
+        bodyCollider = GetComponent<Collider2D>();
+        bodyCollider.enabled = false;                       // 시작할 때 꺼놓기
 
         pathLine = GetComponentInChildren<PathLineDraw>();
 
@@ -143,9 +144,12 @@ public class Slime : MonoBehaviour
     private void OnEnable()
     {
         onDie = () => isActivate = false;               // 죽으면 비활성화        
-        onPhaseEnd = () => isActivate = true;           // 페이즈가 끝나면 활성화
+        onPhaseEnd = () =>
+        {
+            isActivate = true;                          // 페이즈가 끝나면 활성화
+            bodyCollider.enabled = true;                // 컬라이더 켜기(페이즈가 끝나기 전까지는 무적)
+        };
 
-        //bodyCollider.enabled = true;                    // 컬라이더 켜기
         pathLine.gameObject.SetActive(isShowPath);      // isShowPath에 따라 경로 활성화/비활성화 설정
 
         // 쉐이더 프로퍼티 값들 초기화
@@ -250,7 +254,7 @@ public class Slime : MonoBehaviour
     {
         if (isActivate)
         {
-            //bodyCollider.enabled = false;           // 더 이상 충돌 안하도록 끄기
+            bodyCollider.enabled = false;           // 더 이상 충돌 안하도록 끄기
 
             // 슬라임을 제거하기 위한 처리들 수행
             ClearData();          
