@@ -6,6 +6,7 @@ using UnityEngine;
 public class Slime : MonoBehaviour
 {
     // 일반 변수들 ---------------------------------------------------------------------------------
+    public float bonusLife = 2.0f;
 
     bool isActivate = false;
 
@@ -250,8 +251,9 @@ public class Slime : MonoBehaviour
     /// <summary>
     /// 이 슬라임을 죽일 때 실행할 함수
     /// </summary>
-    public void Die()
+    public float Die()
     {
+        float bonus = 0.0f;
         if (isActivate)
         {
             bodyCollider.enabled = false;           // 더 이상 충돌 안하도록 끄기
@@ -264,7 +266,9 @@ public class Slime : MonoBehaviour
 
             // 죽었다고 신호보내기
             onDie?.Invoke();
+            bonus = bonusLife;
         }
+        return bonus;
     }
 
     /// <summary>
