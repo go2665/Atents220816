@@ -49,6 +49,6 @@ public class GameOverPanel : MonoBehaviour
 
     private void OnRestartClick()
     {
-        SceneManager.LoadScene("Seamless_Base");
+        SceneManager.LoadScene("LoadingScene");
     }
 }
