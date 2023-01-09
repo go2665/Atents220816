@@ -522,6 +522,10 @@ PrefabInstance:
       propertyPath: speed
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7176025567080620848, guid: 64f58dc9a7efac4489459c9a79e01f11, type: 3}
+      propertyPath: maxLifeTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7176025567080620849, guid: 64f58dc9a7efac4489459c9a79e01f11, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -728,7 +732,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511048629}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -744,6 +748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cea473278994a5c4db81e94973d48edb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alphaChangeSpeed: 2
 --- !u!1 &1605083873
 GameObject:
   m_ObjectHideFlags: 0

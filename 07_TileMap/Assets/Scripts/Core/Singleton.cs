@@ -117,10 +117,11 @@ public class Singleton<T> : MonoBehaviour where T : Component
 #if PRINT_DEBUG_INFO
         Debug.Log($"Singleton({this.gameObject.name}) : SceneLoaded");
 #endif
+        ResetData();
         if (!initialized)   // 이전에 초기화 된 적이 있으면 다시 초기화하지는 않는다.
         {
             Initialize();   // 씬이 로드 되면 초기화 함수 따로 실행
-        }
+        }        
     }
 
     /// <summary>
@@ -133,6 +134,14 @@ public class Singleton<T> : MonoBehaviour where T : Component
 #endif
         
         initialized = true; // 초기화 되었다고 표시
+    }
+
+    /// <summary>
+    /// 해당 싱글톤이 미리 찾아놓아야 하는 데이터들을 다시 찾기
+    /// </summary>
+    protected virtual void ResetData()
+    {
+
     }
 }
 
