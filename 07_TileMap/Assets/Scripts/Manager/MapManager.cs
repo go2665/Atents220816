@@ -51,7 +51,7 @@ public class MapManager : MonoBehaviour
     public void Initialize()
     {
         // 맵의 갯수에 맞게 배열 생성
-        sceneNames = new string[HeightCount * WidthCount];
+        sceneNames = new string[HeightCount * WidthCount];        
         sceneLoadState = new SceneLoadState[HeightCount * WidthCount];
 
         for(int y = 0; y<HeightCount; y++)
@@ -60,6 +60,19 @@ public class MapManager : MonoBehaviour
             {
                 int index = GetIndex(x, y);
                 sceneNames[index] = $"{SceneNameBase}_{x}_{y}";     // 각 씬의 이름 설정
+                sceneLoadState[index] = SceneLoadState.Unload;      // 각 씬의 로딩 상태 초기화
+            }
+        }
+    }
+
+    // 무조건 초기화가 다 된 이후에 실행
+    public void MapDataReset()
+    {
+        for (int y = 0; y < HeightCount; y++)
+        {
+            for (int x = 0; x < WidthCount; x++)
+            {
+                int index = GetIndex(x, y);
                 sceneLoadState[index] = SceneLoadState.Unload;      // 각 씬의 로딩 상태 초기화
             }
         }
