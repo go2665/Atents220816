@@ -67,7 +67,7 @@ public class Spawner : MonoBehaviour
             }
         }
     }
-
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Vector3 pos = new Vector3(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.y));
@@ -83,6 +83,7 @@ public class Spawner : MonoBehaviour
         Handles.DrawLine(p2, p3, 5);
         Handles.DrawLine(p3, p0, 5);
     }
+#endif
 
     public Slime Spawn()
     {

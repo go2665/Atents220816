@@ -132,9 +132,9 @@ public class Singleton<T> : MonoBehaviour where T : Component
             Initialize();   // 씬이 로드 되면 초기화 함수 따로 실행
         }
 
-        if (scene.buildIndex == mainSceneIndex) // Seamless_Base가 로드되었을 때만 데이터 리셋하기
+        if (scene.buildIndex == mainSceneIndex) // 자신이 처음 존재하던 씬이 로드되었을 때만 데이터 리셋하기
         {
-            ManagerDataReset(); // Seamless_Base 씬이 로드 될 때마다 초기화 해야할 것들 초기화
+            ManagerDataReset(); // 자신이 처음 존재하던 씬이 로드 될 때마다 초기화 해야할 것들 초기화
         }
     }
 
@@ -148,7 +148,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
 #endif
         
         initialized = true; // 초기화 되었다고 표시
-        Scene active = SceneManager.GetActiveScene();
+        Scene active = SceneManager.GetActiveScene();   // 자신이 처음 존재하던 씬 가져오기 (Initialize는 한번만 실행되기 때문에 액티브 씬이 자신이 처음 존재하던 씬이 된다.)
         mainSceneIndex = active.buildIndex;
     }
 
