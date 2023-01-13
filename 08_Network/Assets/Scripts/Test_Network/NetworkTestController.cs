@@ -20,7 +20,7 @@ public class NetworkTestController : MonoBehaviour
         {
             if(NetworkManager.Singleton.StartHost())    // 호스트로 시작하기(시도)
             {
-                GameManager.Inst.Logger.Log("호스트가 시작되었습니다.");       // 시작에 성공
+                GameManager.Inst.Logger.Log("<#00ff00>호스트</color>가 시작되었습니다.");       // 시작에 성공
             }
             else
             {
