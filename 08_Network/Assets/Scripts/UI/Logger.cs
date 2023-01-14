@@ -53,9 +53,22 @@ public class Logger : MonoBehaviour
 
         // 입력 예시
         // logStr = "[위험]합니다. {경고}입니다."  => 위험은 빨간색, 경고는 노란색으로 보여야 한다.
-        logStr = "<#ff0000>위험</color>합니다. <#ffff00>경고</color>입니다.";
-        string warnning = ColorUtility.ToHtmlStringRGB(warningColor);   //warnning = "ffff00";
+        // 출력 예시
+        // logStr = "<#ff0000>위험</color>합니다. <#ffff00>경고</color>입니다.";
+        // Color를 RGB코드로 바꾸기
+        //string warnning = ColorUtility.ToHtmlStringRGB(warningColor);   //warnning = "ffff00";
 
+        //string test = string.Format("{0} 입력됨", logStr);
+        //int index = logStr.IndexOf("[");                // 문자열 안에 특정 문자열이 있는 위치 찾기
+        //test = $"{logStr}에서 [는 {index}번째에 있다.";
+        //string[] split = logStr.Split('[', ']');
+        //test = split[0] + "<#ff0000>" + split[1] + "</color>" + split[2];
+        //test = logStr.Replace("[", "<#ff0000>");
+        //test = test.Replace("]", "</color>");
+        //logStr = test;
+                
+        logStr = Emphasize(logStr, '[', ']', criticalColor);    // 괄호 내부를 강조
+        logStr = Emphasize(logStr, '{', '}', warningColor);
 
         logLines.Add(logStr);               // 리스트에 문장 추가하고
         if(logLines.Count > maxLineCount)   // 최대 줄 수를 넘어서면
@@ -70,6 +83,20 @@ public class Logger : MonoBehaviour
         }
 
         log.text = builder.ToString();      // 빌더에 있는 내용을 하나의 문자열로 합치기
+    }
+
+    string Emphasize(string source, char open, char close, Color color)
+    {
+        string temp = source;
+        if (temp.IndexOfAny(new char[] { open, close }) != -1) // 이 문자열에 괄호([],{})가 포함 되어있는지 확인
+        {
+            // 추가 처리 필요
+            string[] split = temp.Split(open, close);
+            string colorText = ColorUtility.ToHtmlStringRGB(color);
+            temp = $"{split[0]}<#{colorText}>{split[1]}</color>{split[2]}";
+        }
+
+        return temp;
     }
 
     /// <summary>
