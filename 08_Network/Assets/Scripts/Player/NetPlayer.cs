@@ -68,11 +68,11 @@ public class NetPlayer : NetworkBehaviour
         //contoller.SimpleMove(moveDelta);
         //transform.Rotate(0, rotateDelta * Time.deltaTime, 0, Space.World);
 
-        if( networkMoveDelta.Value != Vector3.zero)
+        if( networkMoveDelta.Value != Vector3.zero)     // networkMoveDelta가 값이 변경되었을 때만 처리
         {
             contoller.SimpleMove(networkMoveDelta.Value);
         }
-        if (networkRotateDelta.Value != 0.0f)
+        if (networkRotateDelta.Value != 0.0f)           // networkRotateDelta가 값이 변경되었을 때만 처리
         {
             transform.Rotate(0, networkRotateDelta.Value * Time.deltaTime, 0, Space.World);
         }
@@ -84,13 +84,13 @@ public class NetPlayer : NetworkBehaviour
     /// <param name="context"></param>
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        if (IsClient && IsOwner)
+        if (IsClient && IsOwner)    // 클라이언트이고 오너일 때만 처리(각 개별로만 처리)
         {
             Vector2 moveInput = context.ReadValue<Vector2>();
             Vector3 moveDelta = moveInput.y * moveSpeed * transform.forward;    // 이동 입력 저장하기
             float rotateDelta = moveInput.x * rotateSpeed;                      // 회전 입력 저장하기
 
-            UpdateClientMoveAndRotateServerRpc(moveDelta, rotateDelta);
+            UpdateClientMoveAndRotateServerRpc(moveDelta, rotateDelta);         // 저장한 내용을 바탕으로 서버에 변경 요청
         }
     }
 
