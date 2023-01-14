@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class Logger : MonoBehaviour
 {
+    public Color warningColor;       // 경고용 색상. 
+    public Color criticalColor;      // 심각한 강조용 색상.
+
     /// <summary>
     /// 한번에 출력되는 최대 줄 수
     /// </summary>
@@ -45,6 +48,15 @@ public class Logger : MonoBehaviour
     /// <param name="logStr">추가할 문장</param>
     public void Log(string logStr)
     {
+        // [] 사이에 있는 글자는 critical 색상으로 보여주기
+        // {} 사이에 있는 글자는 warning 색상으로 보여주기
+
+        // 입력 예시
+        // logStr = "[위험]합니다. {경고}입니다."  => 위험은 빨간색, 경고는 노란색으로 보여야 한다.
+        logStr = "<#ff0000>위험</color>합니다. <#ffff00>경고</color>입니다.";
+        string warnning = ColorUtility.ToHtmlStringRGB(warningColor);   //warnning = "ffff00";
+
+
         logLines.Add(logStr);               // 리스트에 문장 추가하고
         if(logLines.Count > maxLineCount)   // 최대 줄 수를 넘어서면
         {

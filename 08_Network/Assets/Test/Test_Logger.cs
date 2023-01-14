@@ -16,7 +16,10 @@ public class Test_Logger : TestBase
     private void OnInputFinish(string text)
     {
         GameManager.Inst.Logger.Log(text);
-        inputField.text = "";        
+        inputField.text = "";
+                
+        //inputField.Select();              // 켜져있던것은 끄고 꺼져있던 것은 켜기
+        inputField.ActivateInputField();    // 인풋필드 활성화 시키기
     }
 
     protected override void Test1(InputAction.CallbackContext _)
