@@ -63,6 +63,14 @@ public class NetPlayer : NetworkBehaviour
         ClientMoveAndRotate();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)    // 내 NetPlayer가 스폰이 되었을 때만 
+        {
+            GameManager.Inst.VCamera.Follow = transform.GetChild(0);    // 카메라가 이 NetPlayer를 따라다니게 만들기            
+        }
+    }
+
     private void ClientMoveAndRotate()
     {
         //contoller.SimpleMove(moveDelta);
