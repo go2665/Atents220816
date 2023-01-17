@@ -118,10 +118,7 @@ public class NetPlayer : NetworkBehaviour
         if (IsClient && IsOwner)    // 클라이언트이고 오너일 때만 처리(각 개별로만 처리)
         {
             Vector2 moveInput = context.ReadValue<Vector2>();
-            Vector3 moveDelta = moveInput.y * moveSpeed * transform.forward;    // 이동 입력 저장하기
-            float rotateDelta = moveInput.x * rotateSpeed;                      // 회전 입력 저장하기
-
-            UpdateClientMoveAndRotateServerRpc(moveDelta, rotateDelta);         // 저장한 내용을 바탕으로 서버에 변경 요청
+            SetInputDir(moveInput);
 
             // 애니메이션 관련 처리
             if(moveInput.y > 0)
@@ -141,6 +138,15 @@ public class NetPlayer : NetworkBehaviour
                 UpdateNetPlayerAnimStateServerRpc(animState);   // 서버에게 networkAnimState를 animState 값으로 바꾸도록 요청
             }
         }
+    }
+
+    //public void SetInputDir(ref Vector2 dir)
+    public void SetInputDir(Vector2 dir)
+    {
+        Vector3 moveDelta = dir.y * moveSpeed * transform.forward;      // 이동 입력 저장하기
+        float rotateDelta = dir.x * rotateSpeed;                        // 회전 입력 저장하기
+
+        UpdateClientMoveAndRotateServerRpc(moveDelta, rotateDelta);     // 저장한 내용을 바탕으로 서버에 변경 요청
     }
 
     /// <summary>
