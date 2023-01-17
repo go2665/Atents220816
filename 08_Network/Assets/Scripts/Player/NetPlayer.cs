@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
+using System;
+using Unity.Collections.LowLevel.Unsafe;
 
 public class NetPlayer : NetworkBehaviour
 {
@@ -21,27 +23,48 @@ public class NetPlayer : NetworkBehaviour
     // NetworkVariable로 공유 가능한 데이터 타입은 unmanaged 타입 가능(대략적으로 값타입만 가능)
     // 생성자를 통해 읽기/쓰기 권한을 설정할 수 있다.
 
+    /// <summary>
+    /// 네트워크로 적용될 이동량
+    /// </summary>
     NetworkVariable<Vector3> networkMoveDelta = new NetworkVariable<Vector3>();
+
+    /// <summary>
+    /// 네트워크로 적용될 회전량
+    /// </summary>
     NetworkVariable<float> networkRotateDelta = new NetworkVariable<float>();
 
     /// <summary>
-    /// 이번 프레임에 움직여야 할 이동량
+    /// 플레이어의 애니메이션 상태를 나타내는 enum
     /// </summary>
-    //Vector3 moveDelta;
+    public enum PlayerAnimState
+    {
+        Idle,       // 가만히 있는 상태
+        Walk,       // 걷는 상태
+        BackWalk    // 뒤로 걷는 상태
+    }
 
     /// <summary>
-    /// 이번 프레임에 회전해야 할 회전량
+    /// 현재 컴퓨터(로컬)의 애니메이션 상태
     /// </summary>
-    //float rotateDelta;
+    PlayerAnimState animState = PlayerAnimState.Idle;
+
+    /// <summary>
+    /// 네트워크로 공유되는 애니메이션 상태
+    /// </summary>
+    NetworkVariable<PlayerAnimState> networkAnimState = new NetworkVariable<PlayerAnimState>();
 
     // 컴포넌트들
     CharacterController contoller;
+    Animator anim;
     PlayerInputActions inputActions;
 
     private void Awake()
     {
         contoller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
         inputActions = new PlayerInputActions();
+
+        networkAnimState.OnValueChanged += OnAnimStateChange;   // networkAnimState가 변경될 때 OnAnimStateChange를 실행 시키도록 함수 등록
     }
 
     private void OnEnable()
@@ -99,7 +122,35 @@ public class NetPlayer : NetworkBehaviour
             float rotateDelta = moveInput.x * rotateSpeed;                      // 회전 입력 저장하기
 
             UpdateClientMoveAndRotateServerRpc(moveDelta, rotateDelta);         // 저장한 내용을 바탕으로 서버에 변경 요청
+
+            // 애니메이션 관련 처리
+            if(moveInput.y > 0)
+            {
+                animState = PlayerAnimState.Walk;       // 앞으로 갈 때
+            }
+            else if(moveInput.y < 0)
+            {
+                animState = PlayerAnimState.BackWalk;   // 뒤로 갈 때 
+            }
+            else
+            {
+                animState = PlayerAnimState.Idle;       // 안움직일 때
+            }
+            if( animState != networkAnimState.Value)    // 네트워크로 공유되는 값과 현재 로컬 값이 서로 다를 때만 변경 요청
+            {
+                UpdateNetPlayerAnimStateServerRpc(animState);   // 서버에게 networkAnimState를 animState 값으로 바꾸도록 요청
+            }
         }
+    }
+
+    /// <summary>
+    /// networkAnimState가 변경되었을 때 실행되는 함수
+    /// </summary>
+    /// <param name="previousValue">이전값</param>
+    /// <param name="newValue">현재값</param>
+    private void OnAnimStateChange(PlayerAnimState previousValue, PlayerAnimState newValue)
+    {
+        anim.SetTrigger($"{newValue}"); // enum 값으로 토대로 트리거 실행
     }
 
     // [ServerRpc] : 서버가 실행하는 함수라는 표시
@@ -111,5 +162,12 @@ public class NetPlayer : NetworkBehaviour
         // NetworkVariable의 기본 설정이 서버만 쓰기 권한을 가지고 있기 때문이다.
         networkMoveDelta.Value = moveDelta;
         networkRotateDelta.Value = rotateDelta;
+    }
+
+    [ServerRpc]
+    void UpdateNetPlayerAnimStateServerRpc(PlayerAnimState playerAnimState)
+    {
+        // 값 변경하기
+        networkAnimState.Value = playerAnimState;        
     }
 }
