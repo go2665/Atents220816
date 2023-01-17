@@ -1,17 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
-public class VirtualStick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
+public class VirtualPad : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
     RectTransform containerRect;
     RectTransform handleRect;
 
     float stickRange;
 
-    Action<Vector2> onMoveInput;
+    public Action<Vector2> onMoveInput;
 
     private void Awake()
     {
@@ -25,35 +27,38 @@ public class VirtualStick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoi
 
     public void OnDrag(PointerEventData eventData)
     {
-        //Debug.Log("드래그 중");
+        // Debug.Log("드래그 중");
 
         //position은 containerRect의 pivot 기준으로 얼마만큼 이동했는지를 받아옴
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             containerRect, eventData.position, eventData.pressEventCamera, out Vector2 position);   
 
         position = Vector2.ClampMagnitude(position, stickRange);    // 핸들이 stickRange 안쪽으로만 움직이도록 계산
-        handleRect.anchoredPosition = position;                     // 핸들의 위치 설정
+        
+        InputUpdate(position);
 
-        position /= stickRange;     // 최대값이 1이 되도록 설정
-        NetPlayer player = GameManager.Inst.Player;
-        if (player != null)
-        {
-            //player.SetInputDir(ref position);
-            player.SetInputDir(position);
-        }
-
-
-        Debug.Log(position);
+        // Debug.Log(position);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log("마우스 업");
-        handleRect.anchoredPosition = Vector3.zero;
+        // Debug.Log("마우스 업");
+
+        InputUpdate(Vector2.zero);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("마우스 다운");
+        // Debug.Log("마우스 다운");
+    }
+
+    /// <summary>
+    /// 입력 업데이트(가상 패드에서 어떻게 입력이 들어왔는지 전달)
+    /// </summary>
+    /// <param name="pos">핸들이 부모에서 얼마나 떨어져 있는지</param>
+    void InputUpdate(Vector2 pos)
+    {
+        handleRect.anchoredPosition = pos;      // 핸들의 위치 설정
+        onMoveInput?.Invoke(pos / stickRange);  // 이동 방향을 알림
     }
 }
