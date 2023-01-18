@@ -53,6 +53,7 @@ Material:
     - _QueueOffset: 0
     - _Smoothness: 0.7
     - _Strenght: 0
+    - _Strength: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
     - _EffectColor: {r: 1.073334, g: 4, b: 0, a: 0}

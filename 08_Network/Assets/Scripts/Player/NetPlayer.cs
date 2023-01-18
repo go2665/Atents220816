@@ -53,10 +53,32 @@ public class NetPlayer : NetworkBehaviour
     /// </summary>
     NetworkVariable<PlayerAnimState> networkAnimState = new NetworkVariable<PlayerAnimState>();
 
+
+    /// <summary>
+    /// 네트워크로 공유되는 이팩트 상태(true면 켜져있고, false면 꺼져있다.)
+    /// </summary>
+    NetworkVariable<bool> networkEffectState = new NetworkVariable<bool>(false);    // 초기값 false로 만들기
+
+    /// <summary>
+    /// 이팩트 상태 확인하고 수정하는 프로퍼티
+    /// </summary>
+    public bool IsEffectOn
+    {
+        get => networkEffectState.Value;
+        set 
+        {
+            if( networkEffectState.Value != value ) // 값에 변경이 생기면 서버RPC로 수정 요청
+            {
+                UpdateEffectStateServerRpc(value);
+            }
+        }
+    }
+
     // 컴포넌트들
     CharacterController contoller;
     Animator anim;
     PlayerInputActions inputActions;
+    Material bodyMaterial;
 
     private void Awake()
     {
@@ -64,7 +86,13 @@ public class NetPlayer : NetworkBehaviour
         anim = GetComponent<Animator>();
         inputActions = new PlayerInputActions();
 
+        Renderer tempRenderer = GetComponentInChildren<Renderer>();
+        bodyMaterial = tempRenderer.material;
+
         networkAnimState.OnValueChanged += OnAnimStateChange;   // networkAnimState가 변경될 때 OnAnimStateChange를 실행 시키도록 함수 등록
+
+        networkEffectState.OnValueChanged += OnEffectStateChange;   // networkEffectState가 변경될 때 실행될 함수 연결
+
     }
 
     private void OnEnable()
@@ -159,6 +187,24 @@ public class NetPlayer : NetworkBehaviour
         anim.SetTrigger($"{newValue}"); // enum 값으로 토대로 트리거 실행
     }
 
+    /// <summary>
+    /// networkEffectState가 변경되면 이팩트를 보여주거나 끄는 함수
+    /// </summary>
+    /// <param name="previousValue"></param>
+    /// <param name="newValue"></param>
+    private void OnEffectStateChange(bool previousValue, bool newValue)
+    {
+        bodyMaterial.SetFloat("_Strength", newValue ? 1 : 0 );  // 셰이더 프로퍼티를 수정해서 보여주고 안보여주고를 결정
+        //if ( newValue )
+        //{
+        //    bodyMaterial.SetFloat("_Strength", 1);
+        //}
+        //else
+        //{
+        //    bodyMaterial.SetFloat("_Strength", 0);
+        //}
+    }
+
     // [ServerRpc] : 서버가 실행하는 함수라는 표시
     [ServerRpc]
     public void UpdateClientMoveAndRotateServerRpc(Vector3 moveDelta, float rotateDelta)
@@ -175,5 +221,12 @@ public class NetPlayer : NetworkBehaviour
     {
         // 값 변경하기
         networkAnimState.Value = playerAnimState;        
+    }
+
+    [ServerRpc]
+    void UpdateEffectStateServerRpc(bool isOn)
+    {
+        // 값 변경하기
+        networkEffectState.Value = isOn;
     }
 }

@@ -40,7 +40,8 @@ public class NetPlayerDecoration : NetworkBehaviour
 
     private void OnColorChange(Color previousValue, Color newValue)
     {
-        playerRenderer.material.color = newValue;   // 새 color 값으로 머티리얼 컬러 설정
+        //playerRenderer.material.color = newValue;   // 새 color 값으로 머티리얼 컬러 설정(Standard 셰이더를 사용했을때)
+        playerRenderer.material.SetColor("_BaseColor", color.Value);    // 셰이더가 변경되면서 직접 설정하는 것으로 수정(셰이더 그래프로 만든 커스텀 셰이더여서)
     }
 
     /// <summary>
@@ -70,8 +71,8 @@ public class NetPlayerDecoration : NetworkBehaviour
             color.Value = Random.ColorHSV(0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
         }
 
-        playerRenderer.material.color = color.Value;        // 스폰할 때 저장되어 있던 색상으로 설정
-        namePlate.text = playerName.Value.ToString();       // 스폰할 때 저장되어 있던 이름으로 설정
+        playerRenderer.material.SetColor("_BaseColor", color.Value);    // 스폰할 때 저장되어 있던 색상으로 설정
+        namePlate.text = playerName.Value.ToString();                   // 스폰할 때 저장되어 있던 이름으로 설정
     }
 
     /// <summary>
