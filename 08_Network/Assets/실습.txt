@@ -42,3 +42,11 @@
 
 2. 금속부분의 색상만 변경해보기
 	시간 : 2시 5분까지
+
+
+1/25
+1. 코드 확인하기
+2. NetworkTestController UI에 현재 접속 인원수를 출력하는 UI 만들기
+	2.1. GameManager에 NetworkVariable만들어서 접속 인원수 관리하기
+	2.2. 접속하는 인원에 변경이 있으면 NetworkTestController에서 표시해주기
+		 (OnClientConnectedCallback과 OnClientDisconnectCallback활용하기)

@@ -6,7 +6,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : NetSingleton<GameManager>
 {
     Logger logger;
     public Logger Logger => logger;
@@ -24,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.Initialize();
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnect;
+        //NetworkManager.Singleton.OnClientDisconnectCallback
     }
 
     protected override void ManagerDataReset()
