@@ -40,19 +40,30 @@ public class GameManager : Singleton<GameManager>
         Logger.Log($"{id} is connected.");
 
         NetworkObject netObj = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject( id );
-        if( netObj.IsOwner )                            // 내 NetPlayer가 접속했으면
+        if( netObj.IsOwner )                                // 내 NetPlayer가 접속했으면
         {
-            player = netObj.GetComponent<NetPlayer>();  // 게임메니저에 기록해 놓기
+            player = netObj.GetComponent<NetPlayer>();      // 게임메니저에 기록해 놓기
             virtualPad.onMoveInput += player.SetInputDir;
+
+            // 내 게임 오브젝트 이름 설정하기
+            TMP_InputField inputField = FindObjectOfType<TMP_InputField>();
+            string name = $"{id} - {inputField.text}";
+            NetPlayerDecoration decoration = netObj.GetComponent<NetPlayerDecoration>();
+            decoration.SetPlayerNameServerRpc(name);        // 이름판에 이름 쓰기
+
+            // 나 외에 다른 플레이어 게임 오브젝트 이름 변경
+            foreach (var netObjs in NetworkManager.Singleton.SpawnManager.SpawnedObjectsList)
+            {
+                if (netObj != netObjs)  // 미리 접속해 있던 다른 플레이어이면
+                {
+                    NetPlayerDecoration deco = netObjs.GetComponent<NetPlayerDecoration>();
+                    if (deco != null)   // NetPlayer만 처리하기
+                    {
+                        deco.gameObject.name = $"NetPlayer - {deco.PlayerName}";    // 게임 오브젝트 이름 바꾸기
+                    }
+                }
+            }
         }
-
-        TMP_InputField inputField = FindObjectOfType<TMP_InputField>();
-        string name = $"{id} - {inputField.text}";
-
-        NetPlayerDecoration decoration = netObj.GetComponent<NetPlayerDecoration>();
-        decoration.SetPlayerNameServerRpc(name);        // 이름판에 이름 쓰기
-
-        netObj.gameObject.name = $"NetPlayer - {name}"; // NetPlayer 게임 오브젝트 이름 변경
     }
 
 }

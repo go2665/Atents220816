@@ -28,6 +28,11 @@ public class NetPlayerDecoration : NetworkBehaviour
     /// </summary>
     Renderer playerRenderer;
 
+    /// <summary>
+    /// 플레이어의 이름을 돌려주는 프로퍼티
+    /// </summary>
+    public string PlayerName => playerName.Value.ToString();
+
     private void Awake()
     {
         namePlate = GetComponentInChildren<TextMeshPro>();
@@ -51,7 +56,8 @@ public class NetPlayerDecoration : NetworkBehaviour
     /// <param name="newValue">네트워크 변수에 이번에 설정되는 값</param>
     private void OnNameChange(FixedString32Bytes previousValue, FixedString32Bytes newValue)
     {
-        namePlate.text = newValue.ToString();   // 새 값을 이름판에 설정
+        namePlate.text = newValue.ToString();           // 새 값을 이름판에 설정
+        gameObject.name = $"NetPlayer - {newValue}";    // 게임 오브젝트 이름도 변경
     }
 
     /// <summary>
