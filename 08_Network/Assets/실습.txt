@@ -51,3 +51,6 @@
 	2.2. 접속하는 인원에 변경이 있으면 NetworkTestController에서 표시해주기
 		 (OnClientConnectedCallback과 OnClientDisconnectCallback활용하기)
 	시간 : 10시 50분까지
+
+3. 호스트에 새로 접속한 플레이어의 이름을 출력하기
+	시간 : 2시까지

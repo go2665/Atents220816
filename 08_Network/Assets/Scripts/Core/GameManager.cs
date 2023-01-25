@@ -26,6 +26,11 @@ public class GameManager : NetSingleton<GameManager>
     NetworkVariable<int> playersInGame = new NetworkVariable<int>(0);
 
     /// <summary>
+    /// 연결된 플레이어의 이름
+    /// </summary>
+    NetworkVariable<FixedString32Bytes> connectName = new NetworkVariable<FixedString32Bytes>();
+
+    /// <summary>
     /// 디스커넥트 된 플레이어의 이름
     /// </summary>
     NetworkVariable<FixedString32Bytes> disconnectName = new NetworkVariable<FixedString32Bytes>();
@@ -53,9 +58,9 @@ public class GameManager : NetSingleton<GameManager>
             }
         };
         playersInGame.OnValueChanged += OnPlayersInGameChange;  // 값이 변경될 때 실행될 함수 등록
+        connectName.OnValueChanged += OnPlayerConnected;
         disconnectName.OnValueChanged += OnPlayerDisconnected;  
     }
-
 
     /// <summary>
     /// PlayersInGame의 값이 변경되었을 때 실행될 함수
@@ -66,6 +71,11 @@ public class GameManager : NetSingleton<GameManager>
     {
         Logger.Log($"Players In Game: {newValue}");     // 값이 변경되면 새 값을 로그로 출력
         onPlayersChange?.Invoke(newValue);
+    }
+
+    private void OnPlayerConnected(FixedString32Bytes previousValue, FixedString32Bytes newValue)
+    {
+        Logger.Log($"[{newValue}]가 들어왔습니다.");
     }
 
     /// <summary>
@@ -89,7 +99,7 @@ public class GameManager : NetSingleton<GameManager>
 
     private void OnClientConnect(ulong id)
     {
-        Logger.Log($"{id} is connected.");
+        //Logger.Log($"{id} is connected.");
 
         NetworkObject netObj = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject( id );
         if( netObj.IsOwner )                                // 내 NetPlayer가 접속했으면
@@ -102,6 +112,7 @@ public class GameManager : NetSingleton<GameManager>
             string name = $"{id} - {inputField.text}";
             NetPlayerDecoration decoration = netObj.GetComponent<NetPlayerDecoration>();
             decoration.SetPlayerNameServerRpc(name);        // 이름판에 이름 쓰기
+
 
             // 나 외에 다른 플레이어 게임 오브젝트 이름 변경
             foreach (var netObjs in NetworkManager.Singleton.SpawnManager.SpawnedObjectsList)
@@ -125,5 +136,11 @@ public class GameManager : NetSingleton<GameManager>
             NetworkObject dis = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(id);
             disconnectName.Value = dis.gameObject.name; // 나간 플레이어의 이름 기록
         }        
+    }
+
+    [ServerRpc]
+    public void SetPlayerNameServerRpc(string name)
+    {
+        connectName.Value = name;
     }
 }

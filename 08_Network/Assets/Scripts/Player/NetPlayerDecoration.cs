@@ -58,6 +58,7 @@ public class NetPlayerDecoration : NetworkBehaviour
     {
         namePlate.text = newValue.ToString();           // 새 값을 이름판에 설정
         gameObject.name = $"NetPlayer - {newValue}";    // 게임 오브젝트 이름도 변경
+        GameManager.Inst.SetPlayerNameServerRpc(gameObject.name);
     }
 
     /// <summary>
