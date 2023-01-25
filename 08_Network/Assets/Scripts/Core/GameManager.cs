@@ -18,13 +18,45 @@ public class GameManager : NetSingleton<GameManager>
     public NetPlayer Player => player;
 
     VirtualPad virtualPad;
-        
+
+    /// <summary>
+    /// 이 게임에 접속한 플레이어의 숫자
+    /// </summary>
+    NetworkVariable<int> playersInGame = new NetworkVariable<int>(0);
+
+    public Action<int> onPlayersChange;
 
     protected override void Initialize()
     {
         base.Initialize();
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnect;
-        //NetworkManager.Singleton.OnClientDisconnectCallback
+
+        NetworkManager.Singleton.OnClientConnectedCallback += (_) =>
+        {
+            if (IsServer)   // 누가 게임에 들어왔을 때, 서버에서만 playersInGame을 1 증가 시키기
+            {
+                playersInGame.Value++;
+            }
+        };
+        NetworkManager.Singleton.OnClientDisconnectCallback += (_) =>
+        {
+            if (IsServer)   // 누가 게임에 나갔을 때, 서버에서만 playersInGame을 1 감소 시키기
+            {
+                playersInGame.Value--;
+            }
+        };
+        playersInGame.OnValueChanged += OnPlayersInGameChange;  // 값이 변경될 때 실행될 함수 등록
+    }
+
+    /// <summary>
+    /// PlayersInGame의 값이 변경되었을 때 실행될 함수
+    /// </summary>
+    /// <param name="previousValue"></param>
+    /// <param name="newValue"></param>
+    private void OnPlayersInGameChange(int previousValue, int newValue)
+    {
+        Logger.Log($"Players In Game: {newValue}");     // 값이 변경되면 새 값을 로그로 출력
+        onPlayersChange?.Invoke(newValue);
     }
 
     protected override void ManagerDataReset()

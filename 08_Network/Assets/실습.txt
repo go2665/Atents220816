@@ -50,3 +50,4 @@
 	2.1. GameManager에 NetworkVariable만들어서 접속 인원수 관리하기
 	2.2. 접속하는 인원에 변경이 있으면 NetworkTestController에서 표시해주기
 		 (OnClientConnectedCallback과 OnClientDisconnectCallback활용하기)
+	시간 : 10시 50분까지
