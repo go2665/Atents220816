@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -24,12 +25,18 @@ public class GameManager : NetSingleton<GameManager>
     /// </summary>
     NetworkVariable<int> playersInGame = new NetworkVariable<int>(0);
 
+    /// <summary>
+    /// 디스커넥트 된 플레이어의 이름
+    /// </summary>
+    NetworkVariable<FixedString32Bytes> disconnectName = new NetworkVariable<FixedString32Bytes>();
+
     public Action<int> onPlayersChange;
 
     protected override void Initialize()
     {
         base.Initialize();
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnect;
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
 
         NetworkManager.Singleton.OnClientConnectedCallback += (_) =>
         {
@@ -46,7 +53,9 @@ public class GameManager : NetSingleton<GameManager>
             }
         };
         playersInGame.OnValueChanged += OnPlayersInGameChange;  // 값이 변경될 때 실행될 함수 등록
+        disconnectName.OnValueChanged += OnPlayerDisconnected;  
     }
+
 
     /// <summary>
     /// PlayersInGame의 값이 변경되었을 때 실행될 함수
@@ -57,6 +66,16 @@ public class GameManager : NetSingleton<GameManager>
     {
         Logger.Log($"Players In Game: {newValue}");     // 값이 변경되면 새 값을 로그로 출력
         onPlayersChange?.Invoke(newValue);
+    }
+
+    /// <summary>
+    /// 플레이어가 나가서 disconnectName가 변경되었을 때 실행
+    /// </summary>
+    /// <param name="previousValue"></param>
+    /// <param name="newValue"></param>
+    private void OnPlayerDisconnected(FixedString32Bytes previousValue, FixedString32Bytes newValue)
+    {
+        Logger.Log($"[{newValue}]가 나갔습니다.");     
     }
 
     protected override void ManagerDataReset()
@@ -99,4 +118,12 @@ public class GameManager : NetSingleton<GameManager>
         }
     }
 
+    private void OnClientDisconnect(ulong id)
+    {
+        if (IsServer)   // 서버만
+        {
+            NetworkObject dis = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(id);
+            disconnectName.Value = dis.gameObject.name; // 나간 플레이어의 이름 기록
+        }        
+    }
 }
