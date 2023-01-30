@@ -174,6 +174,7 @@ public class NetPlayer : NetworkBehaviour
     {
         GameObject ball = Instantiate(ballPrefab);          // 서버에서만 만들기
         ball.transform.position = fireTransform.position;
+        ball.transform.rotation = fireTransform.rotation;
 
         NetworkObject netObj = ball.GetComponent<NetworkObject>();
         netObj.Spawn(true);                                 // 다른 클라이언트들에게 만들어지게 하기
