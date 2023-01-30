@@ -36,6 +36,11 @@ public class GameManager : NetSingleton<GameManager>
     NetworkVariable<FixedString32Bytes> disconnectName = new NetworkVariable<FixedString32Bytes>();
 
     public Action<int> onPlayersChange;
+    public string ConnectName
+    {
+        get => connectName.Value.ToString();
+        set => connectName.Value = value;
+    }
 
     protected override void Initialize()
     {
