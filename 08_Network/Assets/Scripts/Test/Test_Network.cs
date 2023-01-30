@@ -29,4 +29,5 @@ public class Test_Network : TestBase
         player.IsEffectOn = effectSwitch;
         effectSwitch = !effectSwitch;
     }
+
 }

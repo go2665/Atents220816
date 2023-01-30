@@ -18,6 +18,9 @@ public class NetPlayer : NetworkBehaviour
     /// </summary>
     public float rotateSpeed = 350f;
 
+    public GameObject ballPrefab;
+    Transform fireTransform;
+
     // NetworkVariable
     // Netcode for GameObjects에서 네트웨크를 통해 데이터를 공유하기 위해 사용하는 데이터 타입.
     // NetworkVariable로 공유 가능한 데이터 타입은 unmanaged 타입 가능(대략적으로 값타입만 가능)
@@ -89,10 +92,10 @@ public class NetPlayer : NetworkBehaviour
         Renderer tempRenderer = GetComponentInChildren<Renderer>();
         bodyMaterial = tempRenderer.material;
 
+        fireTransform = transform.GetChild(3);
+
         networkAnimState.OnValueChanged += OnAnimStateChange;   // networkAnimState가 변경될 때 OnAnimStateChange를 실행 시키도록 함수 등록
-
         networkEffectState.OnValueChanged += OnEffectStateChange;   // networkEffectState가 변경될 때 실행될 함수 연결
-
     }
 
     private void OnEnable()
@@ -100,10 +103,14 @@ public class NetPlayer : NetworkBehaviour
         inputActions.Player.Enable();
         inputActions.Player.Move.performed += OnMoveInput;
         inputActions.Player.Move.canceled += OnMoveInput;
+        inputActions.Player.Attack1.performed += OnAttack1;
+        inputActions.Player.Attack2.performed += OnAttack2;
     }
 
     private void OnDisable()
     {
+        inputActions.Player.Attack2.performed -= OnAttack2;
+        inputActions.Player.Attack1.performed -= OnAttack1;
         inputActions.Player.Move.canceled -= OnMoveInput;
         inputActions.Player.Move.performed -= OnMoveInput;
         inputActions.Player.Disable();
@@ -147,34 +154,57 @@ public class NetPlayer : NetworkBehaviour
         {
             Vector2 moveInput = context.ReadValue<Vector2>();
             SetInputDir(moveInput);
-
-            // 애니메이션 관련 처리
-            if(moveInput.y > 0)
-            {
-                animState = PlayerAnimState.Walk;       // 앞으로 갈 때
-            }
-            else if(moveInput.y < 0)
-            {
-                animState = PlayerAnimState.BackWalk;   // 뒤로 갈 때 
-            }
-            else
-            {
-                animState = PlayerAnimState.Idle;       // 안움직일 때
-            }
-            if( animState != networkAnimState.Value)    // 네트워크로 공유되는 값과 현재 로컬 값이 서로 다를 때만 변경 요청
-            {
-                UpdateNetPlayerAnimStateServerRpc(animState);   // 서버에게 networkAnimState를 animState 값으로 바꾸도록 요청
-            }
         }
+    }
+    
+    private void OnAttack1(InputAction.CallbackContext _)
+    {
+    }
+
+    private void OnAttack2(InputAction.CallbackContext _)
+    {
+        if(IsOwner)
+        {
+            SpawnBallServerRpc();
+        }
+    }
+
+    [ServerRpc]
+    void SpawnBallServerRpc()
+    {
+        GameObject ball = Instantiate(ballPrefab);          // 서버에서만 만들기
+        ball.transform.position = fireTransform.position;
+
+        NetworkObject netObj = ball.GetComponent<NetworkObject>();
+        netObj.Spawn(true);                                 // 다른 클라이언트들에게 만들어지게 하기
     }
 
     //public void SetInputDir(ref Vector2 dir)
     public void SetInputDir(Vector2 dir)
     {
+        // 이동 및 회전 관련 처리
         Vector3 moveDelta = dir.y * moveSpeed * transform.forward;      // 이동 입력 저장하기
         float rotateDelta = dir.x * rotateSpeed;                        // 회전 입력 저장하기
 
         UpdateClientMoveAndRotateServerRpc(moveDelta, rotateDelta);     // 저장한 내용을 바탕으로 서버에 변경 요청
+
+        // 애니메이션 관련 처리
+        if (dir.y > 0)
+        {
+            animState = PlayerAnimState.Walk;       // 앞으로 갈 때
+        }
+        else if (dir.y < 0)
+        {
+            animState = PlayerAnimState.BackWalk;   // 뒤로 갈 때 
+        }
+        else
+        {
+            animState = PlayerAnimState.Idle;       // 안움직일 때
+        }
+        if (animState != networkAnimState.Value)    // 네트워크로 공유되는 값과 현재 로컬 값이 서로 다를 때만 변경 요청
+        {
+            UpdateNetPlayerAnimStateServerRpc(animState);   // 서버에게 networkAnimState를 animState 값으로 바꾸도록 요청
+        }
     }
 
     /// <summary>
