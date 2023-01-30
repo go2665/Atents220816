@@ -173,8 +173,8 @@ public class NetPlayer : NetworkBehaviour
     void SpawnBallServerRpc()
     {
         GameObject ball = Instantiate(ballPrefab);          // 서버에서만 만들기
-        ball.transform.position = fireTransform.position;
-        ball.transform.rotation = fireTransform.rotation;
+        ball.transform.position = fireTransform.position;   // fireTransform의 위치 적용
+        ball.transform.rotation = fireTransform.rotation;   // fireTransform의 회전 적용
 
         NetworkObject netObj = ball.GetComponent<NetworkObject>();
         netObj.Spawn(true);                                 // 다른 클라이언트들에게 만들어지게 하기
