@@ -608,3 +608,5 @@ MonoBehaviour:
   rotateSpeed: 350
   ballPrefab: {fileID: 8906496650238412639, guid: 22d08661f9651bc4890f516ba61dd941,
     type: 3}
+  bulletPrefab: {fileID: 6232399396955129228, guid: 201bf741f2c999a468c1fd60476fba68,
+    type: 3}
