@@ -77,4 +77,13 @@ public class VirtualButton : MonoBehaviour, IPointerClickHandler
     {
         onClick?.Invoke();  // 클릭했을 때 델리게이트만 보내기
     }
+
+    /// <summary>
+    /// 쿨타임 비율이 변경될 때 실행될 함수
+    /// </summary>
+    /// <param name="ratio"></param>
+    public void RefreshCooltime(float ratio)
+    {
+        attackCoolDown.fillAmount = ratio;  // 받은대로 처리
+    }
 }
