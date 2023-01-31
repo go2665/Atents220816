@@ -1502,10 +1502,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44f08027c58a274469740fe6077c844a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackType: 0
-  attackSprites:
+  attackIcons:
   - {fileID: 21300000, guid: eacae7c90607ef747bdd6bd7707aa69e, type: 3}
   - {fileID: 21300000, guid: f8d8d453d1ed4dd45bdb79fc86eae9e2, type: 3}
+  attackType: 0
   attackIcon: {fileID: 2093873457}
 --- !u!114 &549799855
 MonoBehaviour:
@@ -1840,10 +1840,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44f08027c58a274469740fe6077c844a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackType: 1
-  attackSprites:
+  attackIcons:
   - {fileID: 21300000, guid: eacae7c90607ef747bdd6bd7707aa69e, type: 3}
   - {fileID: 21300000, guid: f8d8d453d1ed4dd45bdb79fc86eae9e2, type: 3}
+  attackType: 1
   attackIcon: {fileID: 1605813296}
 --- !u!114 &792369188
 MonoBehaviour:
