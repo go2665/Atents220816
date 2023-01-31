@@ -20,6 +20,8 @@ public class GameManager : NetSingleton<GameManager>
 
     VirtualPad virtualPad;
 
+    VirtualButton[] virtualButtons;
+
     /// <summary>
     /// 이 게임에 접속한 플레이어의 숫자
     /// </summary>
@@ -100,6 +102,12 @@ public class GameManager : NetSingleton<GameManager>
 
         virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         virtualPad = FindObjectOfType<VirtualPad>();
+
+        virtualButtons = new VirtualButton[2];
+        virtualButtons[(int)VirtualButton.AttackType.Bullet] 
+            = GameObject.Find("VirtualButton_Bullet").GetComponent<VirtualButton>();
+        virtualButtons[(int)VirtualButton.AttackType.Ball] 
+            = GameObject.Find("VirtualButton_Ball").GetComponent<VirtualButton>();
     }
 
     private void OnClientConnect(ulong id)
@@ -111,6 +119,8 @@ public class GameManager : NetSingleton<GameManager>
         {
             player = netObj.GetComponent<NetPlayer>();      // 게임메니저에 기록해 놓기
             virtualPad.onMoveInput = player.SetInputDir;    // 새로 접속한 플레이어를 가상패드에 연결(이전 플레이어를 대체)
+            virtualButtons[(int)VirtualButton.AttackType.Bullet].onClick = player.Attack01;
+            virtualButtons[(int)VirtualButton.AttackType.Ball].onClick = player.Attack02;
 
             // 내 게임 오브젝트 이름 설정하기
             TMP_InputField inputField = FindObjectOfType<TMP_InputField>();

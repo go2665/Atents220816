@@ -91,17 +91,6 @@
                 },
                 {
                     "name": "",
-                    "id": "ff55f029-2f57-409a-914b-c5c0d468fdfb",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KMT",
-                    "action": "Attack1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a1c5c6e3-a660-4d02-b0ff-b6009c70a72a",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -113,8 +102,8 @@
                 },
                 {
                     "name": "",
-                    "id": "7306948d-c582-42fa-89b6-446ae06a988d",
-                    "path": "<Mouse>/rightButton",
+                    "id": "061842ea-bcba-4762-8ee0-1b0458026104",
+                    "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
                     "groups": "KMT",

@@ -169,18 +169,12 @@ public class NetPlayer : NetworkBehaviour
     
     private void OnAttack1(InputAction.CallbackContext _)
     {
-        if(IsOwner)
-        {
-            SpawnBulletServerRpc();
-        }
+        Attack01();
     }
 
     private void OnAttack2(InputAction.CallbackContext _)
     {
-        if(IsOwner)
-        {
-            SpawnBallServerRpc();
-        }
+        Attack02();
     }
 
     [ServerRpc]
@@ -284,5 +278,21 @@ public class NetPlayer : NetworkBehaviour
     {
         // 값 변경하기
         networkEffectState.Value = isOn;
+    }
+
+    public void Attack01()
+    {
+        if (IsOwner)
+        {
+            SpawnBulletServerRpc();
+        }
+    }
+
+    public void Attack02()
+    {
+        if (IsOwner)
+        {
+            SpawnBallServerRpc();
+        }
     }
 }
