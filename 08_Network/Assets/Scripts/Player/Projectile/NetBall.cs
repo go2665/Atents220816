@@ -30,6 +30,9 @@ public class NetBall : NetworkBehaviour
         {
             NetPlayerDecoration deco = collision.gameObject.GetComponent<NetPlayerDecoration>();
             GameManager.Inst.Logger.Log($"공 : {deco.PlayerName} 명중");
+
+            NetPlayer player = collision.gameObject.GetComponent<NetPlayer>();
+            player.OnDie();
         }
 
         NetworkObject.Despawn();        // 디스폰 처리

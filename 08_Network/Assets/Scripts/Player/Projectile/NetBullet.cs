@@ -32,6 +32,9 @@ public class NetBullet : NetworkBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             NetworkObject.Despawn();    // 플레이어에 맞으면 즉시 디스폰
+
+            NetPlayer player = collision.gameObject.GetComponent<NetPlayer>();
+            player.OnDie();
         }
         else if(reflectCount > 0)
         {
