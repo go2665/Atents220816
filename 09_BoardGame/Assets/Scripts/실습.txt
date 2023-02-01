@@ -5,3 +5,14 @@
 	1.3. 가로 위쪽은 알파벳으로 위치 표시
 	1.4. 세로 왼쪽은 숫자로 위치 표시
 	시간 : 9시 40분까지 -> 9시 50분까지
+
+2. GridPainter 코드 확인 및 Board 클래스 구상해보기
+	시간 : 10시 50분까지
+
+3. Board 클래스 구현 시작
+	3.1. static public Vector2Int IndexToGrid(int index);
+	3.2. static public int GridToIndex(Vector2Int grid);
+	3.3. public Vector3 GridToWorld(int x, int y);
+	3.4. public Vector3 GridToWorld(Vector2Int grid);
+	3.5. public Vector2Int WorldToGrid(Vector3 worldPos);
+	3.6. public Vector3 IndexToWorld(int index);
