@@ -13,6 +13,6 @@
 	3.1. static public Vector2Int IndexToGrid(int index);
 	3.2. static public int GridToIndex(Vector2Int grid);
 	3.3. public Vector3 GridToWorld(int x, int y);
-	3.4. public Vector3 GridToWorld(Vector2Int grid);
-	3.5. public Vector2Int WorldToGrid(Vector3 worldPos);
-	3.6. public Vector3 IndexToWorld(int index);
+	3.4. public Vector2Int WorldToGrid(Vector3 worldPos);
+	3.5. public Vector3 IndexToWorld(int index);
+	시간 : 1시 20분까지
