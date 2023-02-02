@@ -129,6 +129,7 @@ public class Ship : MonoBehaviour
     /// <param name="shipType">이 배의 타입</param>
     public void Initialize(ShipType shipType)
     {
+        
     }
 
     /// <summary>
