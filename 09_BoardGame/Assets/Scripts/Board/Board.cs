@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -14,12 +15,14 @@ public class Board : MonoBehaviour
     /// </summary>
     ShipType[] shipType;
 
+    // static 함수들 -------------------------------------------------------------------------------
+
     /// <summary>
     /// 배열의 인덱스 값을 그리드 좌표로 변환해주는 static 함수
     /// </summary>
     /// <param name="index">계산할 인덱스 값</param>
     /// <returns>변환된 그리드 좌표</returns>
-    static public Vector2Int IndexToGrid(int index)
+    public static Vector2Int IndexToGrid(int index)
     {
         return new Vector2Int(index % BoardSize, index / BoardSize);
     }
@@ -29,7 +32,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="grid">계산할 그리드 좌표</param>
     /// <returns>변환된 인덱스 값</returns>
-    static public int GridToIndex(Vector2Int grid)
+    public static int GridToIndex(Vector2Int grid)
     {
         return grid.x + grid.y * BoardSize;
     }
@@ -40,10 +43,19 @@ public class Board : MonoBehaviour
     /// <param name="x">계산할 그리드 x좌표</param>
     /// <param name="y">계산할 그리드 y좌표</param>
     /// <returns>변환된 인덱스 값</returns>
-    static public int GridToIndex(int x, int y)
+    public static int GridToIndex(int x, int y)
     {
         return x + y * BoardSize;
     }
+
+    public static bool IsValidPosition(Vector2Int gridPos)
+    {
+        return gridPos.x > -1 && gridPos.x < BoardSize && gridPos.y > -1 && gridPos.y < BoardSize;
+    }
+
+    
+
+    // 일반 함수들 ---------------------------------------------------------------------------------
 
     /// <summary>
     /// 그리드 좌표를 월드 좌표로 변환해주는 함수
@@ -74,10 +86,8 @@ public class Board : MonoBehaviour
     public Vector2Int WorldToGrid(Vector3 worldPos)
     {
         worldPos.y = 0;
-
         Vector3 diff = worldPos - transform.position;
-
-        return new Vector2Int((int)diff.x, (int)-diff.z);
+        return new Vector2Int(Mathf.FloorToInt(diff.x), Mathf.FloorToInt(-diff.z));
     }
 
     /// <summary>
@@ -90,6 +100,16 @@ public class Board : MonoBehaviour
         return Vector3Int.zero;
     }
 
+    /// <summary>
+    /// 월드 좌표가 보드 안쪽인지 확인하는 함수
+    /// </summary>
+    /// <param name="worldPos">체크할 월드 좌표</param>
+    /// <returns>보드 안쪽이면 true, 아니면 false</returns>
+    public bool IsValidPosition(Vector3 worldPos)
+    {
+        Vector3 diff = worldPos - transform.position;
+        return diff.x >= 0.0f && diff.x <= BoardSize && diff.z < 0.0f && diff.z > -BoardSize;
+    }
 
     /// <summary>
     /// 함선 배치 함수
