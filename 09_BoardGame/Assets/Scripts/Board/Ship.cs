@@ -44,12 +44,17 @@ public class Ship : MonoBehaviour
     /// <summary>
     /// 배가 배치된 위치. 배의 각 칸들의 위치
     /// </summary>
-    Vector2Int[] positions;
+    Vector2Int[] positions = null;
 
     /// <summary>
-    /// 배의 색상 변경 용
+    /// 배의 모델 색상 변경 용
     /// </summary>
     Renderer shipRenderer = null;
+
+    /// <summary>
+    /// 배의 모델 부분의 트랜스폼
+    /// </summary>
+    Transform model;
 
     
     
@@ -74,26 +79,6 @@ public class Ship : MonoBehaviour
     /// 배의 크기 확인용 프로퍼티. 읽기 전용. 배의 종류에 따라 결정됨
     /// </summary>
     public int Size => size;
-    //{
-    //    get
-    //    {
-    //        switch (type)
-    //        {
-    //            case ShipType.Carrier:      // 항공모함은 5칸
-    //                return 5;
-    //            case ShipType.Battleship:   // 전함은 4칸
-    //                return 4;
-    //            case ShipType.Submarine:    // 잠수함은 3칸
-    //                return 3;
-    //            case ShipType.Destroyer:    // 구축함은 3칸
-    //                return 3;
-    //            case ShipType.PatrolBoat:   // 경비정은 2칸
-    //                return 2;
-    //            default:
-    //                return 0;
-    //        }
-    //    }
-    //}
 
     /// <summary>
     /// 배의 현재 HP 확인용 프로퍼티. 읽기 전용.
@@ -122,14 +107,45 @@ public class Ship : MonoBehaviour
 
 
     // 함수들 --------------------------------------------------------------------------------------
-    
+
     /// <summary>
-    /// 배 생성 직후에 배 타입에 맞춰 각종 초기화 작업을 하기 위한 함수
+    /// 함선 생성 직후에 함선 타입에 맞춰 각종 초기화 작업을 하기 위한 함수
     /// </summary>
-    /// <param name="shipType">이 배의 타입</param>
+    /// <param name="shipType">이 함선의 타입</param>
     public void Initialize(ShipType shipType)
     {
-        
+        // 함선의 타입별 처리
+        type = shipType;
+        switch (type)
+        {
+            case ShipType.Carrier:      // 항공모함은 5칸
+                size = 5;                
+                break;
+            case ShipType.Battleship:   // 전함은 4칸
+                size = 4;
+                break;
+            case ShipType.Destroyer:    // 구축함은 3칸
+                size = 3;
+                break;
+            case ShipType.Submarine:    // 잠수함은 3칸
+                size = 3;
+                break;
+            case ShipType.PatrolBoat:   // 경비정은 2칸
+                size = 2;
+                break;
+            default:
+                break;
+        }
+        hp = size;      // HP는 크기를 그대로 사용
+        shipName = ShipManager.Inst.ShipNames[(int)type - 1];   // 함선 이름 설정
+
+        // 모든 함선 공통
+        direction = ShipDirection.North;                        // 함선 방향 초기화
+        isAlive = true;                                         // 생존 여부 초기화
+        isDeployed = false;                                     // 배치 여부 초기화
+        positions = null;                                       // 함선의 칸별 위치
+        model = transform.GetChild(0);                          // 함선의 모델링 트랜스폼
+        shipRenderer = model.GetComponentInChildren<Renderer>();    // 함선 모델링의 랜더러
     }
 
     /// <summary>

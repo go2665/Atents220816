@@ -42,6 +42,11 @@ public class ShipManager : Singleton<ShipManager>
     /// </summary>
     int shipDirectionCount;
 
+    /// <summary>
+    /// 배의 이름들
+    /// </summary>
+    readonly public string[] ShipNames = { "항공모함", "전함", "구축함", "잠수함", "경비정" };
+
 
     // 프로퍼티 ------------------------------------------------------------------------------------
 

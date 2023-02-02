@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4662003234613532897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4662003234613532899}
+  - component: {fileID: 4662003234613532898}
+  m_Layer: 0
+  m_Name: ShipManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4662003234613532899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4662003234613532897}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4662003234613532898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4662003234613532897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e19906466adaee439b1da9bba7793df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipPrefab: {fileID: 7505354843608772135, guid: 6768f253ab72d09438f8bdc087bc6e62,
+    type: 3}
+  shipModels:
+  - {fileID: 5995225959482403969, guid: e9935dbee73dfee499588a30cae244b4, type: 3}
+  - {fileID: 3612929093917726022, guid: dd4031c62d130c64a95966ef7cd494bf, type: 3}
+  - {fileID: 1740072271694253066, guid: 5768010e54229ca48bd98713242bad56, type: 3}
+  - {fileID: 5723508388309036381, guid: 334761df78b94ea4c92093a933a9ead3, type: 3}
+  - {fileID: 7505354843608772135, guid: 6768f253ab72d09438f8bdc087bc6e62, type: 3}
+  shipMaterials:
+  - {fileID: 2100000, guid: cb1f2c55a64d5eb49a5b75d8ae44e119, type: 2}
+  - {fileID: 2100000, guid: 20e8a2383d6bcd34783755523cf0d96a, type: 2}
