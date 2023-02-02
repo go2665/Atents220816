@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +57,25 @@ public class Ship : MonoBehaviour
     /// </summary>
     Transform model;
 
-    
+    // 델리게이트 ----------------------------------------------------------------------------------
+
+    /// <summary>
+    /// 함선이 배치되거나 배치 해제가 되었을 때 실행되는 델리게이트
+    /// 파라메터 : 배치할 때 true, 배치 해제할 때 false
+    /// </summary>
+    public Action<bool> onDeploy;
+
+    /// <summary>
+    /// 함선이 공격을 당했을 때 실행될 델리게이트
+    /// 파라메터 : 자기 자신
+    /// </summary>
+    public Action<Ship> onHit;
+
+    /// <summary>
+    /// 함선이 침몰했을 때 실행될 델리게이트
+    /// 파라메터 : 자기 자신
+    /// </summary>
+    public Action<Ship> onSinking;
     
     // 프로퍼티 ------------------------------------------------------------------------------------
     
@@ -100,10 +119,10 @@ public class Ship : MonoBehaviour
     /// </summary>
     public Vector2Int[] Positions => positions;
 
-    /// <summary>
-    /// 배의 랜더러 접근용 프로퍼티. 읽기 전용.
-    /// </summary>
-    public Renderer ShipRenderer => shipRenderer;
+    ///// <summary>
+    ///// 배의 랜더러 접근용 프로퍼티. 읽기 전용.
+    ///// </summary>
+    //public Renderer ShipRenderer => shipRenderer;
 
 
     // 함수들 --------------------------------------------------------------------------------------
@@ -149,11 +168,30 @@ public class Ship : MonoBehaviour
     }
 
     /// <summary>
+    /// 함선의 머티리얼을 선택하는 함수
+    /// </summary>
+    /// <param name="isNormal">true면 normal 머티리얼, false면 deployMode 머티리얼</param>
+    public void SetMaterialType(bool isNormal = true)
+    {
+        if( isNormal)
+        {
+            shipRenderer.material = ShipManager.Inst.NormalShipMaterial;
+        }
+        else
+        {
+            shipRenderer.material = ShipManager.Inst.DeployModeShipMaterial;
+        }
+    }
+
+    /// <summary>
     /// 함선이 배치될 때 실행되는 함수
     /// </summary>
     /// <param name="deployPositions">배치되는 위치들</param>
     public void Deploy(Vector2Int[] deployPositions)
     {
+        positions = deployPositions;
+        isDeployed = true;
+        onDeploy?.Invoke(true);
     }
 
     /// <summary>
@@ -161,6 +199,9 @@ public class Ship : MonoBehaviour
     /// </summary>
     public void UnDeploy()
     {
+        positions = null;
+        isDeployed = false;
+        onDeploy?.Invoke(false);
     }
 
     /// <summary>

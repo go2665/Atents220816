@@ -123,11 +123,11 @@ public class ShipManager : Singleton<ShipManager>
     {
         if( isSuccess)
         {
-            DeployModeShipMaterial.SetColor("_Color", successColor);
+            DeployModeShipMaterial.SetColor("_BaseColor", successColor);
         }
         else
         {
-            DeployModeShipMaterial.SetColor("_Color", failColor);
+            DeployModeShipMaterial.SetColor("_BaseColor", failColor);
         }
     }
 }
