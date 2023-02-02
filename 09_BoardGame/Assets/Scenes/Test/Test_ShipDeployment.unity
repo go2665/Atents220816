@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 688988166}
   - component: {fileID: 688988167}
   m_Layer: 0
-  m_Name: Test_ShipMake
+  m_Name: Test_Deployment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,7 +354,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 688988165}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c9b71738ddd90a46870e201850f7b83, type: 3}
+  m_Script: {fileID: 11500000, guid: a675815ba294ade4cb8e6eb80f1c3c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1160234425

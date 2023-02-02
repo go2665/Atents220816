@@ -94,8 +94,10 @@ public class Board : MonoBehaviour
     /// <summary>
     /// 함선 배치 함수
     /// </summary>
-    /// <returns></returns>
-    public bool ShipDeplyment()
+    /// <param name="ship">배치할 함선</param>
+    /// <param name="pos">배치할 월드좌표</param>
+    /// <returns>성공하면 true, 아니면 false</returns>
+    public bool ShipDeplyment(Ship ship, Vector3 pos)
     {
         return false;
     }
@@ -103,7 +105,8 @@ public class Board : MonoBehaviour
     /// <summary>
     /// 함선 배치 취소 함수
     /// </summary>
-    public void UndoShipDeplyment()
+    /// <param name="ship">배치를 취소할 배</param>
+    public void UndoShipDeplyment(Ship ship)
     {
     }
 }
