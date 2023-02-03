@@ -189,9 +189,9 @@ public class Ship : MonoBehaviour
     /// <param name="deployPositions">배치되는 위치들</param>
     public void Deploy(Vector2Int[] deployPositions)
     {
-        positions = deployPositions;
-        isDeployed = true;
-        onDeploy?.Invoke(true);
+        positions = deployPositions;    // 배치된 위치 기록
+        isDeployed = true;              // 배치 되었다고 표시
+        onDeploy?.Invoke(true);         // 배치 되었다고 알림
     }
 
     /// <summary>
