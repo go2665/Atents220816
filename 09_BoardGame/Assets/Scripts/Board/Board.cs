@@ -15,9 +15,19 @@ public class Board : MonoBehaviour
     /// </summary>
     ShipType[] shipInfo = null;
 
+    public bool isShowShipDeploymentInfo = true;
+    ShipDeploymentInfoMaker shipDeploymentInfo = null;
+
+    // 유니티 이벤트 함수들 -------------------------------------------------------------------------
+
     private void Awake()
     {
         shipInfo = new ShipType[BoardSize* BoardSize];  // shipInfo 초기화(none으로 초기화됨)
+
+        if( isShowShipDeploymentInfo)
+        {
+            shipDeploymentInfo = GetComponentInChildren<ShipDeploymentInfoMaker>();
+        }
     }
 
     // static 함수들 -------------------------------------------------------------------------------
@@ -107,7 +117,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public Vector3 IndexToWorld(int index)
     {
-        return Vector3Int.zero;
+        return GridToWorld(IndexToGrid(index));
     }
 
     // 확인용 함수들 -------------------------------------------------------------------------------
@@ -155,6 +165,17 @@ public class Board : MonoBehaviour
             Vector3 worldPos = GridToWorld(pos);
             ship.transform.position = worldPos;             // 힘선의 위치 옮기기
             ship.Deploy(gridPositions);                     // 함선 배치 처리
+
+            // 개발용 오브젝트 추가 부분
+            if( shipDeploymentInfo != null )                // 개발용 오브젝트를 만드는 클래스가 있으면
+            {
+                Vector3[] worlds = new Vector3[gridPositions.Length];
+                for(int i = 0;i < worlds.Length;i++)
+                {
+                    worlds[i] = GridToWorld(gridPositions[i]);      // 그리드 좌표를 모두 월드 좌표로 바꿔서
+                }
+                shipDeploymentInfo.MarkShipDeploymentInfo(ship.Type, worlds);   // 표시하기
+            }
         }
 
         return result;
@@ -178,10 +199,18 @@ public class Board : MonoBehaviour
     /// <param name="ship">배치를 취소할 배</param>
     public void UndoShipDeplyment(Ship ship)
     {
+        // 개발용 오브젝트 추가 부분
+        if (shipDeploymentInfo != null)                // 개발용 오브젝트를 만드는 클래스가 있으면
+        {
+            shipDeploymentInfo.UnMarkShipDeploymentInfo(ship.Type);
+        }
+
         foreach (var temp in ship.Positions)
         {
             shipInfo[GridToIndex(temp)] = ShipType.None;
         }
+        ship.UnDeploy();
+
     }
 
     /// <summary>

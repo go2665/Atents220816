@@ -64,6 +64,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Test_RClick",
+                    "type": "Button",
+                    "id": "1271d373-725c-4305-9e32-4e61f0244a4b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TestWheel",
+                    "type": "Value",
+                    "id": "d6b7f65c-9ac6-4c40-bb42-447f165dd5b8",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -130,6 +148,28 @@
                     "processors": "",
                     "groups": "KMT",
                     "action": "TestClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0876c55-9cf0-4e0d-82fa-5d59eb56de6a",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KMT",
+                    "action": "Test_RClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d62c5e66-b5e5-4b90-b0db-256de44dd383",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KMT",
+                    "action": "TestWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

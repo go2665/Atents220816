@@ -86,6 +86,24 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Test_RClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""1271d373-725c-4305-9e32-4e61f0244a4b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TestWheel"",
+                    ""type"": ""Value"",
+                    ""id"": ""d6b7f65c-9ac6-4c40-bb42-447f165dd5b8"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -154,6 +172,28 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""TestClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0876c55-9cf0-4e0d-82fa-5d59eb56de6a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KMT"",
+                    ""action"": ""Test_RClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d62c5e66-b5e5-4b90-b0db-256de44dd383"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KMT"",
+                    ""action"": ""TestWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -192,6 +232,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Test_Test4 = m_Test.FindAction("Test4", throwIfNotFound: true);
         m_Test_Test5 = m_Test.FindAction("Test5", throwIfNotFound: true);
         m_Test_TestClick = m_Test.FindAction("TestClick", throwIfNotFound: true);
+        m_Test_Test_RClick = m_Test.FindAction("Test_RClick", throwIfNotFound: true);
+        m_Test_TestWheel = m_Test.FindAction("TestWheel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -282,6 +324,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Test_Test4;
     private readonly InputAction m_Test_Test5;
     private readonly InputAction m_Test_TestClick;
+    private readonly InputAction m_Test_Test_RClick;
+    private readonly InputAction m_Test_TestWheel;
     public struct TestActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -292,6 +336,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Test4 => m_Wrapper.m_Test_Test4;
         public InputAction @Test5 => m_Wrapper.m_Test_Test5;
         public InputAction @TestClick => m_Wrapper.m_Test_TestClick;
+        public InputAction @Test_RClick => m_Wrapper.m_Test_Test_RClick;
+        public InputAction @TestWheel => m_Wrapper.m_Test_TestWheel;
         public InputActionMap Get() { return m_Wrapper.m_Test; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -319,6 +365,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @TestClick.started -= m_Wrapper.m_TestActionsCallbackInterface.OnTestClick;
                 @TestClick.performed -= m_Wrapper.m_TestActionsCallbackInterface.OnTestClick;
                 @TestClick.canceled -= m_Wrapper.m_TestActionsCallbackInterface.OnTestClick;
+                @Test_RClick.started -= m_Wrapper.m_TestActionsCallbackInterface.OnTest_RClick;
+                @Test_RClick.performed -= m_Wrapper.m_TestActionsCallbackInterface.OnTest_RClick;
+                @Test_RClick.canceled -= m_Wrapper.m_TestActionsCallbackInterface.OnTest_RClick;
+                @TestWheel.started -= m_Wrapper.m_TestActionsCallbackInterface.OnTestWheel;
+                @TestWheel.performed -= m_Wrapper.m_TestActionsCallbackInterface.OnTestWheel;
+                @TestWheel.canceled -= m_Wrapper.m_TestActionsCallbackInterface.OnTestWheel;
             }
             m_Wrapper.m_TestActionsCallbackInterface = instance;
             if (instance != null)
@@ -341,6 +393,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @TestClick.started += instance.OnTestClick;
                 @TestClick.performed += instance.OnTestClick;
                 @TestClick.canceled += instance.OnTestClick;
+                @Test_RClick.started += instance.OnTest_RClick;
+                @Test_RClick.performed += instance.OnTest_RClick;
+                @Test_RClick.canceled += instance.OnTest_RClick;
+                @TestWheel.started += instance.OnTestWheel;
+                @TestWheel.performed += instance.OnTestWheel;
+                @TestWheel.canceled += instance.OnTestWheel;
             }
         }
     }
@@ -365,5 +423,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnTest4(InputAction.CallbackContext context);
         void OnTest5(InputAction.CallbackContext context);
         void OnTestClick(InputAction.CallbackContext context);
+        void OnTest_RClick(InputAction.CallbackContext context);
+        void OnTestWheel(InputAction.CallbackContext context);
     }
 }

@@ -406,6 +406,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1454190821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1454190822}
+  - component: {fileID: 1454190823}
+  m_Layer: 0
+  m_Name: ShipDeploymentInfoMaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1454190822
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454190821}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1764637088}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1454190823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454190821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc461a30e08b2f247b170ccd4e7bd1ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoPrefab: {fileID: 5812439188991085990, guid: db29c07acc1dc5e4e967ce3d63417850,
+    type: 3}
+  infoMaterials:
+  - {fileID: 2100000, guid: 205fae1a778317648be08221e40f9042, type: 2}
+  - {fileID: 2100000, guid: 369181d54fc576843b138f53f2052997, type: 2}
+  - {fileID: 2100000, guid: 6b738183879d59b4582581cd79550a04, type: 2}
+  - {fileID: 2100000, guid: b062660838fa9b443a979a1061d38445, type: 2}
+  - {fileID: 2100000, guid: 2ede3e807c1cd8740a93b5c5130dfecd, type: 2}
 --- !u!1 &1764637086
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,6 +487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5215519963ca0d478a5d35d0ab1216f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isShowShipDeploymentInfo: 1
 --- !u!4 &1764637088
 Transform:
   m_ObjectHideFlags: 0
@@ -448,6 +501,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 256497187}
+  - {fileID: 1454190822}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
