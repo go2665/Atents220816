@@ -92,7 +92,15 @@ public class Ship : MonoBehaviour
     /// <summary>
     /// 배의 방향 확인용 프로퍼티. 읽기 전용.
     /// </summary>
-    public ShipDirection Direction => direction;
+    public ShipDirection Direction
+    { 
+        get => direction; 
+        set
+        {
+            direction = value;
+            model.rotation = Quaternion.Euler(0, (int)direction * 90.0f, 0);
+        }
+    }
 
     /// <summary>
     /// 배의 크기 확인용 프로퍼티. 읽기 전용. 배의 종류에 따라 결정됨
@@ -210,6 +218,16 @@ public class Ship : MonoBehaviour
     /// <param name="isCCW">true면 반시계방향으로 회전. false면 시계방향으로 회전</param>
     public void Rotate(bool isCCW)
     {
+        // Direction을 어떻게 수정해야 하나?
+        int count = ShipManager.Inst.ShipDirectionCount;
+        if( isCCW )
+        {
+            Direction = (ShipDirection)(((int)(Direction) + count - 1) % count);
+        }
+        else
+        {
+            Direction = (ShipDirection)(((int)(Direction) + 1) % count); ;
+        }
     }
 
     /// <summary>

@@ -104,6 +104,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Test_MouseMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""8fd65cbe-ec30-465d-8234-d91fd336dcac"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -194,6 +203,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""TestWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""857fb172-b830-4527-a943-d1641cdd4b00"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KMT"",
+                    ""action"": ""Test_MouseMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -234,6 +254,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Test_TestClick = m_Test.FindAction("TestClick", throwIfNotFound: true);
         m_Test_Test_RClick = m_Test.FindAction("Test_RClick", throwIfNotFound: true);
         m_Test_TestWheel = m_Test.FindAction("TestWheel", throwIfNotFound: true);
+        m_Test_Test_MouseMove = m_Test.FindAction("Test_MouseMove", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -326,6 +347,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Test_TestClick;
     private readonly InputAction m_Test_Test_RClick;
     private readonly InputAction m_Test_TestWheel;
+    private readonly InputAction m_Test_Test_MouseMove;
     public struct TestActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -338,6 +360,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @TestClick => m_Wrapper.m_Test_TestClick;
         public InputAction @Test_RClick => m_Wrapper.m_Test_Test_RClick;
         public InputAction @TestWheel => m_Wrapper.m_Test_TestWheel;
+        public InputAction @Test_MouseMove => m_Wrapper.m_Test_Test_MouseMove;
         public InputActionMap Get() { return m_Wrapper.m_Test; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -371,6 +394,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @TestWheel.started -= m_Wrapper.m_TestActionsCallbackInterface.OnTestWheel;
                 @TestWheel.performed -= m_Wrapper.m_TestActionsCallbackInterface.OnTestWheel;
                 @TestWheel.canceled -= m_Wrapper.m_TestActionsCallbackInterface.OnTestWheel;
+                @Test_MouseMove.started -= m_Wrapper.m_TestActionsCallbackInterface.OnTest_MouseMove;
+                @Test_MouseMove.performed -= m_Wrapper.m_TestActionsCallbackInterface.OnTest_MouseMove;
+                @Test_MouseMove.canceled -= m_Wrapper.m_TestActionsCallbackInterface.OnTest_MouseMove;
             }
             m_Wrapper.m_TestActionsCallbackInterface = instance;
             if (instance != null)
@@ -399,6 +425,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @TestWheel.started += instance.OnTestWheel;
                 @TestWheel.performed += instance.OnTestWheel;
                 @TestWheel.canceled += instance.OnTestWheel;
+                @Test_MouseMove.started += instance.OnTest_MouseMove;
+                @Test_MouseMove.performed += instance.OnTest_MouseMove;
+                @Test_MouseMove.canceled += instance.OnTest_MouseMove;
             }
         }
     }
@@ -425,5 +454,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnTestClick(InputAction.CallbackContext context);
         void OnTest_RClick(InputAction.CallbackContext context);
         void OnTestWheel(InputAction.CallbackContext context);
+        void OnTest_MouseMove(InputAction.CallbackContext context);
     }
 }
