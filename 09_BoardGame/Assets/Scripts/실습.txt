@@ -44,3 +44,14 @@
 		ShipManager.SetDeployModeColor 함수
 	시간 : 2시 20분까지
 	
+
+2/6
+1. 코드 확인
+2. 함선 랜덤 배치 구상
+	시간 : 9시 50분까지
+
+3. 함선 랜덤 배치하기
+	3.1. OnRandomDeployment() 구현하기
+	3.2. OnResetClick() 구현하기
+	3.3. OnTestRClick() 구현하기
+	시간 : 12시 20분에 중간 확인
