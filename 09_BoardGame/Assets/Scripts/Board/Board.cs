@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Board : MonoBehaviour
 {
@@ -118,6 +118,18 @@ public class Board : MonoBehaviour
     public Vector3 IndexToWorld(int index)
     {
         return GridToWorld(IndexToGrid(index));
+    }
+
+    /// <summary>
+    /// 현재 마우스의 위치를 그리드 좌표로 변경해서 리턴
+    /// </summary>
+    /// <returns>현재 마우스의 그리드 좌표</returns>
+    public Vector2Int GetMouseGridPosition()
+    {
+        Vector2 mousePos = Mouse.current.position.ReadValue();          // 현재 마우스 위치 가져오기
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);    // 마우스 위치를 월드 좌표로 변환
+        
+        return WorldToGrid(worldPos);   // 월드 좌표를 다시 그리드 좌표로 변경해서 돌려주기
     }
 
     // 확인용 함수들 -------------------------------------------------------------------------------
@@ -281,8 +293,8 @@ public class Board : MonoBehaviour
     /// <returns>true면 배치 가능, false면 배치 불가능</returns>
     public bool IsShipDeployment(Ship ship, Vector3 worldPos)
     {
-        Vector2Int grisPos = WorldToGrid(worldPos);
-        return IsShipDeployment(ship, grisPos, out _);
+        Vector2Int gridPos = WorldToGrid(worldPos);
+        return IsShipDeployment(ship, gridPos, out _);
     }
 
 

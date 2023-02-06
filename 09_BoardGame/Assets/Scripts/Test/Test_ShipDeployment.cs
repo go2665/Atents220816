@@ -16,13 +16,23 @@ public class Test_ShipDeployment : TestBase
         {
             if( targetShip != value )
             {
-                if(targetShip!= null)
-                    targetShip.gameObject.SetActive( false );
+                if (targetShip != null)                     // 이전 targetShip이 있으면 그것에 대한 처리
+                {
+                    targetShip.SetMaterialType();           // 함선의 머티리얼 타입을 normal로 돌리기
+                    targetShip.gameObject.SetActive(false); // 비활성화 시켜서 안보이게 만들기
+                }
                 
-                targetShip = value;
-                
-                if (targetShip != null)
-                    targetShip.gameObject.SetActive( true );
+                targetShip = value;         // targetShip 변경
+
+                if (targetShip != null)                     // 새 targetShip이 있으면 그것에 대한 처리
+                {
+                    targetShip.SetMaterialType(false);      // 함선의 머티리얼 타입을 deployMode로 변경
+                    
+                    Vector2Int gridPos = board.GetMouseGridPosition();          // 마우스 커서의 그리드 좌표 계산해서
+                    TargetShip.transform.position = board.GridToWorld(gridPos); // 해당위치에 함선 배치
+
+                    targetShip.gameObject.SetActive(true);  // 활성화 시켜서 보이게 만들기
+                }
             }
         }
     }
@@ -63,10 +73,9 @@ public class Test_ShipDeployment : TestBase
         Vector2 screen = Mouse.current.position.ReadValue();
         Vector3 world = Camera.main.ScreenToWorldPoint(screen);
 
-        if(TargetShip != null )        
+        if(TargetShip != null && board.ShipDeplyment(TargetShip, world))    // TargetShip이 있으면 함선 배치 시도
         {
-            board.ShipDeplyment(TargetShip, world);
-            TargetShip = null;
+            TargetShip = null;      // TargetShip이 있고 함선 배치가 성공했으면 TargetShip 해제
         }
     }
 
@@ -90,21 +99,23 @@ public class Test_ShipDeployment : TestBase
             ccw = true;     // 반시계 방향으로
         }
 
-        if (TargetShip != null)
+        if (TargetShip != null)     // TargetShip이 있으면
         {
-            TargetShip.Rotate(ccw);
+            TargetShip.Rotate(ccw); // 휠방향에 따라 회전
+            bool isSuccess = board.IsShipDeployment(TargetShip, TargetShip.transform.position); // 배치 가능한지 확인해서
+            ShipManager.Inst.SetDeployModeColor(isSuccess);     // 머티리얼 업데이트
         }
     }
 
     private void OnTestMove(InputAction.CallbackContext context)
     {
-        if (TargetShip != null)
+        if (TargetShip != null && !TargetShip.IsDeployed)
         {
-            Vector2 moveDelta = context.ReadValue<Vector2>();
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(moveDelta);
-            worldPos.y = 0.0f;
-            
-            TargetShip.transform.position = board.GridToWorld(board.WorldToGrid(worldPos));
+            Vector2Int gridPos = board.GetMouseGridPosition();          // 마우스 커서 위치를 그리드로 계산
+            TargetShip.transform.position = board.GridToWorld(gridPos); // 계산한 위치로 TargetShip 옮기기
+
+            bool isSuccess = board.IsShipDeployment(TargetShip, gridPos);   // 배치 가능한지 확인해서
+            ShipManager.Inst.SetDeployModeColor(isSuccess);                 // 머티리얼 업데이트
         }
     }
 
