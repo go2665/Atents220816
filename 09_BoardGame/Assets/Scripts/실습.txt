@@ -54,4 +54,4 @@
 	3.1. OnRandomDeployment() 구현하기
 	3.2. OnResetClick() 구현하기
 	3.3. OnTestRClick() 구현하기
-	시간 : 12시 20분에 중간 확인
+	시간 : 12시 20분에 중간 확인 -> 1시까지

@@ -8,7 +8,7 @@ public class Board : MonoBehaviour
     /// <summary>
     /// 보드의 가로 세로 길이(항상 정사각형)
     /// </summary>
-    const int BoardSize = 10;
+    public const int BoardSize = 10;
 
     /// <summary>
     /// 보드의 배 배치 정보. 2차원 대신 1차원으로 저장
@@ -17,6 +17,8 @@ public class Board : MonoBehaviour
 
     public bool isShowShipDeploymentInfo = true;
     ShipDeploymentInfoMaker shipDeploymentInfo = null;
+
+    public const int NOT_VALID = -1;
 
     // 유니티 이벤트 함수들 -------------------------------------------------------------------------
 
@@ -49,7 +51,10 @@ public class Board : MonoBehaviour
     /// <returns>변환된 인덱스 값</returns>
     public static int GridToIndex(Vector2Int grid)
     {
-        return grid.x + grid.y * BoardSize;
+        if(IsValidPosition(grid))
+            return grid.x + grid.y * BoardSize;
+
+        return NOT_VALID;
     }
 
     /// <summary>

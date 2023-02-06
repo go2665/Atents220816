@@ -231,6 +231,19 @@ public class Ship : MonoBehaviour
     }
 
     /// <summary>
+    /// 함선을 랜덤한 방향으로 회전시키는 함수
+    /// </summary>
+    public void RandomRotate()
+    {
+        int rotateCount = UnityEngine.Random.Range(0, ShipManager.Inst.ShipDirectionCount); // 바라볼 방향 결정
+        bool isCCW = UnityEngine.Random.Range(0,2) == 0;    // 시계방향/반시계바향 고르기
+        for(int i=0;i<rotateCount;i++) 
+        {
+            Rotate(isCCW);  // 바라볼 방향을 향해 회전
+        }
+    }
+
+    /// <summary>
     /// 함선이 공격 받았을 때 실행되는 함수
     /// </summary>
     public void OnAttacked()
