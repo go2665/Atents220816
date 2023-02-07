@@ -137,6 +137,18 @@ public class Board : MonoBehaviour
         return WorldToGrid(worldPos);   // 월드 좌표를 다시 그리드 좌표로 변경해서 돌려주기
     }
 
+    /// <summary>
+    /// 특정 월드 좌표에 어떤 종류의 배가 배치되어있는지 알려주는 함수
+    /// </summary>
+    /// <param name="worldPos">확인할 월드좌표</param>
+    /// <returns>해당 위치에 있는 배의 종류</returns>
+    public ShipType GetShipType(Vector3 worldPos)
+    {
+        Vector2Int gridPos = WorldToGrid(worldPos);
+        int index = GridToIndex(gridPos);
+        return shipInfo[index];
+    }
+
     // 확인용 함수들 -------------------------------------------------------------------------------
 
     /// <summary>
@@ -222,10 +234,16 @@ public class Board : MonoBehaviour
             shipDeploymentInfo.UnMarkShipDeploymentInfo(ship.Type);
         }
 
-        foreach (var temp in ship.Positions)
+        // board에 표시해 놓았던 것 해제
+        if (ship.Positions != null)
         {
-            shipInfo[GridToIndex(temp)] = ShipType.None;
+            foreach (var temp in ship.Positions)
+            {
+                shipInfo[GridToIndex(temp)] = ShipType.None;
+            }
         }
+
+        // 함선 배치 해제
         ship.UnDeploy();
 
     }
