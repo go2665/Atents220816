@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,18 +16,50 @@ public class Board : MonoBehaviour
     /// </summary>
     ShipType[] shipInfo = null;
 
+    /// <summary>
+    /// 공격 당한 위치 정보. 공격을 했으면 true, 아직 안했으면 false
+    /// </summary>
+    bool[] bombInfo;
+
+    /// <summary>
+    /// 공격 당한 위치를 시각적으로 보여주는 클래스. (성공(O), 실패(X), 그냥 표시(검은구))
+    /// </summary>
+    BombMark bombMark;
+
+    /// <summary>
+    /// 개발용 배 배치 정보를 보여줄지 여부. true면 보여주고, false면 보여주지 않는다.
+    /// </summary>
     public bool isShowShipDeploymentInfo = true;
+
+    /// <summary>
+    /// 개발용 배 배치 정보 생성용 클래스.
+    /// </summary>
     ShipDeploymentInfoMaker shipDeploymentInfo = null;
 
     public const int NOT_VALID = -1;
+
+    // 델리게이트 ----------------------------------------------------------------------------------
+    public Dictionary<ShipType, Action> onShipAttacked;
+
 
     // 유니티 이벤트 함수들 -------------------------------------------------------------------------
 
     private void Awake()
     {
         shipInfo = new ShipType[BoardSize* BoardSize];  // shipInfo 초기화(none으로 초기화됨)
+        bombInfo = new bool[BoardSize* BoardSize];
 
-        if( isShowShipDeploymentInfo)
+        bombMark = GetComponentInChildren<BombMark>();
+
+        onShipAttacked = new Dictionary<ShipType, Action>(ShipManager.Inst.ShipTypeCount);
+        onShipAttacked[ShipType.None] = null;           // ShipType.None 부분은 무조건 없음. 접근했을 때 터지는 것 방지
+        onShipAttacked[ShipType.Carrier] = null;
+        onShipAttacked[ShipType.Battleship] = null;
+        onShipAttacked[ShipType.Destroyer] = null;
+        onShipAttacked[ShipType.Submarine] = null;
+        onShipAttacked[ShipType.PatrolBoat] = null;
+
+        if ( isShowShipDeploymentInfo)
         {
             shipDeploymentInfo = GetComponentInChildren<ShipDeploymentInfoMaker>();
         }
@@ -321,4 +354,44 @@ public class Board : MonoBehaviour
     }
 
 
+    // 피격용 --------------------------------------------------------------------------------------
+    
+    /// <summary>
+    /// 상대 플레이어에게 공격을 받았을 때 실행되는 함수
+    /// </summary>
+    /// <param name="gridPos">공격 받은 위치(그리드 좌표)</param>
+    /// <returns>true면 공격에 의해 함선에 명중했다. false면 실패했다.</returns>
+    public bool OnAttacked(Vector2Int gridPos)
+    {
+        bool result = false;
+
+        if( IsValidPosition(gridPos) )          // 보드 위인지 확인
+        {
+            int index = GridToIndex(gridPos);
+            if(IsAttackable(index))             // 공격 했던 지점인지 아닌지 확인
+            {
+                bombInfo[index] = true;         // 공격 가능하면 공격했다고 표시
+
+                if(shipInfo[index] != ShipType.None)    // 그곳에 배가 있으면
+                {
+                    result = true;                              // 공격으로 배가 명중됬다고 표시
+                    onShipAttacked[shipInfo[index]]?.Invoke();  // 공격 당한 배의 델리게이트 실행
+                }
+
+                bombMark.SetBombMark(GridToWorld(gridPos.x, gridPos.y), result);    // 붐마크 표시
+            }
+        }
+
+        return result;
+    }
+
+    public bool IsAttackable(Vector2Int gridPos)
+    {
+        return IsAttackable(GridToIndex(gridPos));
+    }
+
+    public bool IsAttackable(int index)
+    {
+        return !bombInfo[index];
+    }
 }

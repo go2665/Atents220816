@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1ae6654beb98eb54c891b0b260634399
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - successMark: {fileID: 6840417928254801700, guid: a9ecce09e031d274ea986ffd32e08b87,
+      type: 3}
+  - failureMark: {fileID: 6840417928254801700, guid: 986771f508e98f34c8a0f71faae1091f,
+      type: 3}
+  - testInfoPrefab: {fileID: 2325445913513071323, guid: 40c9d3272ddc24046b868c303870f441,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

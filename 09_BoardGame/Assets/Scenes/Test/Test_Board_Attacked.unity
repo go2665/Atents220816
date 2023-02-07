@@ -561,7 +561,7 @@ GameObject:
   - component: {fileID: 688988166}
   - component: {fileID: 688988167}
   m_Layer: 0
-  m_Name: Test_Deployment_Random
+  m_Name: Test_Board_Attacked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -591,7 +591,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 688988165}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bcf4deab28ae8e4a8d39f4741355160, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c24b1b086ad41f4e931aa8c68d5fd9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   reset: {fileID: 2118991128}
@@ -1514,6 +1514,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Board
+      objectReference: {fileID: 0}
+    - target: {fileID: 8308656940719098001, guid: eb2ef0afd0fc9744b9a3ce3607947840,
+        type: 3}
+      propertyPath: isShowTestInfo
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb2ef0afd0fc9744b9a3ce3607947840, type: 3}
