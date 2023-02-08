@@ -45,7 +45,7 @@ public class PlayerBase : MonoBehaviour
     List<int> attackCandiateIndices;
 
     /// <summary>
-    /// 다음에 공격했을 때 성공확률이 높은 지점
+    /// 다음에 공격했을 때 성공확률이 높은 지점.(후보지역)
     /// </summary>
     List<int> attackHighCandidateIndices;
 
@@ -109,8 +109,20 @@ public class PlayerBase : MonoBehaviour
             board.onShipAttacked[shipType] = ships[i].OnAttacked;       // 보드에서 특정 타입의 배가 공격 당했을 때 실행될 델리게이트에 함수 등록
         }
         remainShipCount = shipTypeCount;    
-        
-        lastAttackSuccessPos = NOT_SUCCESS_YET;
+                
+        lastAttackSuccessPos = NOT_SUCCESS_YET;     // 직전 공격에서 성공하지 않았다.(시작이라 당연히 없음)
+
+        PlayerBase[] players = FindObjectsOfType<PlayerBase>();
+        if(players[0] != this)
+        {
+            opponent = players[0];  // players[0]이 나와 다르면 players[0]은 적이다.
+        }
+        else
+        {
+            opponent = players[1];  // players[0]이 나와 다르지 않다면 남은 것(players[1])이 적이다.
+        }
+        //Debug.Log($"{this.gameObject.name}의 상대방은 {opponent.gameObject.name}이다.");
+
     }
 
     // 턴 관리용 함수 ------------------------------------------------------------------------------
@@ -128,8 +140,18 @@ public class PlayerBase : MonoBehaviour
     // - 공격
     public void Attack(Vector2Int attackGridPos)
     {
-        if(!isActionDone)
+        //if(!isActionDone)
         {
+            bool result = opponent.Board.OnAttacked(attackGridPos);
+            if( result )
+            {
+                AttackSuccessProcess(attackGridPos);
+            }
+            else
+            {
+                lastAttackSuccessPos = NOT_SUCCESS_YET; // 공격이 실패하면 무조건 lastAttackSuccessPos 비우가
+                onAttackFail?.Invoke(this); // 공격 실패 알림(로그 출력용)
+            }
 
             isActionDone = true;
         }
@@ -140,7 +162,54 @@ public class PlayerBase : MonoBehaviour
         Attack(opponent.Board.WorldToGrid(worldPos));
     }
 
-    
+    /// <summary>
+    /// 공격이 성공했을 때 공격 성공 지점 주변을 후보지역에 추가하는 함수
+    /// </summary>
+    /// <param name="attackGridPos">공격한 지점</param>
+    private void AttackSuccessProcess(Vector2Int attackGridPos)
+    { 
+        // 이전에 공격이 성공한 적이 있는지 확인
+        if(lastAttackSuccessPos != NOT_SUCCESS_YET)
+        {
+            // 직전 공격이 성공했었다.
+            AddHighCandidataByTwoPosition(attackGridPos, lastAttackSuccessPos); // 직선으로 후보지역 추가
+        }
+        else
+        {
+            // 직전 공격이 성공한적 없다.
+            AddNeighborToHighCanditate(attackGridPos);  // 공격한 지점의 주변을 후보지역으로 추가
+        }
+    }
+
+    private void AddHighCandidataByTwoPosition(Vector2Int now, Vector2Int last)
+    {
+        Debug.Log($"연속 공격 성공 : {now}");
+    }
+
+    /// <summary>
+    /// 공격한 지점의 이웃을 후보지역으로 추가하기
+    /// </summary>
+    /// <param name="gridPos">공격한 지점</param>
+    private void AddNeighborToHighCanditate(Vector2Int gridPos)
+    {
+        Debug.Log($"공격 성공 : {gridPos}");
+
+        // gridPos의 주변 4방향 중 valid하고 이전에 공격을 하지 않았던 지역만 후보지역에 추가
+
+    }
+
+    /// <summary>
+    /// 후보지역 리스트에 인덱스를 추가하는 함수
+    /// </summary>
+    /// <param name="index">추가할 인덱스</param>
+    private void AddHighCandidate(int index)
+    {
+        // 그냥 추가하지 말것
+        // attackHighCandidateIndices;
+
+        // highCandidatePrefab을 이용해서 후보지역 표시하기
+    }
+
 
     // - 자동 공격
 

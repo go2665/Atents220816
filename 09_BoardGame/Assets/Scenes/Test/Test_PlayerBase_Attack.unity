@@ -659,7 +659,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5451b207c28f314eb2c03688a1aa855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highCandidatePrefab: {fileID: 0}
+  highCandidatePrefab: {fileID: 4345559358642674022, guid: 81675ce568754ce4db6b242a545c75d8,
+    type: 3}
 --- !u!4 &544804933
 Transform:
   m_ObjectHideFlags: 0
@@ -1429,7 +1430,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5451b207c28f314eb2c03688a1aa855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highCandidatePrefab: {fileID: 0}
+  highCandidatePrefab: {fileID: 4345559358642674022, guid: 81675ce568754ce4db6b242a545c75d8,
+    type: 3}
 --- !u!1 &2118991126
 GameObject:
   m_ObjectHideFlags: 0

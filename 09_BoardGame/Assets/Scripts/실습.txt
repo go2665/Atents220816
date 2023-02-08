@@ -60,3 +60,12 @@
 2/7
 1. 코드 확인
 	시간 : 10시 50분까지
+
+
+2/8
+1. 공격 후보지역 표시하기
+	1.1. AddHighCandidate 완성하기
+		1.1.1. attackHighCandidateIndices에 후보지역 인덱스 추가하기(추가 전, 후 각각 하나씩 고려사항이 있음)
+		1.1.2. highCandidatePrefab을 이용해서 후보지역이 눈에 보이도록 만들기
+	1.2. AddNeighborToHighCanditate 완성하기
+	시간 : 1시 20분까지
