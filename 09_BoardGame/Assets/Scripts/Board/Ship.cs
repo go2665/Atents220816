@@ -110,7 +110,18 @@ public class Ship : MonoBehaviour
     /// <summary>
     /// 배의 현재 HP 확인용 프로퍼티. 읽기 전용.
     /// </summary>
-    public int HP => hp;
+    public int HP
+    {
+        get => hp;
+        private set
+        {
+            hp = value;
+            if( hp <= 0 && isAlive )        // HP가 0 이하인데 살아있으면
+            {
+                OnSinking();                // 함선 침몰
+            }
+        }
+    } 
 
     /// <summary>
     /// 배의 생존 여부 확인용 프로퍼티. 읽기 전용.
@@ -249,6 +260,12 @@ public class Ship : MonoBehaviour
     public void OnAttacked()
     {
         Debug.Log($"{type}이 공격 받음");
+        HP--;
+
+        if(IsAlive)
+        {
+            onHit?.Invoke(this);    // 함선이 데미지를 입었다고 알림.
+        }
     }
 
     /// <summary>
@@ -256,6 +273,9 @@ public class Ship : MonoBehaviour
     /// </summary>
     private void OnSinking()
     {
+        Debug.Log($"{type}이 침몰했습니다.");
+        isAlive = false;            // 함선이 침몰했다고 기록
+        onSinking?.Invoke(this);    // 함선이 침몰했다고 알림
     }
 
 

@@ -140,16 +140,13 @@ public class PlayerBase : MonoBehaviour
         Attack(opponent.Board.WorldToGrid(worldPos));
     }
 
-    private void OnShipDestroy(Ship ship)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     // - 자동 공격
 
 
     // 함선 배치용 함수들 --------------------------------------------------------------------------
-    
+
     /// <summary>
     /// 자동으로 함선을 배치하는 함수
     /// </summary>
@@ -390,4 +387,21 @@ public class PlayerBase : MonoBehaviour
         }
     }
 
+    // 내 함선 파괴 및 패배처리용 함수 --------------------------------------------------------------
+    private void OnShipDestroy(Ship ship)
+    {
+        remainShipCount--;  // 남은 함선 수 감소
+        Debug.Log($"배가 {remainShipCount}척 남았습니다.");
+
+        if (remainShipCount <= 0)
+        {
+            OnDefeat();
+        }
+    }
+
+    private void OnDefeat()
+    {
+        Debug.Log($"{gameObject.name} 패배");
+        onDefeat?.Invoke( this );
+    }
 }
