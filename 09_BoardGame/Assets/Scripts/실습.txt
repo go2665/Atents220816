@@ -68,4 +68,4 @@
 		1.1.1. attackHighCandidateIndices에 후보지역 인덱스 추가하기(추가 전, 후 각각 하나씩 고려사항이 있음)
 		1.1.2. highCandidatePrefab을 이용해서 후보지역이 눈에 보이도록 만들기
 	1.2. AddNeighborToHighCanditate 완성하기
-	시간 : 1시 20분까지
+	시간 : 1시 20분까지 -> 1시 30분까지

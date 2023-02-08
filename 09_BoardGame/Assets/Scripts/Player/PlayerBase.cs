@@ -94,7 +94,7 @@ public class PlayerBase : MonoBehaviour
     protected virtual void Awake()
     {
         board = GetComponentInChildren<Board>();
-        attackCandiateIndices= new List<int>();
+        attackHighCandidateIndices = new List<int>();
     }
 
     protected virtual void Start()
@@ -195,7 +195,16 @@ public class PlayerBase : MonoBehaviour
         Debug.Log($"공격 성공 : {gridPos}");
 
         // gridPos의 주변 4방향 중 valid하고 이전에 공격을 하지 않았던 지역만 후보지역에 추가
-
+        Vector2Int[] neighbors = { new(-1, 0), new(1, 0), new(0, -1), new(0, 1) };
+        foreach(Vector2Int neighbor in neighbors )
+        {
+            Vector2Int pos = gridPos + neighbor;
+            if( Board.IsValidPosition(pos) && opponent.Board.IsAttackable(pos) )
+            {
+                int index = Board.GridToIndex(pos);
+                AddHighCandidate(index);
+            }
+        }
     }
 
     /// <summary>
@@ -204,10 +213,16 @@ public class PlayerBase : MonoBehaviour
     /// <param name="index">추가할 인덱스</param>
     private void AddHighCandidate(int index)
     {
-        // 그냥 추가하지 말것
-        // attackHighCandidateIndices;
+        // attackHighCandidateIndices에 인덱스 추가
+        if (!attackHighCandidateIndices.Exists( (x) => x == index ))    // 중복이 있으면 안함.
+        {
+            attackHighCandidateIndices.Insert(0, index);                // 추가할 때는 항상 맨 앞에 추가.
+        }
 
         // highCandidatePrefab을 이용해서 후보지역 표시하기
+        GameObject obj = Instantiate(highCandidatePrefab, transform);
+        obj.transform.position = opponent.board.IndexToWorld(index);
+        highCandidateMark[index] = obj;
     }
 
 
