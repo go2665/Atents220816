@@ -248,6 +248,7 @@ public class Ship : MonoBehaviour
     /// </summary>
     public void OnAttacked()
     {
+        Debug.Log($"{type}이 공격 받음");
     }
 
     /// <summary>
