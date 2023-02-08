@@ -41,4 +41,17 @@ public class BombMark : MonoBehaviour
             testObj.transform.position = position + Vector3.up * 0.5f;
         }
     }
+
+    /// <summary>
+    /// 폭탄 마크 리셋.
+    /// </summary>
+    public void ResetBombMark()
+    {
+        while(transform.childCount > 0)     // 자식은 폭탄 마크 밖에 없으니 자식이 없을 때까지 반복
+        {
+            Transform child = transform.GetChild(0);    // 첫번째 자식 가져와서
+            child.SetParent(null);                      // 부모 제거하고
+            Destroy(child.gameObject);                  // 게임 오브젝트 삭제
+        }
+    }
 }
