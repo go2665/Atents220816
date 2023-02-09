@@ -103,4 +103,11 @@ public class Test_Player_Attack : TestBase
     {
         player1.AutoAttack();
     }
+
+    protected override void Test2(InputAction.CallbackContext _)
+    {
+        Vector2Int[] neighbors = { new(-1, 0), new(1, 0), new(0, -1), new(0, 1) };
+        Util.Shuffle(neighbors);
+        int i = 0;
+    }
 }
