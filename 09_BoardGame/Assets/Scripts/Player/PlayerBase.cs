@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 public class PlayerBase : MonoBehaviour
 {
@@ -31,6 +32,9 @@ public class PlayerBase : MonoBehaviour
     /// 대전 상대
     /// </summary>
     protected PlayerBase opponent;
+
+    private bool opponentShipDestroyed = false;
+
 
     // 공격 관련 변수 ------------------------------------------------------------------------------
     
@@ -99,6 +103,7 @@ public class PlayerBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        // 함선 생성
         int shipTypeCount = ShipManager.Inst.ShipTypeCount;
         ships = new Ship[shipTypeCount];
         for (int i = 0; i < shipTypeCount; i++)
@@ -110,8 +115,10 @@ public class PlayerBase : MonoBehaviour
         }
         remainShipCount = shipTypeCount;    
                 
+        // 공격 관련 변수 초기화
         lastAttackSuccessPos = NOT_SUCCESS_YET;     // 직전 공격에서 성공하지 않았다.(시작이라 당연히 없음)
 
+        // opponent 설정하기
         PlayerBase[] players = FindObjectsOfType<PlayerBase>();
         if(players[0] != this)
         {
@@ -123,6 +130,15 @@ public class PlayerBase : MonoBehaviour
         }
         //Debug.Log($"{this.gameObject.name}의 상대방은 {opponent.gameObject.name}이다.");
 
+        // 일반 공격용 후보지역(우선 순위가 낮은 지역) 만들기
+        int fullSize = Board.BoardSize * Board.BoardSize;
+        int[] tempCandidate = new int[fullSize];
+        for(int i = 0;i < fullSize;i++)
+        {
+            tempCandidate[i] = i;       // 0~99까지 순서대로 넣고
+        }
+        Util.Shuffle(tempCandidate);    // 섞기
+        attackCandiateIndices = new List<int>(tempCandidate);   // 섞은 것을 기반으로 리스트 만들기
     }
 
     // 턴 관리용 함수 ------------------------------------------------------------------------------
@@ -137,32 +153,89 @@ public class PlayerBase : MonoBehaviour
 
     // 공격용 함수 ---------------------------------------------------------------------------------
 
-    // - 공격
+    /// <summary>
+    /// 특정 위치를 공격하는 함수
+    /// </summary>
+    /// <param name="attackGridPos">공격하는 위치(그리드 좌표)</param>
     public void Attack(Vector2Int attackGridPos)
     {
-        //if(!isActionDone)
+        //if(!isActionDone)     // 턴 제어용
         {
-            bool result = opponent.Board.OnAttacked(attackGridPos);
+            bool result = opponent.Board.OnAttacked(attackGridPos); // 상대방 보드에 공격하기
             if( result )
             {
-                AttackSuccessProcess(attackGridPos);
+                // 공격 성공
+                if(opponentShipDestroyed)   
+                {
+                    // 공격으로 배가 침몰했으면
+                    RemoveAllHighCantidate();               // 모든 후보지역 제거
+                    opponentShipDestroyed = false;          // 함선 침몰 표시 초기화
+                }
+                else
+                {
+                    // 배가 침몰하지 않았으면
+                    AttackSuccessProcess(attackGridPos);    // 후보지역 추가
+                }
             }
             else
             {
-                lastAttackSuccessPos = NOT_SUCCESS_YET; // 공격이 실패하면 무조건 lastAttackSuccessPos 비우가
-                onAttackFail?.Invoke(this); // 공격 실패 알림(로그 출력용)
+                // 공격 실패
+                //lastAttackSuccessPos = NOT_SUCCESS_YET;     // 공격이 실패하면 무조건 lastAttackSuccessPos 비우기
+                onAttackFail?.Invoke(this);                 // 공격 실패 알림(로그 출력용)
             }
 
             RemoveHighCandidate(Board.GridToIndex(attackGridPos));  // 성공이든 실패든 공격 지점이 후보지로 되어있으면 제거
 
-            isActionDone = true;
+            isActionDone = true;    // 턴 행동 완료 표시
         }
     }
 
+    /// <summary>
+    /// 특정 위치를 공격하는 함수
+    /// </summary>
+    /// <param name="worldPos">공격하는 위치의 월드 좌표</param>
     public void Attack(Vector3 worldPos)
     {
         Attack(opponent.Board.WorldToGrid(worldPos));
     }
+
+    /// <summary>
+    /// 특정 위치를 공격하는 함수
+    /// </summary>
+    /// <param name="attackIndex">공격하는 위치의 인덱스</param>
+    public void Attack(int attackIndex)
+    {
+        Attack(Board.IndexToGrid(attackIndex));
+    }
+
+    /// <summary>
+    /// 자동 공격 함수. CPU 플레이어가 사용하거나 사람 플레이어가 타임오버 되었을 때 사용
+    /// </summary>
+    public void AutoAttack()
+    {
+        //if(!isActionDone)
+        {
+            int target = -1;
+
+            if(attackHighCandidateIndices.Count > 0)
+            {
+                // 우선 순위가 높은 후보지역이 있는 경우
+                target = attackHighCandidateIndices[0]; // 첫번째 인덱스 가져오고
+                RemoveHighCandidate(target);            // 높은 후보지역에서 제거
+                attackCandiateIndices.Remove(target);   // 일반 후보지역에서도 제거
+            }
+            else
+            {
+                // 우선 순위가 높은 후보지역이 없는 경우
+                target = attackCandiateIndices[0];      // 일반 후보지역에서 첫번째 인덱스 가져오기
+                attackCandiateIndices.Remove(target);   // 일반 후보지역에서 제거
+            }
+
+            Attack(target); // 구한 인덱스에 공격
+        }
+    }
+        
+
 
     /// <summary>
     /// 공격이 성공했을 때 공격 성공 지점 주변을 후보지역에 추가하는 함수
@@ -183,7 +256,7 @@ public class PlayerBase : MonoBehaviour
         }
         lastAttackSuccessPos = attackGridPos;
     }
-    // - 자동 공격
+    
 
 
     // 후보지역 처리 함수 --------------------------------------------------------------------------
@@ -261,6 +334,67 @@ public class PlayerBase : MonoBehaviour
         {
             // 세로 방향으로 붙어있다.
             // 연속으로 공격이 성공했는데 붙어있다 => 같은배로 예상
+
+            // 세로선 밖의 후보지역은 제거
+            List<int> dels = new List<int>();
+            foreach (var index in attackHighCandidateIndices)
+            {
+                Vector2Int pos = Board.IndexToGrid(index);
+                if (pos.x != now.x)
+                {
+                    dels.Add(index);        // 세로선을 벗어난 후보지역 모으기
+                }
+            }
+            foreach (var del in dels)
+            {
+                RemoveHighCandidate(del);   // 세로선을 벗어난 후보지역들을 제거하기
+            }
+
+            // 세로 선상의 양끝부분에 후보지역 추가
+            // -> 세로 선상으로 now의 y를 +-로 계속 증가시킴. 공격 실패나 보드 밖이 나오면 취소, 공격을 안한 지역이 나오면 후보지에 추가
+            Vector2Int newPos = now;
+
+            // 공격 지점의 위쪽에 있는 후보지역 찾기
+            for (int i = now.y - 1; i > -1; i--)
+            {
+                newPos.y = i;
+
+                // 보드를 벗어나면 끝
+                if (!Board.IsValidPosition(newPos))
+                    break;
+
+                // 공격 실패한 지점이면 후보지역을 추가하지 않고 break;
+                if (opponent.Board.IsAttackFailPosition(newPos))
+                    break;
+
+                // 공격이 가능한 지점이면 후보지역에 추가하고 break;
+                if (opponent.Board.IsAttackable(newPos))
+                {
+                    AddHighCandidate(Board.GridToIndex(newPos));
+                    break;
+                }
+            }
+
+            // 공격 지점의 아래쪽에 있는 후보지역 찾기
+            for (int i = now.y + 1; i < Board.BoardSize; i++)
+            {
+                newPos.y = i;
+
+                // 보드를 벗어나면 끝
+                if (!Board.IsValidPosition(newPos))
+                    break;
+
+                // 공격 실패한 지점이면 후보지역을 추가하지 않고 break;
+                if (opponent.Board.IsAttackFailPosition(newPos))
+                    break;
+
+                // 공격이 가능한 지점이면 후보지역에 추가하고 break;
+                if (opponent.Board.IsAttackable(newPos))
+                {
+                    AddHighCandidate(Board.GridToIndex(newPos));
+                    break;
+                }
+            }
         }
         else
         {
@@ -279,6 +413,7 @@ public class PlayerBase : MonoBehaviour
 
         // gridPos의 주변 4방향 중 valid하고 이전에 공격을 하지 않았던 지역만 후보지역에 추가
         Vector2Int[] neighbors = { new(-1, 0), new(1, 0), new(0, -1), new(0, 1) };
+        //Util.Shuffle(neighbors);
         foreach(Vector2Int neighbor in neighbors )
         {
             Vector2Int pos = gridPos + neighbor;
@@ -323,6 +458,16 @@ public class PlayerBase : MonoBehaviour
             highCandidateMark[index] = null;            // 딕셔너리에서 저장하고 있던 value 정리
             highCandidateMark.Remove(index);            // 딕셔너리에서 해당 key도 제거
         }
+    }
+
+    private void RemoveAllHighCantidate()
+    {
+        foreach(var index in attackHighCandidateIndices)
+        {
+            Destroy(highCandidateMark[index]);  // 개발용 후보지역 오브젝트 삭제
+        }
+        highCandidateMark.Clear();              // 개발용 후보지역 오브젝트 딕셔너리 클리어
+        attackHighCandidateIndices.Clear();     // 모든 후보지역 인덱스 리스트 삭제
     }
 
     /// <summary>
@@ -636,6 +781,8 @@ public class PlayerBase : MonoBehaviour
     // 내 함선 파괴 및 패배처리용 함수 --------------------------------------------------------------
     private void OnShipDestroy(Ship ship)
     {
+        opponent.opponentShipDestroyed = true;
+
         remainShipCount--;  // 남은 함선 수 감소
         Debug.Log($"배가 {remainShipCount}척 남았습니다.");
 

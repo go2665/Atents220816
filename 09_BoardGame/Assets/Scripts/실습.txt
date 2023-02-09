@@ -73,3 +73,6 @@
 2/9
 1. AddHighCandidataByTwoPosition 완성하기
 	시간 : 10시 50분까지
+
+2. 코드 확인 + AddHighCandidataByTwoPosition의 세로 방향 채워 넣기
+	시간 : 1시 10분까지
