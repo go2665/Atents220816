@@ -222,6 +222,30 @@ public class Board : MonoBehaviour
         return shipInfo[GridToIndex(shipPos)] != ShipType.None;
     }
 
+    /// <summary>
+    /// 특정 위치가 공격 실패한 지점인지 확인하는 함수
+    /// </summary>
+    /// <param name="gridPos">확인할 위치</param>
+    /// <returns>true면 공격이 실패한 지점. false면 공격이 성공한 지점</returns>
+    public bool IsAttackFailPosition(Vector2Int gridPos)
+    {
+        int index = GridToIndex(gridPos);
+        // 공격을 한 지점은 상대방도 배가 있는지 없는지 알 수 있으므로 shipInfo를 봐도 상관이 없다.
+        return bombInfo[index] && (shipInfo[index] == ShipType.None);   // 공격을 했고 거기에 배가 없었다.
+    }
+
+    /// <summary>
+    /// 특정 위치가 공격 성공한 지점인지 확인하는 함수
+    /// </summary>
+    /// <param name="gridPos">확인할 위치</param>
+    /// <returns>true면 공격이 성공한 지점. false면 공격이 실패한 지점</returns>
+    public bool IsAttackSuccessPosition(Vector2Int gridPos)
+    {
+        int index = GridToIndex(gridPos);
+        // 공격을 한 지점은 상대방도 배가 있는지 없는지 알 수 있으므로 shipInfo를 봐도 상관이 없다.
+        return bombInfo[index] && (shipInfo[index] != ShipType.None);   // 공격을 했고 거기에 배가 있었다.
+    }
+
     // 함선 배치 관련 함수들 ------------------------------------------------------------------------
     /// <summary>
     /// 함선 배치 함수
