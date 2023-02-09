@@ -69,3 +69,7 @@
 		1.1.2. highCandidatePrefab을 이용해서 후보지역이 눈에 보이도록 만들기
 	1.2. AddNeighborToHighCanditate 완성하기
 	시간 : 1시 20분까지 -> 1시 30분까지
+
+2/9
+1. AddHighCandidataByTwoPosition 완성하기
+	시간 : 10시 50분까지

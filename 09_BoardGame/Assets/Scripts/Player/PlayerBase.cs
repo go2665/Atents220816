@@ -153,6 +153,8 @@ public class PlayerBase : MonoBehaviour
                 onAttackFail?.Invoke(this); // 공격 실패 알림(로그 출력용)
             }
 
+            RemoveHighCandidate(Board.GridToIndex(attackGridPos));  // 성공이든 실패든 공격 지점이 후보지로 되어있으면 제거
+
             isActionDone = true;
         }
     }
@@ -171,19 +173,40 @@ public class PlayerBase : MonoBehaviour
         // 이전에 공격이 성공한 적이 있는지 확인
         if(lastAttackSuccessPos != NOT_SUCCESS_YET)
         {
-            // 직전 공격이 성공했었다.
+            // 한턴 앞의 공격이 성공했었다.
             AddHighCandidataByTwoPosition(attackGridPos, lastAttackSuccessPos); // 직선으로 후보지역 추가
         }
         else
         {
-            // 직전 공격이 성공한적 없다.
+            // 한턴 앞의 공격이 성공하지 못했다.
             AddNeighborToHighCanditate(attackGridPos);  // 공격한 지점의 주변을 후보지역으로 추가
         }
+        lastAttackSuccessPos = attackGridPos;
     }
 
     private void AddHighCandidataByTwoPosition(Vector2Int now, Vector2Int last)
     {
         Debug.Log($"연속 공격 성공 : {now}");
+        
+        if(Mathf.Abs(now.x - last.x) == 1 && (now.y == last.y))
+        {
+            // 가로 방향으로 붙어있다.
+            // 연속으로 공격이 성공했는데 붙어있다 => 같은배로 예상
+
+            // 가로선 밖의 후보지는 제거 -> 가로선을 벗어난 후보지 찾고 전부 리무브
+            // 가로 선상의 후보지 추가
+            // -> 가로 선상으로 now의 x를 +-로 계속 증가시킴. 공격 실패나 보드 밖이 나오면 취소, 공격을 안한 지역이 나오면 후보지에 추가
+        }
+        else if(Mathf.Abs(now.y - last.y) == 1 && (now.x == last.x))
+        {
+            // 세로 방향으로 붙어있다.
+            // 연속으로 공격이 성공했는데 붙어있다 => 같은배로 예상
+        }
+        else
+        {
+            // 서로 떨어져 있는데 공격이 성공했다. => 다른배
+            AddNeighborToHighCanditate(now);  // 공격한 지점의 주변을 후보지역으로 추가
+        }
     }
 
     /// <summary>
@@ -225,6 +248,20 @@ public class PlayerBase : MonoBehaviour
         highCandidateMark[index] = obj;
     }
 
+    /// <summary>
+    /// index에 있는 후보지역 삭제 함수
+    /// </summary>
+    /// <param name="index">삭제할 위치를 나타내는 인덱스</param>
+    private void RemoveHighCandidate(int index)
+    {
+        if(attackHighCandidateIndices.Exists((x) => x == index ))   // index가 리스트에 있으면
+        {
+            attackHighCandidateIndices.Remove(index);   // attackHighCandidateIndices 리스트에서 index 제거
+            Destroy(highCandidateMark[index]);          // 개발용으로 후보지역 오브젝트 만든것 삭제
+            highCandidateMark[index] = null;            // 딕셔너리에서 저장하고 있던 value 정리
+            highCandidateMark.Remove(index);            // 딕셔너리에서 해당 key도 제거
+        }
+    }
 
     // - 자동 공격
 
