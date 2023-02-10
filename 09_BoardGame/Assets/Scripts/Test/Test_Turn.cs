@@ -81,6 +81,7 @@ public class Test_Turn : TestBase
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
         Vector2Int gridPos = board2.WorldToGrid(worldPos);
         player1.Attack(gridPos);
+        player2.AutoAttack();
     }
 
     private void OnTestRClick(InputAction.CallbackContext _)

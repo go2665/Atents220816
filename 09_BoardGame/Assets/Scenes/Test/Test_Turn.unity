@@ -639,28 +639,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 544804933}
-  - component: {fileID: 544804932}
+  - component: {fileID: 544804934}
   m_Layer: 0
-  m_Name: PlayerBase2
+  m_Name: EnemyPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &544804932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 544804931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5451b207c28f314eb2c03688a1aa855, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  highCandidatePrefab: {fileID: 4345559358642674022, guid: 81675ce568754ce4db6b242a545c75d8,
-    type: 3}
 --- !u!4 &544804933
 Transform:
   m_ObjectHideFlags: 0
@@ -677,6 +663,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &544804934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544804931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892761de1fc1b9245a66fdb1129ff831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highCandidatePrefab: {fileID: 4345559358642674022, guid: 81675ce568754ce4db6b242a545c75d8,
+    type: 3}
 --- !u!1 &744518516
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,8 +709,8 @@ MonoBehaviour:
   reset: {fileID: 0}
   randomDeployment: {fileID: 0}
   resetRandom: {fileID: 0}
-  player1: {fileID: 2069905707}
-  player2: {fileID: 544804932}
+  player1: {fileID: 0}
+  player2: {fileID: 0}
 --- !u!4 &744518518
 Transform:
   m_ObjectHideFlags: 0
@@ -1440,7 +1440,7 @@ GameObject:
   - component: {fileID: 2069905706}
   - component: {fileID: 2069905707}
   m_Layer: 0
-  m_Name: PlayerBase1
+  m_Name: UserPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1471,7 +1471,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2069905705}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5451b207c28f314eb2c03688a1aa855, type: 3}
+  m_Script: {fileID: 11500000, guid: 6dbc437ab93985948b52235d78c6843a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   highCandidatePrefab: {fileID: 4345559358642674022, guid: 81675ce568754ce4db6b242a545c75d8,

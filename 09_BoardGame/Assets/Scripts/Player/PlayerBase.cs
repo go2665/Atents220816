@@ -75,7 +75,8 @@ public class PlayerBase : MonoBehaviour
 
     public Board Board => board;
     public Ship[] Ships => ships;
-    public bool IsDpeat => remainShipCount < 1;
+    public bool IsDepeat => remainShipCount < 1;
+    public bool IsActionDone => isActionDone;
 
 
     // 델리게이트 들
@@ -146,7 +147,7 @@ public class PlayerBase : MonoBehaviour
     // 턴 관리용 함수 ------------------------------------------------------------------------------
     public virtual void OnPlayerTurnStart(int turnNumber)
     {
-        isActionDone = true;
+        isActionDone = false;
     }
 
     public virtual void OnPlayerTurnEnd()
@@ -161,7 +162,7 @@ public class PlayerBase : MonoBehaviour
     /// <param name="attackGridPos">공격하는 위치(그리드 좌표)</param>
     public void Attack(Vector2Int attackGridPos)
     {
-        //if(!isActionDone)     // 턴 제어용
+        if(!isActionDone)     // 턴 제어용
         {
             bool result = opponent.Board.OnAttacked(attackGridPos); // 상대방 보드에 공격하기
             if( result )
@@ -189,6 +190,7 @@ public class PlayerBase : MonoBehaviour
             RemoveHighCandidate(Board.GridToIndex(attackGridPos));  // 성공이든 실패든 공격 지점이 후보지로 되어있으면 제거
 
             isActionDone = true;    // 턴 행동 완료 표시
+            onActionEnd?.Invoke();  // 턴 행동 완료를 연결된 대상에게 알림
         }
     }
 
@@ -215,7 +217,7 @@ public class PlayerBase : MonoBehaviour
     /// </summary>
     public void AutoAttack()
     {
-        //if(!isActionDone)
+        if(!isActionDone)
         {
             int target = -1;
 
