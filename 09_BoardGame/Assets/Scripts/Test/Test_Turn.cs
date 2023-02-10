@@ -44,7 +44,7 @@ public class Test_Turn : TestBase
         });
 
         player1.AutoShipDeployment(false);
-        player2.AutoShipDeployment(false);
+        //player2.AutoShipDeployment(false);
     }
 
     protected override void OnEnable()

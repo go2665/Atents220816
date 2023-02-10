@@ -23,7 +23,7 @@ public class TurnManager : Singleton<TurnManager>
     /// <summary>
     /// 한 턴이 타임 아웃되는데 걸리는 시간
     /// </summary>
-    const float turnDurationTime = 5.0f;
+    public const float turnDurationTime = 5.0f;
 
     /// <summary>
     /// 유저 플레이어

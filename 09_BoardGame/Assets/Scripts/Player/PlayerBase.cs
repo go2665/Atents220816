@@ -121,16 +121,16 @@ public class PlayerBase : MonoBehaviour
         // 공격 관련 변수 초기화
         lastAttackSuccessPos = NOT_SUCCESS_YET;     // 직전 공격에서 성공하지 않았다.(시작이라 당연히 없음)
 
-        // opponent 설정하기
-        PlayerBase[] players = FindObjectsOfType<PlayerBase>();
-        if(players[0] != this)
-        {
-            opponent = players[0];  // players[0]이 나와 다르면 players[0]은 적이다.
-        }
-        else
-        {
-            opponent = players[1];  // players[0]이 나와 다르지 않다면 남은 것(players[1])이 적이다.
-        }
+        //// opponent 설정하기 ( 각 UserPlayer와 EnemyPlayer가 설정하는 것으로 변경)
+        //PlayerBase[] players = FindObjectsOfType<PlayerBase>();
+        //if(players[0] != this)
+        //{
+        //    opponent = players[0];  // players[0]이 나와 다르면 players[0]은 적이다.
+        //}
+        //else
+        //{
+        //    opponent = players[1];  // players[0]이 나와 다르지 않다면 남은 것(players[1])이 적이다.
+        //}
         //Debug.Log($"{this.gameObject.name}의 상대방은 {opponent.gameObject.name}이다.");
 
         // 일반 공격용 후보지역(우선 순위가 낮은 지역) 만들기
@@ -145,7 +145,7 @@ public class PlayerBase : MonoBehaviour
     }
 
     // 턴 관리용 함수 ------------------------------------------------------------------------------
-    public virtual void OnPlayerTurnStart(int turnNumber)
+    public virtual void OnPlayerTurnStart(int _)
     {
         isActionDone = false;
     }
