@@ -123,7 +123,7 @@ public class PlayerBase : MonoBehaviour
 
         //// opponent 설정하기 ( 각 UserPlayer와 EnemyPlayer가 설정하는 것으로 변경)
         //PlayerBase[] players = FindObjectsOfType<PlayerBase>();
-        //if(players[0] != this)
+        //if (players[0] != this)
         //{
         //    opponent = players[0];  // players[0]이 나와 다르면 players[0]은 적이다.
         //}
@@ -266,7 +266,7 @@ public class PlayerBase : MonoBehaviour
     // 후보지역 처리 함수 --------------------------------------------------------------------------
     private void AddHighCandidataByTwoPosition(Vector2Int now, Vector2Int last)
     {
-        Debug.Log($"연속 공격 성공 : {now}");
+        //Debug.Log($"연속 공격 성공 : {now}");
         
         if(InSuccessLine(last, now, true))
         {
@@ -474,6 +474,8 @@ public class PlayerBase : MonoBehaviour
         }
         highCandidateMark.Clear();              // 개발용 후보지역 오브젝트 딕셔너리 클리어
         attackHighCandidateIndices.Clear();     // 모든 후보지역 인덱스 리스트 삭제
+
+        lastAttackSuccessPos = NOT_SUCCESS_YET; // 마지막 공격 성공도 초기화
     }
 
     /// <summary>
@@ -788,7 +790,7 @@ public class PlayerBase : MonoBehaviour
     private void OnShipDestroy(Ship ship)
     {
         opponent.opponentShipDestroyed = true;
-        lastAttackSuccessPos = NOT_SUCCESS_YET;             // 새 후보지역을 생성 할 때 4방향 모두 생성되도록 하기 위해 초기화
+        opponent.lastAttackSuccessPos = NOT_SUCCESS_YET;    // 새 후보지역을 생성 할 때 4방향 모두 생성되도록 하기 위해 초기화
 
         remainShipCount--;  // 남은 함선 수 감소
         Debug.Log($"배가 {remainShipCount}척 남았습니다.");
@@ -803,5 +805,16 @@ public class PlayerBase : MonoBehaviour
     {
         Debug.Log($"{gameObject.name} 패배");
         onDefeat?.Invoke( this );
+    }
+
+    // 초기화 용 -----------------------------------------------------------------------------------
+    public void Clear()
+    {
+        remainShipCount = ShipManager.Inst.ShipTypeCount;
+        isActionDone = false;
+        opponentShipDestroyed = false;
+
+        Board.ResetBoard(Ships);
+        RemoveAllHighCantidate();
     }
 }
