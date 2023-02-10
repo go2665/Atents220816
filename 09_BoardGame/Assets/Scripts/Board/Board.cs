@@ -187,11 +187,13 @@ public class Board : MonoBehaviour
     /// </summary>
     public void ResetBoard(Ship[] ships)
     {
+        // 함선 초기화
         foreach (var ship in ships)
         {
             UndoShipDeplyment(ship);    // 모든 함선 배치 취소
         }
 
+        // 공격 표시 초기화
         for (int i = 0; i < bombInfo.Length; i++)
         {
             bombInfo[i] = false;        // 공격 여부는 모두 안한것으로 설정
