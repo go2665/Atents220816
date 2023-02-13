@@ -721,8 +721,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highCandidatePrefab: {fileID: 4345559358642674022, guid: 81675ce568754ce4db6b242a545c75d8,
     type: 3}
-  thinkingTimeMin: 1
-  thinkingTimeMax: 4
+  thinkingTimeMin: 0
+  thinkingTimeMax: 0.1
 --- !u!1 &744518516
 GameObject:
   m_ObjectHideFlags: 0

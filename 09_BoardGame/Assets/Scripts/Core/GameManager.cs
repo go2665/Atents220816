@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
     public UserPlayer UserPlayer => userPlayer;
     public EnemyPlayer EnemyPlayer => enemyPlayer;
 
+    public bool IsGameEnd => UserPlayer.IsDepeat || enemyPlayer.IsDepeat;
+
     protected override void Initialize()
     {
         base.Initialize();

@@ -100,13 +100,20 @@ public class TurnManager : Singleton<TurnManager>
     /// </summary>
     void OnTurnEnd()
     {
-        onTurnEnd?.Invoke();
-        
-        isTurnEnd = true;
+        // !(UserPlayer.IsDepeat || enemyPlayer.IsDepeat)
+        if (!enemyPlayer.IsDepeat && !userPlayer.IsDepeat)
+        {
+            onTurnEnd?.Invoke();
 
-        Debug.Log($"{turnNumber} 턴 종료");
-        turnNumber++;
+            isTurnEnd = true;
 
+            Debug.Log($"{turnNumber} 턴 종료");
+            turnNumber++;
+        }
+        else
+        {
+            turnRemainTime = float.MaxValue;    // OnTurnEnd가 과하게 호출되는 것 방지
+        }
     }
 
     private void Update()
