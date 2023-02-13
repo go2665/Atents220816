@@ -41,7 +41,7 @@ public class PlayerBase : MonoBehaviour
     /// <summary>
     /// 현재 게임 상태
     /// </summary>
-    GameState state;
+    protected GameState state;
 
 
     // 공격 관련 변수 ------------------------------------------------------------------------------
