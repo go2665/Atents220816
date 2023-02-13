@@ -429,6 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff2e0c5fb3e9a6468253698cf3bb9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipType: 3
 --- !u!114 &453992509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -768,6 +769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff2e0c5fb3e9a6468253698cf3bb9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipType: 2
 --- !u!114 &1119860717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,6 +1054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff2e0c5fb3e9a6468253698cf3bb9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipType: 5
 --- !u!114 &1500293379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1146,6 +1149,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShipManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4662003234613532898, guid: b3a20e545360b254c8ed6f49f1d47351,
+        type: 3}
+      propertyPath: shipModels.Array.data[3]
+      value: 
+      objectReference: {fileID: 1740072271694253066, guid: 5768010e54229ca48bd98713242bad56,
+        type: 3}
+    - target: {fileID: 4662003234613532898, guid: b3a20e545360b254c8ed6f49f1d47351,
+        type: 3}
+      propertyPath: shipModels.Array.data[4]
+      value: 
+      objectReference: {fileID: 5723508388309036381, guid: 334761df78b94ea4c92093a933a9ead3,
+        type: 3}
     - target: {fileID: 4662003234613532899, guid: b3a20e545360b254c8ed6f49f1d47351,
         type: 3}
       propertyPath: m_RootOrder
@@ -1420,6 +1435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff2e0c5fb3e9a6468253698cf3bb9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipType: 4
 --- !u!114 &2098226328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1554,6 +1570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff2e0c5fb3e9a6468253698cf3bb9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipType: 1
 --- !u!114 &2124882455
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,6 +7,18 @@ using UnityEngine.UI;
 public class DeploymentToggle : MonoBehaviour
 {
     /// <summary>
+    /// 이 버튼이 처리할 함선의 종류
+    /// </summary>
+    public ShipType shipType = ShipType.None;
+
+    /// <summary>
+    /// 배치할 함선을 가진 플레이어
+    /// </summary>
+    UserPlayer player;
+
+    // 버튼 관련 변수 ------------------------------------------------------------------------------
+
+    /// <summary>
     /// 버튼의 이미지
     /// </summary>
     Image image;
@@ -55,6 +67,8 @@ public class DeploymentToggle : MonoBehaviour
     /// </summary>
     public Action<DeploymentToggle> onTogglePress;    
 
+    // 함수들 --------------------------------------------------------------------------------------
+
     private void Awake()
     {
         image= GetComponent<Image>();
@@ -62,11 +76,28 @@ public class DeploymentToggle : MonoBehaviour
         button.onClick.AddListener(OnClick);
     }
 
+    private void Start()
+    {
+        player = GameManager.Inst.UserPlayer;
+    }
+
     /// <summary>
     /// 버튼이 클릭되었을 때 실행되는 함수
     /// </summary>
     private void OnClick()
     {
+        if( IsToggled )
+        {
+            // 눌려져 있다가 해제될 예정이다.
+            // => 배치되어있던 함선을 배치 취소해야 한다.
+            player.UndoShipDeploy(shipType);        // 배치 취소
+        }
+        else
+        {
+            // 해제되어있다가 눌려질 예정이다.
+            player.SelectShipToDeploy(shipType);    // 배치하기 위해 선택
+        }
+
         IsToggled = !IsToggled; // 토글 상태만 반전 시킴
     }
 
@@ -75,6 +106,9 @@ public class DeploymentToggle : MonoBehaviour
     /// </summary>
     public void UnToggle()
     {
-        IsToggled = false;      // 무조건 해제
+        if (!player.Ships[(int)shipType - 1].IsDeployed)    // 배치되지 않은 함선은
+        {
+            IsToggled = false;                              // 무조건 해제
+        }
     }
 }
