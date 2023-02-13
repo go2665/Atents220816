@@ -83,3 +83,9 @@
 
 2. 코드 확인
 	시간 : 11시 40분까지
+
+2/13
+1. 한번에 하나의 토글 버튼만 눌려지게 만들기
+	1.1. ShipDeploymentPanel 완성 시키기
+	1.2. DeploymentToggle.IsDeployed는 private로 유지할 것
+	시간 : 12시 20분까지

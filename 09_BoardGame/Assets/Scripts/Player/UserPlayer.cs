@@ -51,22 +51,22 @@ public class UserPlayer : PlayerBase
     // 상태별 입력 처리 함수들 ------------------------------------------------------------------------------
     private void OnClick_ShipDeployment(Vector2 screenPos)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     private void OnClick_Battle(Vector2 screenPos)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     private void OnMouseMove_ShipDeployment(Vector2 screenPos)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     private void OnMouseWheel_ShipDeployment(float wheelDelta)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
 }
