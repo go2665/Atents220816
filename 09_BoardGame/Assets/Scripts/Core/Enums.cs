@@ -22,3 +22,11 @@ public enum ShipDirection : byte
     South,
     West
 }
+
+public enum GameState : byte
+{
+    Title = 0,      // 타이틀 장면
+    ShipDeployment, // 함선 배치 장면
+    Battle,         // 전투 장면
+    GameEnd         // 게임 종료 장면
+}

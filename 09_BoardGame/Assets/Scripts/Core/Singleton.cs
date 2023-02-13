@@ -132,7 +132,8 @@ public class Singleton<T> : MonoBehaviour where T : Component
             Initialize();   // 씬이 로드 되면 초기화 함수 따로 실행
         }
 
-        if (scene.buildIndex == mainSceneIndex) // 자신이 처음 존재하던 씬이 로드되었을 때만 데이터 리셋하기
+        // 이번 게임은 씬이 additive로 붙지 않을 것이기 때문에 구분하지 않음
+        //if (scene.buildIndex == mainSceneIndex) // 자신이 처음 존재하던 씬이 로드되었을 때만 데이터 리셋하기
         {
             ManagerDataReset(); // 자신이 처음 존재하던 씬이 로드 될 때마다 초기화 해야할 것들 초기화
         }
