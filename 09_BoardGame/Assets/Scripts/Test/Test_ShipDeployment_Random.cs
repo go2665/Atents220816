@@ -56,12 +56,12 @@ public class Test_ShipDeployment_Random : TestBase
 
         reset.onClick.AddListener(OnResetClick);
         randomDeployment.onClick.AddListener(() => {
-            AutoShipDeployment(false);
+            AutoShipDeployment(true);
         });
         resetRandom.onClick.AddListener(() =>
         {
             OnResetClick();
-            AutoShipDeployment(false);
+            AutoShipDeployment(true);
         });
          
     }

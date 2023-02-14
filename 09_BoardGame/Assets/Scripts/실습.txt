@@ -92,3 +92,12 @@
 
 2. 코드 확인
 	시간 : 1시까지
+
+
+2/14
+1. RandomDeploymentButton 완성하기
+	1.1. 버튼이 눌려졌을 때 아직 배치되지 않은 함선을 전부 자동으로 배치
+		(PlayerBase와 Test_ShipDeployment_Random 참조)
+	1.2. 이미 모든 함선이 배치된 상황이면 전부 다시 배치
+	1.3. 자동 배치 이후에 ShipDeploymentPanel 아래에 있는 토글 버튼들을 전부 눌려진 상태로 만들기
+		시간 : 9시 35분까지

@@ -86,6 +86,25 @@ public class PlayerBase : MonoBehaviour
     public bool IsDepeat => remainShipCount < 1;
     public bool IsActionDone => isActionDone;
 
+    /// <summary>
+    /// 모든 함선이 배치되었는지 확인하는 프로퍼티. 모두 배치되었으면 true, 하나라도 배치가 안된 것이 있으면 false
+    /// </summary>
+    public bool IsAllDeployed
+    {
+        get
+        {
+            bool result = true;
+            foreach (var ship in ships)
+            {
+                if( ship.IsDeployed == false )  // 하나라도 배치가 안되었으면
+                {
+                    result = false;             // 실패로 표시
+                    break;
+                }
+            }
+            return result;
+        }
+    }
 
     // 델리게이트 들
 

@@ -111,4 +111,12 @@ public class DeploymentToggle : MonoBehaviour
             IsToggled = false;                              // 무조건 해제
         }
     }
+
+    /// <summary>
+    /// 무조건 눌려진 상태로 만드는 함수
+    /// </summary>
+    public void SetPress()
+    {
+        IsToggled = true;
+    }
 }

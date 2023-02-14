@@ -33,4 +33,15 @@ public class ShipDeploymentPanel : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 모든 토글 버튼을 눌려진 상태로 변경(모든 함선이 배치된 상태에서만 사용할 것)
+    /// </summary>
+    public void SetToggleSelectAll()
+    {
+        foreach (var toggle in toggles)
+        {
+            toggle.SetPress();
+        }
+    }
 }

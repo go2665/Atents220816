@@ -187,7 +187,7 @@ public class Ship : MonoBehaviour
     void ResetData()
     {
         hp = size;                          // HP는 크기를 그대로 사용
-        direction = ShipDirection.North;    // 함선 방향 초기화
+        Direction = ShipDirection.North;    // 함선 방향 초기화(반드시 프로퍼티를 초기화 해야 함선 방향도 초기화가 된다.)
         isAlive = true;                     // 생존 여부 초기화
         isDeployed = false;                 // 배치 여부 초기화
         positions = null;                   // 함선의 칸별 위치
