@@ -10,6 +10,8 @@ public class ShipDeploymentPanel : MonoBehaviour
     /// </summary>
     DeploymentToggle[] toggles = null;
 
+    public Action onDeploymentComplete;
+
     private void Awake()
     {
         toggles = GetComponentsInChildren<DeploymentToggle>();
@@ -25,9 +27,9 @@ public class ShipDeploymentPanel : MonoBehaviour
     /// <param name="toggle">눌러진 토글 버튼</param>
     private void OnTogglePress(DeploymentToggle toggle)
     {
-        foreach(var others in toggles)  
+        foreach (var others in toggles)
         {
-            if( toggle != others )  // 자신을 제외한 나머지 토글 버튼들을
+            if (toggle != others)  // 자신을 제외한 나머지 토글 버튼들을
             {
                 others.UnToggle();  // 눌러진 상태 해제
             }

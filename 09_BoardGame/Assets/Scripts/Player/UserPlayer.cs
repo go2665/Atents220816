@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UserPlayer : PlayerBase
 {
@@ -82,6 +83,11 @@ public class UserPlayer : PlayerBase
         GameManager.Inst.Input.onClick += OnClick;              // 인풋 컨트롤러 쪽에 입력시 실행될 함수 등록
         GameManager.Inst.Input.onMouseMove += OnMouseMove;
         GameManager.Inst.Input.onMouseWheel += OnMouseWheel;
+
+        if( !IsAllDeployed )            // 배치가 안되어있으면 자동 배치(테스트용)
+        {
+            AutoShipDeployment(true);
+        }
     }
 
     /// <summary>
@@ -130,7 +136,9 @@ public class UserPlayer : PlayerBase
 
     private void OnClick_Battle(Vector2 screenPos)
     {
-        //throw new NotImplementedException();
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        Vector2Int gridPos = opponent.Board.WorldToGrid(worldPos);
+        Attack(gridPos);
     }
 
     /// <summary>
