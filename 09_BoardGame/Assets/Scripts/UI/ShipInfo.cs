@@ -19,7 +19,22 @@ public class ShipInfo : MonoBehaviour
         Ship[] ships = player.Ships;
         for(int i=0;i<ships.Length;i++)
         {
-            texts[i].text = $"{ships[i].HP}/{ships[i].Size}";
+            PrintHP(texts[i], ships[i]);
+
+            int index = i;
+            ships[i].onHit += (ship) => PrintHP(texts[index], ship);
+            ships[i].onSinking += (ship) => PrintDestroy(texts[index]);
         }
+    }
+
+    private void PrintHP(TextMeshProUGUI text, Ship ship)
+    {
+        text.text = $"{ship.HP}/{ship.Size}";
+    }
+
+    private void PrintDestroy(TextMeshProUGUI text)
+    {
+        text.fontSize = 40;
+        text.text = "<#ff0000>Destroy!!</color>";
     }
 }
