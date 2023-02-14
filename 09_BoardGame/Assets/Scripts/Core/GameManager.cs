@@ -50,6 +50,10 @@ public class GameManager : Singleton<GameManager>
     InputController input;
     public InputController Input => input;
 
+    // 함선 배치 정보 -----------------------------------------------------------------------------------
+    private ShipDeployData[] shipDeployDatas;
+
+
     // 함수 -----------------------------------------------------------------------------------------
 
     /// <summary>
@@ -80,5 +84,36 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    // 함선 배치 정보 저장 및 로딩용 함수들 ----------------------------------------------------------------------
+
+    public void SaveShipDeployData(PlayerBase targetPlayer)
+    {
+        shipDeployDatas = new ShipDeployData[targetPlayer.Ships.Length];
+        for(int i=0;i<shipDeployDatas.Length;i++)
+        {
+            shipDeployDatas[i] = new ShipDeployData();
+            shipDeployDatas[i].direction = targetPlayer.Ships[i].Direction;
+            shipDeployDatas[i].position = targetPlayer.Ships[i].Positions[0];
+        }
+    }
+
+    public bool LoadShipDeployData(PlayerBase targetPlayer)
+    {
+        bool result = false;
+        if( shipDeployDatas != null )
+        {
+            targetPlayer.UndoAllShipDeployment();
+            for(int i=0;i<shipDeployDatas.Length;i++)
+            {
+                Ship targetShip = targetPlayer.Ships[i];
+                targetShip.Direction = shipDeployDatas[i].direction;
+                targetPlayer.Board.ShipDeplyment(targetShip, shipDeployDatas[i].position);
+                targetShip.gameObject.SetActive(true);
+            }
+        }
+
+        return result;
+
+    }
     
 }

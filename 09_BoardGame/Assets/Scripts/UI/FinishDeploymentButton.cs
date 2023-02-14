@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FinishDeploymentButton : MonoBehaviour
@@ -41,6 +42,8 @@ public class FinishDeploymentButton : MonoBehaviour
     private void OnClick()
     {
         Debug.Log("클릭");
+        GameManager.Inst.SaveShipDeployData(player);
+        SceneManager.LoadScene(1);
     }
 
     private void OnComplete()

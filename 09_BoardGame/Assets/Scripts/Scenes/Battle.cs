@@ -6,6 +6,13 @@ public class Battle : MonoBehaviour
 {
     private void Start()
     {
-        GameManager.Inst.GameState = GameState.Battle;
+        GameManager manager = GameManager.Inst;
+
+        UserPlayer player = manager.UserPlayer;
+        if(!manager.LoadShipDeployData(player))
+        {
+            player.AutoShipDeployment();
+        }
+        manager.GameState = GameState.Battle;
     }
 }

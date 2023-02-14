@@ -46,19 +46,19 @@ public class TurnManager : Singleton<TurnManager>
     Action onTurnEnd;
     
     /// <summary>
-    /// 초기화용 함수. 씬 로드가 완료된 이후에 실행(Awake와 Start 사이에서 실행됨)
+    /// 초기화용 함수. 씬 로드가 완료 될 때마다 실행(Awake와 Start 사이에서 실행됨)
     /// </summary>
-    protected override void Initialize()
+    protected override void ManagerDataReset()
     {
-        base.Initialize();
-
         // 필요 변수들 초기화
-        turnNumber = 0;     
+        turnNumber = 0;
         isTurnEnd = true;
         userPlayer = FindObjectOfType<UserPlayer>();
         enemyPlayer = FindObjectOfType<EnemyPlayer>();
 
         // 턴 시작/종료 델리게이트에 플레이어들의 턴 시작/종료 함수들 연결
+        onTurnStart = null; 
+        onTurnEnd = null;
         onTurnStart += userPlayer.OnPlayerTurnStart;
         onTurnStart += enemyPlayer.OnPlayerTurnStart;
         onTurnEnd += userPlayer.OnPlayerTurnEnd;
@@ -67,7 +67,7 @@ public class TurnManager : Singleton<TurnManager>
         // 유저 플레이어의 행동이 완료되면 적 플레이어의 행동 완료 여부를 체크해서 적의 행동도 완료 되었으면 턴 종료 실행
         userPlayer.onActionEnd += () =>
         {
-            if( enemyPlayer.IsActionDone && !userPlayer.IsDepeat )  // 추가로 유저가 살아있을 때만 턴 종료
+            if (enemyPlayer.IsActionDone && !userPlayer.IsDepeat)  // 추가로 유저가 살아있을 때만 턴 종료
             {
                 OnTurnEnd();
             }
